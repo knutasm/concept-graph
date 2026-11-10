@@ -16,6 +16,7 @@ Katalogen har to formål:
 | Jeg vil … | Gå til |
 |---|---|
 | finne et begrep | [INDEKS.md](INDEKS.md) |
+| se sammenhenger, måltall og systemavvik | [OVERSIKT.md](OVERSIKT.md) |
 | lage eller endre et begrep | Be Claude om det ("nytt begrep: returandel"), så blir du guidet gjennom det. Eller bruk [malen](maler/begrep.md) |
 | lære å skrive gode begreper | [veiledning/godt-begrep.md](veiledning/godt-begrep.md) |
 | forstå skillet forretning/system | [veiledning/forretning-vs-system.md](veiledning/forretning-vs-system.md) |
@@ -26,12 +27,14 @@ Katalogen har to formål:
 
 ```
 INDEKS.md                      Innholdsfortegnelse (generert)
+OVERSIKT.md                    Prosessdiagrammer, måltall, systemavvik og uferdige begreper (generert)
 begreper/<domene>/_domene.md   Hva domenet dekker
 begreper/<domene>/<id>.md      Ett begrep per fil
 systemer/<id>.md               Kildesystemene
-maler/                         Maler for begrep og system
+prosesser/<id>.md              Forretningsprosessene: aktører, steg, beslutninger, resultater
+maler/                         Maler for begrep, prosess og system
 veiledning/                    Skriveveiledning
-scripts/valider.py             Validering og generering av INDEKS.md
+scripts/valider.py             Validering og generering av INDEKS.md og OVERSIKT.md
 .claude/skills/begrep/         Veiledet oppretting og oppdatering med Claude
 ```
 
@@ -46,6 +49,15 @@ den viktigste regelen i katalogen. Les [forretning-vs-system.md](veiledning/forr
 `entitet` (vare, kunde, ordre), `hendelse` (varemottak, leveranse), `maaltall` (omsetning,
 lagerbeholdning), `dimensjon` (fakturadato, varegruppe) og `klassifisering` (aktiv kunde, restordre). Se
 [begrepstyper.md](veiledning/begrepstyper.md).
+
+### Prosesser
+
+En forretningsprosess (`prosesser/<id>.md`, mal i [maler/prosess.md](maler/prosess.md)) beskriver en
+evne virksomheten må ha: hvor den starter og slutter, hvem som deltar, stegene, beslutningene og
+resultatene, og hvilke entiteter og hendelser som brukes og oppstår i hvert steg. Stegene er
+strukturerte blokker, så et flytskjema med svømmebaner kan lages fra dem. Se
+[prosesser.md](veiledning/prosesser.md). [OVERSIKT.md](OVERSIKT.md) har ett diagram per prosess
+som viser relasjonene mellom begrepene.
 
 ## Konvensjoner
 
@@ -62,6 +74,7 @@ grep -i "omsetning" INDEKS.md                    # finn begreper på navn, synon
 grep -rl "^type: maaltall" begreper              # alle måltall
 grep -rl "^status: utkast" begreper              # alt som ikke er ferdig
 grep -rl "\[\[kunde\]\]" begreper           # alt som peker på kunde
+grep -rl "\[\[kunde\]\]" prosesser          # prosesser kunde inngår i
 ```
 
 Flere oppskrifter står i [CLAUDE.md](CLAUDE.md).
@@ -71,8 +84,8 @@ Flere oppskrifter står i [CLAUDE.md](CLAUDE.md).
 Krever [uv](https://docs.astral.sh/uv/).
 
 ```sh
-uv run scripts/valider.py          # valider alt og generer INDEKS.md
-uv run scripts/valider.py --sjekk  # valider, og feil hvis INDEKS.md er utdatert
+uv run scripts/valider.py          # valider alt og generer INDEKS.md og OVERSIKT.md
+uv run scripts/valider.py --sjekk  # valider, og feil hvis INDEKS.md eller OVERSIKT.md er utdatert
 ```
 
 Valideringen sjekker blant annet påkrevde felt per type, gyldige verdier, at id og domene stemmer

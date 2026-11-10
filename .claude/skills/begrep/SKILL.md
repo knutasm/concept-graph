@@ -89,6 +89,11 @@ Alle mål må finnes. Mangler et begrep, tilby å lage det som stubb: `status: u
 felt, kort definisjon, og "Ikke kartlagt." under Systemrepresentasjon. Spør om noe ofte forveksles
 med dette begrepet (`forveksles_med` + seksjonen **Avgrensning mot andre begreper**).
 
+For `entitet` og `hendelse`: spør hvilke forretningsprosesser begrepet inngår i (se `prosesser/` og
+tabellen Prosesser i `INDEKS.md`). Legg `"[[<id>]]"` til i prosessens `begreper`, og oppdater
+prosessens `sist_oppdatert`. Spør også hvilke steg begrepet brukes i (**Bruker**) eller oppstår i
+(**Gir**). Finnes ikke prosessen, tilby å kartlegge den med skillen `prosess` når begrepet er ferdig.
+
 ## 6. Systemrepresentasjon
 
 Spør hvilke systemer begrepet finnes i. Systemene må finnes i `systemer/` (se `INDEKS.md`). Er et

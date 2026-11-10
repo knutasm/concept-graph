@@ -1,8 +1,8 @@
-"""Validerer begrepskatalogen og genererer INDEKS.md.
+"""Validerer begrepskatalogen og genererer INDEKS.md og OVERSIKT.md.
 
 Bruk:
-    uv run scripts/valider.py           # valider og skriv INDEKS.md på nytt
-    uv run scripts/valider.py --sjekk   # valider, og feil hvis INDEKS.md er utdatert (for CI / pre-commit)
+    uv run scripts/valider.py           # valider og skriv INDEKS.md og OVERSIKT.md på nytt
+    uv run scripts/valider.py --sjekk   # valider, og feil hvis INDEKS.md eller OVERSIKT.md er utdatert (for CI / pre-commit)
 
 Avslutter med kode 1 ved feil. Advarsler stopper ikke, men bør leses.
 """
@@ -19,7 +19,9 @@ import yaml
 ROT = Path(__file__).resolve().parent.parent
 BEGREPER = ROT / "begreper"
 SYSTEMER = ROT / "systemer"
+PROSESSER = ROT / "prosesser"
 INDEKS = ROT / "INDEKS.md"
+OVERSIKT = ROT / "OVERSIKT.md"
 
 # --- Tillatte verdier --------------------------------------------------------
 
@@ -68,6 +70,25 @@ SEKSJONER = [
 SEKSJONSNAVN = [s[0] for s in SEKSJONER]
 # Seksjoner som skal være systemnøytrale
 FORRETNINGSSEKSJONER = ["Definisjon", "Forretningsregler", "Beregning", "Gyldige verdier"]
+
+# Forretningsprosesser: prosesser/<id>.md
+PROSESS_PAAKREVD = ["id", "navn", "domene", "kortdefinisjon", "status", "eier", "sist_oppdatert", "begreper"]
+PROSESS_VALGFRI = ["synonymer", "gyldig_fra", "utloser"]
+PROSESS_SEKSJONER = [("Formål", True), ("Avgrensning", True), ("Aktører", True), ("Steg", True),
+                     ("Resultater", True), ("Åpne spørsmål", False)]
+PROSESS_BEGREPSTYPER = {"entitet", "hendelse"}  # begrepene som inngår i en prosess
+# Flyten: ### <id> <tittel> under Steg (s = steg, b = beslutning) og Resultater (r = resultat)
+FLYT_ART = {"s": "steg", "b": "beslutning", "r": "resultat"}
+FLYT_SEKSJON = {"s": "Steg", "b": "Steg", "r": "Resultater"}
+FLYT_FELT = {
+    "steg": {"Aktør", "Bruker", "Gir", "Neste"},
+    "beslutning": {"Aktør", "Regel", "Bruker", "Neste"},
+    "resultat": {"Hendelse"},
+}
+FLYT_BEGREPSFELT = ("Bruker", "Gir", "Hendelse")
+FLYT_ID_RE = re.compile(r"^[sbr][0-9][a-z0-9]*$")
+FLYT_OVERSKRIFT_RE = re.compile(r"^###\s+(\S+)\s*(.*)$")
+FLYT_FELT_RE = re.compile(r"^\s*[-*]\s+\*\*([^*:]+):\*\*\s*(.*)$")
 
 ID_RE = re.compile(r"^[a-z][a-z0-9_]*$")
 LENKE_RE = re.compile(r"\[\[([^\]|#]+)(?:[|#][^\]]*)?\]\]")
@@ -386,20 +407,243 @@ def sjekk_synonymer(begreper: dict, res: Resultat) -> None:
             sett.setdefault(ord_, bid)
 
 
+@dataclass
+class Flytnode:
+    """Ett steg, én beslutning eller ett resultat i en prosess. Grunnlag for å tegne flytskjema."""
+    id: str
+    tittel: str
+    art: str                                  # steg | beslutning | resultat
+    seksjon: str                              # ## overskriften noden står under
+    felt: dict[str, str]                      # feltnavn -> rå verdi
+    neste: list[tuple[str | None, str]]       # (etikett, mål). Mål: lokal id eller "[[prosess_id]]"
+    tekst: str = ""                           # fritekst mellom overskrift og felt
+
+    @property
+    def aktor(self) -> str | None:
+        return self.felt.get("Aktør") or None
+
+    def begreper(self, felt: str) -> list[str]:
+        return [_lenkemaal(d) or d for d in _deler(self.felt.get(felt, ""), ",")]
+
+
+def _deler(verdi: str, skille: str) -> list[str]:
+    return [d.strip() for d in verdi.split(skille) if d.strip()]
+
+
+def _lenkemaal(verdi: str) -> str | None:
+    m = HEL_LENKE_RE.match(verdi.strip())
+    return m.group(1).strip() if m else None
+
+
+def _les_neste(verdi: str) -> list[tuple[str | None, str]]:
+    neste = []
+    for del_ in _deler(verdi, ";"):
+        etikett, pil, maal = del_.replace("->", "→").rpartition("→")
+        neste.append(((etikett.strip() or None) if pil else None, maal.strip()))
+    return neste
+
+
+def les_flyt(dok: Dokument) -> list[Flytnode]:
+    """Leser ###-blokkene under Steg og Resultater, i leserekkefølge."""
+    noder: list[Flytnode] = []
+    for seksjon in ("Steg", "Resultater"):
+        node = None
+        for linje in dok.seksjoner.get(seksjon, "").splitlines():
+            m = FLYT_OVERSKRIFT_RE.match(linje)
+            if m:
+                node = Flytnode(m.group(1), m.group(2).strip(), FLYT_ART.get(m.group(1)[:1], "ukjent"),
+                                seksjon, {}, [])
+                noder.append(node)
+                continue
+            if node is None:
+                continue
+            f = FLYT_FELT_RE.match(linje)
+            if f:
+                node.felt[f.group(1).strip()] = f.group(2).strip()
+            elif linje.strip() and not linje.strip().startswith("<!--") and not node.felt:
+                node.tekst = f"{node.tekst} {linje.strip()}".strip()
+        for n in noder:
+            if n.seksjon == seksjon:
+                n.neste = _les_neste(n.felt.get("Neste", ""))
+    return noder
+
+
+def _aktorer_i_tabell(innhold: str) -> list[str]:
+    rader = [l for l in innhold.splitlines() if l.strip().startswith("|")]
+    return [r.strip().strip("|").split("|")[0].strip() for r in rader[2:]]  # hopp over overskrift og skillelinje
+
+
+def valider_flyt(dok: Dokument, begreper: dict, res: Resultat) -> None:
+    pid = dok.fm.get("id")
+    noder = les_flyt(dok)
+    ider: dict[str, Flytnode] = {}
+    for n in noder:
+        if not FLYT_ID_RE.match(n.id):
+            res.f(dok, f"'### {n.id} {n.tittel}': id må være s<nr> (steg), b<nr> (beslutning) eller r<nr> (resultat)")
+            continue
+        if FLYT_SEKSJON[n.id[0]] != n.seksjon:
+            res.f(dok, f"'{n.id}' står under '## {n.seksjon}', men {n.art} hører under '## {FLYT_SEKSJON[n.id[0]]}'")
+        if n.id in ider:
+            res.f(dok, f"id '{n.id}' er brukt flere ganger")
+        ider[n.id] = n
+        if not n.tittel:
+            res.f(dok, f"'{n.id}' mangler tittel (### {n.id} Verb objekt)")
+        for felt in n.felt:
+            if felt not in FLYT_FELT[n.art]:
+                res.f(dok, f"'{n.id}': feltet '{felt}' er ikke tillatt for {n.art}. "
+                           f"Tillatt: {', '.join(sorted(FLYT_FELT[n.art]))}")
+        if n.art != "resultat":
+            for felt in ("Aktør", "Neste"):
+                if not n.felt.get(felt):
+                    res.f(dok, f"'{n.id}' mangler feltet '{felt}'")
+        if n.art == "beslutning":
+            if len(n.neste) < 2 or any(e is None for e, _ in n.neste):
+                res.f(dok, f"'{n.id}': en beslutning trenger minst to alternativer med etikett: 'ja → s2; nei → r2'")
+            if not n.felt.get("Regel"):
+                res.a(dok, f"'{n.id}': beslutningen mangler 'Regel' (hva avgjør valget?)")
+        if n.art == "steg" and len(n.neste) > 1:
+            res.f(dok, f"'{n.id}': et steg har bare én 'Neste'. Bruk en beslutning (b…) for valg")
+        for felt in FLYT_BEGREPSFELT:
+            for verdi in _deler(n.felt.get(felt, ""), ","):
+                bid = _lenkemaal(verdi)
+                if not bid:
+                    res.f(dok, f"'{n.id}': '{felt}' skal bare ha begrepslenker, f.eks. [[ordre]], ikke '{verdi}'")
+                elif bid not in begreper:
+                    res.f(dok, f"'{n.id}': '{felt}' peker på ukjent begrep '{bid}'")
+                elif begreper[bid].fm.get("type") not in PROSESS_BEGREPSTYPER:
+                    res.f(dok, f"'{n.id}': '{felt}' peker på '{bid}' av type {begreper[bid].fm.get('type')}. "
+                               "Bare entiteter og hendelser")
+                elif f"[[{bid}]]" not in [str(v).strip() for v in som_liste(dok.fm.get("begreper"))]:
+                    res.a(dok, f"'{n.id}': '{bid}' mangler i 'begreper' i frontmatter")
+    steg = [n for n in ider.values() if n.art != "resultat"]
+    if not steg:
+        res.f(dok, "'## Steg' må ha minst ett steg som '### s1 Verb objekt'")
+    if not any(n.art == "resultat" for n in ider.values()):
+        res.f(dok, "'## Resultater' må ha minst ett resultat som '### r1 Navn'")
+    aktorer = _aktorer_i_tabell(dok.seksjoner.get("Aktører", ""))
+    if not aktorer:
+        res.f(dok, "'## Aktører' må være en tabell: | Aktør | Ansvar i prosessen |")
+    for n in steg:
+        if n.aktor and n.aktor not in aktorer:
+            res.f(dok, f"'{n.id}': aktøren '{n.aktor}' står ikke i tabellen under '## Aktører'")
+        for _, maal in n.neste:
+            prosess = _lenkemaal(maal)
+            if prosess:
+                if prosess == pid or not (PROSESSER / f"{prosess}.md").exists():
+                    res.f(dok, f"'{n.id}': 'Neste' peker på ukjent prosess '{prosess}'")
+            elif maal not in ider:
+                res.f(dok, f"'{n.id}': 'Neste' peker på '{maal}', som ikke finnes. Bruk en id eller [[prosess]]")
+    if not steg:
+        return
+    # Nåbarhet: alt skal kunne nås fra første steg, og alt skal kunne føre til et resultat eller en annen prosess
+    kanter = {n.id: [m for _, m in n.neste if m in ider] for n in ider.values()}
+    naadd, kø = set(), [steg[0].id]
+    while kø:
+        nid = kø.pop()
+        if nid not in naadd:
+            naadd.add(nid)
+            kø += kanter.get(nid, [])
+    for nid in ider:
+        if nid not in naadd:
+            res.a(dok, f"'{nid}' kan ikke nås fra første steg '{steg[0].id}'")
+    ferdig = {n.id for n in ider.values() if n.art == "resultat" or any(_lenkemaal(m) for _, m in n.neste)}
+    endret = True
+    while endret:
+        endret = False
+        for nid, mål in kanter.items():
+            if nid not in ferdig and any(m in ferdig for m in mål):
+                ferdig.add(nid)
+                endret = True
+    for n in steg:
+        if n.id not in ferdig:
+            res.a(dok, f"'{n.id}' fører aldri til et resultat eller en annen prosess")
+
+
+def last_prosesser(res: Resultat, begreper: dict, domener: dict) -> dict[str, Dokument]:
+    prosesser: dict[str, Dokument] = {}
+    if not PROSESSER.exists():
+        return prosesser
+    for sti in sorted(PROSESSER.glob("*.md")):
+        dok = les(sti, res)
+        if not dok:
+            continue
+        fm = dok.fm
+        for felt in PROSESS_PAAKREVD:
+            if fm.get(felt) in (None, "", []):
+                res.f(dok, f"mangler påkrevd felt '{felt}'")
+        for felt in fm:
+            if felt not in PROSESS_PAAKREVD + PROSESS_VALGFRI:
+                res.f(dok, f"feltet '{felt}' er ikke tillatt for en prosess")
+        pid = str(fm.get("id", ""))
+        if not ID_RE.match(pid):
+            res.f(dok, f"ugyldig id '{pid}' (bruk små bokstaver a-z, 0-9 og _)")
+        if pid != sti.stem:
+            res.f(dok, f"id '{pid}' må være lik filnavnet '{sti.stem}'")
+        if pid in begreper:
+            res.f(dok, f"id '{pid}' er allerede brukt av begrepet i {begreper[pid].rel}")
+        if fm.get("domene") not in domener:
+            res.f(dok, f"domenet '{fm.get('domene')}' finnes ikke i begreper/")
+        if fm.get("status") not in STATUSER:
+            res.f(dok, f"status '{fm.get('status')}' er ugyldig. Tillatt: {', '.join(STATUSER)}")
+        for felt in ("sist_oppdatert", "gyldig_fra"):
+            if felt in fm and not isinstance(fm[felt], dt.date):
+                res.f(dok, f"'{felt}' må være en dato på formen ÅÅÅÅ-MM-DD")
+        if "begreper" in fm and not isinstance(fm["begreper"], list):
+            res.f(dok, "'begreper' må være en liste, f.eks. [\"[[ordre]]\", \"[[kunde]]\"]")
+        for v in som_liste(fm.get("begreper")) if isinstance(fm.get("begreper"), list) else []:
+            m = HEL_LENKE_RE.match(str(v).strip())
+            if not m:
+                res.f(dok, f"begreper: '{v}' må være en Obsidian-lenke i anførselstegn, f.eks. \"[[ordre]]\"")
+            elif m.group(1) not in begreper:
+                res.f(dok, f"begreper peker på ukjent begrep '{m.group(1)}'")
+            elif begreper[m.group(1)].fm.get("type") not in PROSESS_BEGREPSTYPER:
+                res.f(dok, f"begreper: '{m.group(1)}' er av type {begreper[m.group(1)].fm.get('type')}. "
+                           "En prosess lister bare entiteter og hendelser")
+        if "utloser" in fm:
+            uid = _lenkemaal(str(fm["utloser"]))
+            if not uid:
+                res.f(dok, f"utloser: '{fm['utloser']}' må være én lenke i anførselstegn, f.eks. \"[[ordre]]\"")
+            elif uid not in begreper:
+                res.f(dok, f"utloser peker på ukjent begrep '{uid}'")
+            elif begreper[uid].fm.get("type") not in PROSESS_BEGREPSTYPER:
+                res.f(dok, f"utloser: '{uid}' er av type {begreper[uid].fm.get('type')}. Bare entiteter og hendelser")
+            elif f"[[{uid}]]" not in [str(v).strip() for v in som_liste(fm.get("begreper"))]:
+                res.a(dok, f"utloser '{uid}' mangler i 'begreper'")
+        valider_flyt(dok, begreper, res)
+        navn = [n for n, _ in PROSESS_SEKSJONER]
+        for seksjon in dok.rekkefolge:
+            if seksjon not in navn:
+                res.f(dok, f"ukjent seksjon '## {seksjon}'. Tillatt: {', '.join(navn)}")
+        for seksjon, paakrevd in PROSESS_SEKSJONER:
+            if paakrevd and not dok.seksjoner.get(seksjon, "").strip():
+                res.f(dok, f"mangler eller har tom seksjon '## {seksjon}'")
+        kjente = [n for n in dok.rekkefolge if n in navn]
+        if kjente != sorted(kjente, key=navn.index):
+            res.f(dok, f"seksjonene står i feil rekkefølge. Riktig: {', '.join(navn)}")
+        for seksjon, innhold in dok.seksjoner.items():
+            for lenke in LENKE_RE.findall(innhold):
+                if lenke not in begreper and lenke != pid and not (PROSESSER / f"{lenke}.md").exists():
+                    res.f(dok, f"lenken [[{lenke}]] i '## {seksjon}' peker på ukjent begrep eller prosess")
+        if pid:
+            prosesser[pid] = dok
+    return prosesser
+
+
 # --- Indeks --------------------------------------------------------------------
 
 def celle(verdi) -> str:
     return str(verdi or "").replace("|", "\\|").replace("\n", " ").strip()
 
 
-def lag_indeks(begreper: dict, domener: dict, systemer: dict) -> str:
+def lag_indeks(begreper: dict, domener: dict, systemer: dict, prosesser: dict) -> str:
     linjer = [
         "# Indeks",
         "",
         "<!-- GENERERT av scripts/valider.py. Ikke rediger for hånd. -->",
         "",
-        f"{len(begreper)} begreper i {len(domener)} domener, {len(systemer)} systemer. "
-        "Les [README.md](README.md) for hvordan katalogen er bygd opp.",
+        f"{len(begreper)} begreper i {len(domener)} domener, {len(prosesser)} prosesser, {len(systemer)} systemer. "
+        "Les [README.md](README.md) for hvordan katalogen er bygd opp. "
+        "Diagrammer, måltall og systemavvik står i [OVERSIKT.md](OVERSIKT.md).",
         "",
         "## Domener",
         "",
@@ -424,12 +668,214 @@ def lag_indeks(begreper: dict, domener: dict, systemer: dict) -> str:
             linjer.append(f"| [{fm['id']}]({dok.rel}) | {celle(fm.get('navn'))} | {celle(fm.get('type'))} "
                           f"| {celle(fm.get('status'))} | {celle(', '.join(map(str, som_liste(fm.get('synonymer')))))} "
                           f"| {celle(fm.get('kortdefinisjon'))} |")
+    linjer += ["", "## Prosesser", "", "Forretningsprosessene: hva som starter dem, hvem som deltar, og hvor mange entiteter og hendelser som inngår.", ""]
+    if prosesser:
+        linjer += ["| id | navn | domene | status | utløser | aktører | begreper | kortdefinisjon |",
+                   "|---|---|---|---|---|---|---|---|"]
+        for pdok in sorted(prosesser.values(), key=lambda x: (x.fm.get("domene"), x.fm["id"])):
+            fm = pdok.fm
+            aktorer = list(dict.fromkeys(n.aktor for n in les_flyt(pdok) if n.aktor))
+            linjer.append(f"| [{fm['id']}]({pdok.rel}) | {celle(fm.get('navn'))} | {celle(fm.get('domene'))} "
+                          f"| {celle(fm.get('status'))} | {celle(_lenkemaal(str(fm.get('utloser', ''))))} "
+                          f"| {celle(', '.join(aktorer))} | {len(som_liste(fm.get('begreper')))} "
+                          f"| {celle(fm.get('kortdefinisjon'))} |")
+    else:
+        linjer.append("_Ingen prosesser ennå._")
     linjer += ["", "## Systemer", "", "| id | navn | kategori | antall begreper | beskrivelse |", "|---|---|---|---|---|"]
     for sid, sdok in systemer.items():
         antall = sum(1 for b in begreper.values() if sid in som_liste(b.fm.get("systemer")))
         linjer.append(f"| [{sid}]({sdok.rel}) | {celle(sdok.fm.get('navn'))} | {celle(sdok.fm.get('kategori'))} "
                       f"| {antall} | {celle(sdok.fm.get('beskrivelse'))} |")
     return "\n".join(linjer) + "\n"
+
+
+# --- Oversikt ------------------------------------------------------------------
+
+# Relasjoner som tegnes, og pilstil. se_ogsaa utelates for lesbarhetens skyld.
+KANTSTIL = {
+    "tilhorer": "-->", "del_av": "-->", "er_en": "-->", "avledet_av": "-->", "beskriver": "-->",
+    "grain": "-->", "tid": "-->", "forveksles_med": "-.-", "erstattet_av": "-.->",
+}
+AVVIK_RE = re.compile(r"\*\*Avvik fra forretningsdefinisjon:\*\*\s*(.*?)(?=\n\s*-\s+\*\*|\n#|\Z)", re.DOTALL)
+
+
+def _ref(verdi) -> str | None:
+    m = HEL_LENKE_RE.match(str(verdi).strip())
+    return m.group(1).strip() if m else None
+
+
+def _kanter(dok: Dokument, begreper: dict) -> list[tuple[str, str, str]]:
+    """(fra, til, etikett) for alle tegnbare koblinger fra et begrep."""
+    fra = dok.fm["id"]
+    kanter = []
+    for rtype in RELASJONER:
+        if rtype not in KANTSTIL:
+            continue
+        for v in som_liste(dok.fm.get(rtype)):
+            til = _ref(v)
+            if til in begreper:
+                kanter.append((fra, til, rtype))
+    for felt in REFERANSEFELT:
+        til = _ref(dok.fm.get(felt, ""))
+        if til in begreper:
+            kanter.append((fra, til, "grain" if felt == "grain" else "tid"))
+    return kanter
+
+
+def _alle_kanter(begreper: dict) -> list[tuple[str, str, str]]:
+    sett = set()
+    for dok in begreper.values():
+        for fra, til, etikett in _kanter(dok, begreper):
+            if etikett == "forveksles_med":  # symmetrisk: tegn én gang
+                fra, til = sorted((fra, til))
+            sett.add((fra, til, etikett))
+    return sorted(sett)
+
+
+def _etikett(tekst) -> str:
+    return '"' + str(tekst).replace('"', "#quot;") + '"'
+
+
+# Relasjoner mellom entiteter/hendelser som tegnes i prosessdiagrammene
+PROSESS_RELASJONER = ["tilhorer", "del_av", "er_en"]
+
+
+def _mermaid_prosess(prosess: Dokument, begreper: dict) -> list[str]:
+    domene = prosess.fm.get("domene")
+    noder = sorted({b for b in (_ref(v) for v in som_liste(prosess.fm.get("begreper"))) if b in begreper})
+    linjer = ["```mermaid", "flowchart LR"]
+    for bid in noder:
+        fm = begreper[bid].fm
+        navn = fm.get("navn", bid) if fm.get("domene") == domene else f"{fm.get('navn', bid)} ({fm.get('domene')})"
+        start, slutt = ("([", "])") if fm.get("type") == "hendelse" else ("[", "]")
+        linjer.append(f"    {bid}{start}{_etikett(navn)}{slutt}")
+    kanter = set()
+    for bid in noder:
+        for rtype in PROSESS_RELASJONER:
+            for v in som_liste(begreper[bid].fm.get(rtype)):
+                til = _ref(v)
+                if til in noder:
+                    kanter.add((bid, til, rtype))
+    for fra, til, rtype in sorted(kanter):
+        linjer.append(f"    {fra} -->|{rtype}| {til}")
+    eksterne = [b for b in noder if begreper[b].fm.get("domene") != domene]
+    if eksterne:
+        linjer.append("    classDef ekstern fill:#f5f5f5,stroke:#999,color:#555,stroke-dasharray:3 3")
+        linjer.append(f"    class {','.join(eksterne)} ekstern")
+    linjer.append("```")
+    return linjer
+
+
+def _avvik(dok: Dokument) -> dict[str, str]:
+    innhold = dok.seksjoner.get("Systemrepresentasjon", "")
+    ut = {}
+    for sid in dok.underseksjoner.get("Systemrepresentasjon", []):
+        m = AVVIK_RE.search(_underseksjon(innhold, sid))
+        if m:
+            tekst = " ".join(m.group(1).split())
+            if tekst and not tekst.lower().startswith("ingen kjente"):
+                ut[sid] = tekst
+    return ut
+
+
+def _lenke(dok: Dokument) -> str:
+    return f"[{dok.fm['id']}]({dok.rel})"
+
+
+def _reflenke(verdi, begreper: dict) -> str:
+    bid = _ref(verdi) if verdi else None
+    return _lenke(begreper[bid]) if bid in begreper else celle(verdi)
+
+
+def lag_oversikt(begreper: dict, domener: dict, systemer: dict, prosesser: dict) -> str:
+    kanter = _alle_kanter(begreper)
+    linjer = [
+        "# Oversikt",
+        "",
+        "<!-- GENERERT av scripts/valider.py. Ikke rediger for hånd. -->",
+        "",
+        "Sammenhenger, måltall, systemavvik og uferdige begreper. Se [INDEKS.md](INDEKS.md) for alle begreper.",
+        "",
+        "**Prosessdiagrammene** viser entitetene `[ ]` og hendelsene `([ ])` som inngår i hver "
+        "forretningsprosess (feltet `begreper` i `prosesser/<id>.md`), og relasjonene mellom dem: "
+        "`tilhorer`, `del_av` og `er_en`. Pilene leses *fra → til*: `ordre --tilhorer--> kunde`. "
+        "Grå boks med domenet i parentes = begrep fra et annet domene. Måltall, dimensjoner og "
+        "klassifiseringer står i tabellene under.",
+        "",
+        "## Domenekart",
+        "",
+        "Antall koblinger mellom domener.",
+        "",
+        "```mermaid",
+        "flowchart LR",
+    ]
+    for d, ddok in domener.items():
+        linjer.append(f"    {d}[{_etikett(ddok.fm.get('navn', d))}]")
+    mellom: dict[tuple[str, str], int] = {}
+    for fra, til, _ in kanter:
+        a, b = begreper[fra].fm.get("domene"), begreper[til].fm.get("domene")
+        if a != b and a in domener and b in domener:
+            mellom[(a, b)] = mellom.get((a, b), 0) + 1
+    for (a, b), n in sorted(mellom.items()):
+        linjer.append(f"    {a} -->|{n}| {b}")
+    linjer.append("```")
+
+    for d, ddok in domener.items():
+        linjer += ["", f"## {d}", "", f"**{celle(ddok.fm.get('navn'))}**: {celle(ddok.fm.get('beskrivelse'))}", ""]
+        mine = sorted((p for p in prosesser.values() if p.fm.get("domene") == d), key=lambda x: x.fm["id"])
+        if not mine:
+            linjer.append("_Ingen prosesser ennå._")
+        for pdok in mine:
+            linjer += ["", f"### {celle(pdok.fm.get('navn'))}", "",
+                       f"[{pdok.fm['id']}]({pdok.rel}) ({celle(pdok.fm.get('status'))}): "
+                       f"{celle(pdok.fm.get('kortdefinisjon'))}", ""]
+            linjer += _mermaid_prosess(pdok, begreper)
+
+    # Måltallsmatrise
+    linjer += ["", "## Måltall", "",
+               "Grunnlaget for mål i en semantisk modell. **semi_additiv** skal aldri summeres over tid, "
+               "**ikke_additiv** skal aldri summeres (beregn fra teller og nevner).", "",
+               "| måltall | domene | grain | tidsdimensjon | aggregering | additivitet | enhet | avledet_av | status |",
+               "|---|---|---|---|---|---|---|---|---|"]
+    maaltall = sorted((b for b in begreper.values() if b.fm.get("type") == "maaltall"),
+                      key=lambda b: (b.fm.get("domene"), b.fm["id"]))
+    for b in maaltall:
+        fm = b.fm
+        add = str(fm.get("additivitet", ""))
+        add = add if add == "additiv" else f"**{add}**"
+        avledet = ", ".join(_reflenke(v, begreper) for v in som_liste(fm.get("avledet_av")))
+        linjer.append(f"| {_lenke(b)} | {celle(fm.get('domene'))} | {_reflenke(fm.get('grain'), begreper)} "
+                      f"| {_reflenke(fm.get('tidsdimensjon'), begreper)} | {celle(fm.get('aggregering'))} "
+                      f"| {add} | {celle(fm.get('enhet'))} | {avledet} | {celle(fm.get('status'))} |")
+
+    # Systemdekning
+    linjer += ["", "## Systemdekning", "", "Antall begreper per domene som er beskrevet i hvert system.", "",
+               "| domene | " + " | ".join(systemer) + " |", "|---|" + "---|" * len(systemer)]
+    for d in domener:
+        tall = [sum(1 for b in begreper.values()
+                    if b.fm.get("domene") == d and s in som_liste(b.fm.get("systemer"))) for s in systemer]
+        linjer.append(f"| {d} | " + " | ".join(str(t) for t in tall) + " |")
+
+    linjer += ["", "### Kjente avvik", "",
+               "Der systemet ikke stemmer med forretningsdefinisjonen. Disse filtrene og korreksjonene "
+               "må med når kildedata brukes.", ""]
+    for sid in systemer:
+        rader = [(b, _avvik(b)[sid]) for b in sorted(begreper.values(), key=lambda x: x.fm["id"]) if sid in _avvik(b)]
+        if not rader:
+            continue
+        linjer += [f"#### {sid}", "", "| begrep | avvik |", "|---|---|"]
+        linjer += [f"| {_lenke(b)} | {celle(tekst)} |" for b, tekst in rader]
+        linjer.append("")
+
+    # Uferdig
+    linjer += ["## Uferdig", "", "Begreper og prosesser som ikke er godkjent, eller som har åpne spørsmål.", "",
+               "| begrep | type | status | åpne spørsmål |", "|---|---|---|---|"]
+    for b in sorted([*begreper.values(), *prosesser.values()], key=lambda x: x.fm["id"]):
+        spm = re.sub(r"<!--.*?-->", "", b.seksjoner.get("Åpne spørsmål", ""), flags=re.DOTALL)
+        antall = len(re.findall(r"^\s*[-*] ", spm, re.MULTILINE)) or (1 if spm.strip() else 0)
+        if b.fm.get("status") != "godkjent" or antall:
+            linjer.append(f"| {_lenke(b)} | {celle(b.fm.get('type', 'prosess'))} | {celle(b.fm.get('status'))} | {antall or ''} |")
+    return re.sub(r"\n{3,}", "\n\n", "\n".join(linjer)) + "\n"
 
 
 # --- Hovedprogram --------------------------------------------------------------
@@ -443,27 +889,33 @@ def main() -> int:
     for dok in begreper.values():
         valider_begrep(dok, begreper, systemer, res)
     sjekk_synonymer(begreper, res)
+    prosesser = last_prosesser(res, begreper, domener)
 
     for a in res.advarsler:
         print(f"ADVARSEL  {a}")
     for f in res.feil:
         print(f"FEIL      {f}")
     if res.feil:
-        print(f"\n{len(res.feil)} feil, {len(res.advarsler)} advarsler. INDEKS.md er ikke oppdatert.")
+        print(f"\n{len(res.feil)} feil, {len(res.advarsler)} advarsler. INDEKS.md og OVERSIKT.md er ikke oppdatert.")
         return 1
 
-    ny = lag_indeks(begreper, domener, systemer)
-    gammel = INDEKS.read_text(encoding="utf-8") if INDEKS.exists() else ""
-    if sjekk:
-        if ny != gammel:
-            print("FEIL      INDEKS.md er utdatert. Kjør: uv run scripts/valider.py")
-            return 1
-        print(f"OK: {len(begreper)} begreper, {len(res.advarsler)} advarsler. INDEKS.md er oppdatert.")
-        return 0
-    if ny != gammel:
-        INDEKS.write_text(ny, encoding="utf-8")
-    print(f"OK: {len(begreper)} begreper, {len(res.advarsler)} advarsler. INDEKS.md "
-          f"{'skrevet' if ny != gammel else 'uendret'}.")
+    status = []
+    utdatert = []
+    for sti, lag in [(INDEKS, lag_indeks), (OVERSIKT, lag_oversikt)]:
+        ny = lag(begreper, domener, systemer, prosesser)
+        gammel = sti.read_text(encoding="utf-8") if sti.exists() else ""
+        if ny == gammel:
+            status.append(f"{sti.name} uendret")
+        elif sjekk:
+            utdatert.append(sti.name)
+        else:
+            sti.write_text(ny, encoding="utf-8")
+            status.append(f"{sti.name} skrevet")
+    if utdatert:
+        for navn in utdatert:
+            print(f"FEIL      {navn} er utdatert. Kjør: uv run scripts/valider.py")
+        return 1
+    print(f"OK: {len(begreper)} begreper, {len(prosesser)} prosesser, {len(res.advarsler)} advarsler. {', '.join(status)}.")
     return 0
 
 
