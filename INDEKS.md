@@ -2,7 +2,7 @@
 
 <!-- GENERERT av scripts/valider.py. Ikke rediger for hånd. -->
 
-31 begreper i 4 domener, 5 systemer. Les [README.md](README.md) for hvordan katalogen er bygd opp.
+33 begreper i 4 domener, 5 systemer. Les [README.md](README.md) for hvordan katalogen er bygd opp.
 
 ## Domener
 
@@ -11,7 +11,7 @@
 | [innkjop](#innkjop) | Innkjøp | Innkjøpsavdelingen | 5 | Innkjøp av varer fra leverandører, og oppfølging av leverandørene. |
 | [kjerne](#kjerne) | Kjerne | Dataplattformteamet | 5 | Begreper som brukes av flere domener og ikke har én naturlig faglig eier, f.eks. vare og kalender. |
 | [logistikk](#logistikk) | Logistikk | Logistikkavdelingen | 7 | Lagring og levering av varer: lagre, beholdning, utleveringer og leveringsevne. |
-| [salg](#salg) | Salg | Salgsavdelingen | 14 | Salg til håndverkere og byggeprosjekter: kunder, ordre, fakturering og lønnsomhet. |
+| [salg](#salg) | Salg | Salgsavdelingen | 16 | Salg til håndverkere og byggeprosjekter: kunder, ordre, fakturering og lønnsomhet. |
 
 ## innkjop
 
@@ -65,11 +65,13 @@
 | [fakturalinje](begreper/salg/fakturalinje.md) | Fakturalinje | entitet | godkjent | invoice line | Én vare på en faktura, med fakturert antall, beløp og varekost. |
 | [kunde](begreper/salg/kunde.md) | Kunde | entitet | godkjent | kundekonto, customer | En virksomhet eller person som har kjøpt varer av oss på egen kundekonto. |
 | [kundesegment](begreper/salg/kundesegment.md) | Kundesegment | dimensjon | godkjent | segment, kundetype, customer segment | Hva slags virksomhet kunden er, f.eks. rørleggerbedrift eller entreprenør. |
+| [listepris](begreper/salg/listepris.md) | Listepris | dimensjon | utkast | veiledende pris, bruttopris, list price | Den veiledende salgsprisen for en vare før kunde- eller prosjektrabatter, eksklusiv mva. |
 | [omsetning](begreper/salg/omsetning.md) | Omsetning | maaltall | godkjent | netto omsetning, salg, salgsinntekt, revenue | Fakturert salg av varer eksklusiv mva, fratrukket kreditnotaer. |
 | [ordre](begreper/salg/ordre.md) | Ordre | entitet | godkjent | salgsordre, kundeordre, bestilling, order | En bekreftet bestilling av varer fra en kunde. |
 | [ordredato](begreper/salg/ordredato.md) | Ordredato | dimensjon | godkjent | bestillingsdato, order date | Datoen ordren ble bekreftet. |
 | [ordrelinje](begreper/salg/ordrelinje.md) | Ordrelinje | entitet | godkjent | linje, order line | Én vare på en ordre, med bestilt antall og avtalt pris. |
 | [prosjekt](begreper/salg/prosjekt.md) | Prosjekt | entitet | til_godkjenning | byggeprosjekt, kundeprosjekt, project | Et byggeprosjekt som en kunde kjøper varer til, ofte med egne priser og egen leveringsadresse. |
+| [rabatt](begreper/salg/rabatt.md) | Rabatt | maaltall | utkast | kunderabatt, avslag, discount | Hvor mye lavere enn listepris kunden ble fakturert, i kroner eksklusiv mva. |
 | [varekost](begreper/salg/varekost.md) | Varekost | maaltall | godkjent | vareforbruk, kost solgte varer, COGS | Hva de solgte varene kostet oss, til gjennomsnittlig innkjøpskost på salgstidspunktet. |
 
 ## Systemer
@@ -78,6 +80,6 @@
 |---|---|---|---|---|
 | [crm](systemer/crm.md) | CRM-systemet | CRM | 3 | Brukes av selgerne til å følge opp kunder, kontaktpersoner og prosjektmuligheter. |
 | [datavarehus](systemer/datavarehus.md) | Datavarehuset | datavarehus | 9 | Samler data fra kildesystemene og beregner analytiske modeller og måltall. |
-| [erp](systemer/erp.md) | ERP-systemet | ERP | 23 | Kjernesystem for varer, kunder, leverandører, ordre, innkjøp, fakturering og regnskap. |
+| [erp](systemer/erp.md) | ERP-systemet | ERP | 24 | Kjernesystem for varer, kunder, leverandører, ordre, innkjøp, fakturering og regnskap. |
 | [lagerstyringssystem](systemer/lagerstyringssystem.md) | Lagerstyringssystemet | lager | 7 | Styrer varemottak, lagerplasser, plukk og utlevering på sentrallageret og utsalgsstedene. |
 | [nettbutikk](systemer/nettbutikk.md) | Nettbutikken | netthandel | 4 | Netthandel for innloggede bedriftskunder, med kundens egne avtalepriser. |
