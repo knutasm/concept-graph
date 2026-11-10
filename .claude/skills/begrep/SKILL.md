@@ -1,6 +1,6 @@
 ---
 name: begrep
-description: Veileder brukeren gjennom å opprette eller oppdatere et begrep (forretningsbegrep, måltall, dimensjon, entitet, klassifisering) i begrepskatalogen. Bruk når brukeren vil legge til, definere, endre, rydde i eller dokumentere et begrep, et måltall eller et system i katalogen, f.eks. "nytt begrep", "definer aktiv kunde", "oppdater netto omsetning", "add a glossary term".
+description: Veileder brukeren gjennom å opprette eller oppdatere et begrep (forretningsbegrep, måltall, dimensjon, entitet, klassifisering) i begrepskatalogen. Bruk når brukeren vil legge til, definere, endre, rydde i eller dokumentere et begrep, et måltall eller et system i katalogen, f.eks. "nytt begrep", "definer aktiv kunde", "oppdater dekningsgrad", "add a glossary term".
 ---
 
 # Opprette eller oppdatere et begrep
@@ -37,6 +37,8 @@ grep -rli "^navn:.*<ord>" begreper
 - **Type:** foreslå en type ut fra `veiledning/begrepstyper.md` og forklar kort hvorfor.
 - **Domene:** foreslå blant mappene i `begreper/` (se `_domene.md` i hver). Nytt domene bare
   hvis ingen passer, og da må du lage `begreper/<domene>/_domene.md` også.
+  `kjerne` er bare for begreper som minst to domener bruker **og** som ingen av dem eier alene
+  (f.eks. vare, kalenderdag). Har begrepet en tydelig faglig eier, legg det i eierens domene.
 
 ## 3. Forretningsdefinisjonen (systemnøytral)
 
@@ -81,6 +83,8 @@ Skriv så:
 ## 5. Relasjoner
 
 Foreslå relasjoner ut fra det som er sagt, og bruk bare typene i `veiledning/relasjoner.md`.
+Hver relasjonstype er et eget felt med lenker: `er_en: ["[[kunde]]"]`. Det samme gjelder `grain`,
+`tidsdimensjon` og `tidspunkt`: `grain: "[[fakturalinje]]"`.
 Alle mål må finnes. Mangler et begrep, tilby å lage det som stubb: `status: utkast`, bare påkrevde
 felt, kort definisjon, og "Ikke kartlagt." under Systemrepresentasjon. Spør om noe ofte forveksles
 med dette begrepet (`forveksles_med` + seksjonen **Avgrensning mot andre begreper**).

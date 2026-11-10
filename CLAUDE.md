@@ -27,16 +27,18 @@ semantiske modeller og måltall skal genereres.
 
 ```sh
 grep -rl "^type: maaltall" begreper                     # alle måltall
-grep -rl "^type: maaltall" begreper/okonomi             # måltall i ett domene
+grep -rl "^type: maaltall" begreper/salg                # måltall i ett domene
 grep -rl "^status: utkast" begreper                     # alt som ikke er ferdig
-grep -rli "^synonymer:.*nettosalg" begreper             # søk på synonym
+grep -rli "^synonymer:.*bruttomargin" begreper          # søk på synonym
 grep -rl "^systemer:.*\berp\b" begreper                 # begreper som finnes i ERP
-grep -rlE "\[\[kunde\]\]|: \[.*\bkunde\b.*\]" begreper  # alt som peker på kunde
-grep -rl "^tidsdimensjon: fakturadato" begreper         # måltall plassert i tid av fakturadato
+grep -rl "\[\[kunde\]\]" begreper                     # alt som peker på kunde
+grep -rl "^tidsdimensjon:.*\[\[fakturadato\]\]" begreper # måltall plassert i tid av fakturadato
 grep -h "^kortdefinisjon:" begreper/*/*.md              # alle kortdefinisjoner
 ```
 
 Frontmatter-lister står alltid på én linje (`synonymer: [a, b]`), så grep viser hele lista.
+Referanser til andre begreper (relasjoner, `grain`, `tidsdimensjon`, `tidspunkt` og lenker i teksten)
+skrives alltid `[[id]]`, så `grep "\[\[id\]\]"` finner alle.
 
 ## Generere semantiske modeller
 

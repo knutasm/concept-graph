@@ -10,8 +10,8 @@ beskrivelse: Samler data fra kildesystemene og beregner analytiske modeller og m
 
 ## Formål
 
-Integrerer data fra ERP-, CRM- og abonnementssystemet. Her implementeres beregnede begreper
-som ikke finnes i noe kildesystem (f.eks. aktiv kunde og MRR).
+Integrerer data fra ERP, CRM, lagerstyringssystemet og nettbutikken. Her implementeres beregnede
+begreper som ikke finnes i noe kildesystem, f.eks. aktiv kunde og leveringsgrad.
 
 ## Særegenheter
 

@@ -26,8 +26,8 @@ Definisjonen er det viktigste. Den skal være:
 | Egenskap | ❌ Dårlig | ✅ Bra |
 |---|---|---|
 | **Presis**. Én tolkning | "Kunder som handler jevnlig." | "En kunde med minst én bekreftet ordre de siste 12 månedene." |
-| **Ikke sirkulær** | "Netto omsetning er omsetningen netto." | "Brutto omsetning fratrukket returer og rabatter." |
-| **Systemnøytral** | "Debitorer i ERP-et." | "En person eller virksomhet med minst én bekreftet ordre." |
+| **Ikke sirkulær** | "Dekningsbidrag er bidraget salget dekker." | "Omsetning minus varekost." |
+| **Systemnøytral** | "Kundenumre i ERP-et." | "En virksomhet eller person som har kjøpt varer av oss på egen kundekonto." |
 | **Kort** | Et avsnitt med unntak og historikk | 1–3 setninger. Unntak i Forretningsregler, endringer i Historikk |
 | **Positiv** | "Alt som ikke er en kreditnota." | Si hva det *er*. Bruk Forretningsregler for hva det ikke er |
 | **Forståelig** | Fagsjargong og forkortelser uten forklaring | Skriv for en ny kollega. Forklar forkortelser første gang |
@@ -38,7 +38,7 @@ i søkeresultater, så den må kunne stå alene.
 ## Navn, id og synonymer
 
 - **`navn`** er det virksomheten faktisk kaller begrepet, i entall: "Ordre", ikke "Ordrer".
-- **`id`** er navnet med små bokstaver og `_`, uten æøå (æ→ae, ø→o, å→aa): `maaned`, `okonomi`.
+- **`id`** er navnet med små bokstaver og `_`, uten æøå (æ→ae, ø→o, å→aa): `leverandor`, `innkjop`.
   Ikke endre id-en senere. Andre begreper peker på den.
 - **`synonymer`** er alle andre navn folk bruker, også engelske og forkortelser. Det er dem folk
   søker etter. Hvis et synonym egentlig er et annet begrep, lag begrepet og bruk `forveksles_med`.
@@ -56,10 +56,10 @@ Punktliste med presise regler. Gode regler svarer på:
 
 For måltall avgjør disse feltene om tallene blir riktige:
 
-1. **Grain:** Hva beregnes én grunnverdi for? Faktura, ordrelinje, abonnement?
+1. **Grain:** Hva beregnes én grunnverdi for? Fakturalinje, ordrelinje, vare?
 2. **Tidsdimensjon:** Hvilken dato plasserer tallet i tid? Ordredato og fakturadato gir ulike månedstall.
-3. **Additivitet:** Kan tallet summeres over tid? Beholdninger og MRR kan ikke det.
-4. **Beregning:** Avledede måltall skrives som formel med begreps-id-er: `brutto_omsetning - returer - rabatt`.
+3. **Additivitet:** Kan tallet summeres over tid? Lagerbeholdning kan ikke det.
+4. **Beregning:** Avledede måltall skrives som formel med begreps-id-er: `omsetning - varekost`.
    Aldri tabeller eller kolonner.
 
 ## Endre et begrep

@@ -1,22 +1,23 @@
 ---
 id: erp
 navn: ERP-systemet
-kategori: erp
+kategori: ERP
 synonymer: [ERP, forretningssystemet]
 eier: Økonomiavdelingen
-beskrivelse: Kjernesystem for ordre, fakturering, regnskap og lager.
+beskrivelse: Kjernesystem for varer, kunder, leverandører, ordre, innkjøp, fakturering og regnskap.
 ---
 # ERP-systemet
 
 ## Formål
 
-Master for ordre, fakturaer og kreditnotaer. Oppretter kunderecord for alle som får et tilbud.
+Master for varer, kunder, leverandører, ordre, innkjøpsordre og fakturaer.
 
 ## Særegenheter
 
-- Kunderecord opprettes allerede ved tilbud, så systemet inneholder mange som aldri har kjøpt noe.
-- Ordre har statusfelt med verdiene utkast, tilbud, bekreftet, levert og kansellert.
-- Kreditnotaer lagres som egne dokumenter med referanse til opprinnelig faktura.
+- Kontantsalg på utsalgsstedene føres på én felles samlekunde, ikke på den enkelte kunden.
+- Store byggeprosjekter er ofte opprettet som egne kundenumre i stedet for som prosjekter.
+- Frakt, gebyrer og returemballasje er registrert som varer.
+- Leverandørregisteret inneholder alle kreditorer, ikke bare vareleverandører.
 
 ## Kontakt
 

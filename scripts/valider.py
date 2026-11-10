@@ -25,14 +25,18 @@ INDEKS = ROT / "INDEKS.md"
 
 TYPER = ["entitet", "hendelse", "maaltall", "dimensjon", "klassifisering"]
 STATUSER = ["utkast", "til_godkjenning", "godkjent", "utfaset"]
+# Relasjoner er egne felt på toppnivå i frontmatter (Obsidian støtter ikke nøstede objekter),
+# med Obsidian-lenker som verdier: er_en: ["[[kunde]]"]
 RELASJONER = ["er_en", "del_av", "tilhorer", "avledet_av", "beskriver",
               "forveksles_med", "se_ogsaa", "erstattet_av"]
+# Felt som peker på ett begrep, også som Obsidian-lenke: grain: "[[fakturalinje]]"
+REFERANSEFELT = ["grain", "tidsdimensjon", "tidspunkt"]
 AGGREGERINGER = ["sum", "antall", "antall_unike", "snitt", "min", "maks", "ratio", "formel"]
 ADDITIVITET = ["additiv", "semi_additiv", "ikke_additiv"]
 DIMENSJONSTYPER = ["kategori", "tid", "boolsk", "numerisk", "tekst"]
 
 FELLES_PAAKREVD = ["id", "navn", "type", "domene", "kortdefinisjon", "status", "eier", "sist_oppdatert"]
-FELLES_VALGFRI = ["synonymer", "systemer", "relasjoner", "gyldig_fra"]
+FELLES_VALGFRI = ["synonymer", "systemer", "gyldig_fra"]  # + relasjonstypene i RELASJONER
 TYPE_PAAKREVD = {
     "entitet": ["identifiseres_ved"],
     "hendelse": ["tidspunkt"],
@@ -66,7 +70,8 @@ SEKSJONSNAVN = [s[0] for s in SEKSJONER]
 FORRETNINGSSEKSJONER = ["Definisjon", "Forretningsregler", "Beregning", "Gyldige verdier"]
 
 ID_RE = re.compile(r"^[a-z][a-z0-9_]*$")
-LENKE_RE = re.compile(r"\[\[([^\]]+)\]\]")
+LENKE_RE = re.compile(r"\[\[([^\]|#]+)(?:[|#][^\]]*)?\]\]")
+HEL_LENKE_RE = re.compile(r"^\[\[([^\]|#]+)\]\]$")
 TEKNISK_RE = re.compile(
     r"(?i:\b\w*(?:tabell|kolonne|statuskode|flagg|primærnøkkel|fremmednøkkel)\w*)"  # også sammensatte ord
     r"|\b[A-Z][A-Z0-9]*_[A-Z0-9_]+\b"          # STORE_BOKSTAVER_MED_UNDERSTREK
@@ -183,7 +188,7 @@ def last_systemer(res: Resultat) -> dict[str, Dokument]:
 
 def last_domener(res: Resultat) -> dict[str, Dokument]:
     domener: dict[str, Dokument] = {}
-    for mappe in sorted(p for p in BEGREPER.iterdir() if p.is_dir()):
+    for mappe in sorted(p for p in BEGREPER.iterdir() if p.is_dir() and not p.name.startswith(".")):
         sti = mappe / "_domene.md"
         if not sti.exists():
             res.f(mappe, "domenemappen mangler _domene.md")
@@ -201,7 +206,7 @@ def last_domener(res: Resultat) -> dict[str, Dokument]:
 def last_begreper(res: Resultat) -> dict[str, Dokument]:
     begreper: dict[str, Dokument] = {}
     for sti in sorted(BEGREPER.rglob("*.md")):
-        if sti.name.startswith("_"):
+        if sti.name.startswith("_") or any(d.startswith(".") for d in sti.relative_to(BEGREPER).parts):
             continue
         if sti.parent.parent != BEGREPER:
             res.f(sti, "begrepsfiler skal ligge direkte i begreper/<domene>/")
@@ -232,9 +237,11 @@ def valider_begrep(dok: Dokument, begreper: dict, systemer: dict, res: Resultat)
     for felt in TYPE_PAAKREVD[typ]:
         if fm.get(felt) in (None, "", []):
             res.f(dok, f"mangler felt '{felt}' (påkrevd for type {typ})")
-    tillatt = set(FELLES_PAAKREVD + FELLES_VALGFRI + TYPE_PAAKREVD[typ] + TYPE_VALGFRI[typ])
+    tillatt = set(FELLES_PAAKREVD + FELLES_VALGFRI + RELASJONER + TYPE_PAAKREVD[typ] + TYPE_VALGFRI[typ])
+    if "relasjoner" in fm:
+        res.f(dok, "'relasjoner' er erstattet av egne felt per relasjonstype, f.eks. er_en: [\"[[kunde]]\"]")
     for felt in fm:
-        if felt not in tillatt:
+        if felt not in tillatt and felt != "relasjoner":
             res.f(dok, f"feltet '{felt}' er ikke tillatt for type {typ}")
 
     bid = str(fm.get("id", ""))
@@ -263,17 +270,26 @@ def valider_begrep(dok: Dokument, begreper: dict, systemer: dict, res: Resultat)
         elif typer and begreper[ref].fm.get("type") not in typer:
             res.f(dok, f"{felt} '{ref}' må være av type {' eller '.join(sorted(typer))}")
 
-    rel = fm.get("relasjoner") or {}
-    if not isinstance(rel, dict):
-        res.f(dok, "'relasjoner' må være et objekt, f.eks. {er_en: [kunde]}")
-        rel = {}
-    for rtype, maal in rel.items():
-        if rtype not in RELASJONER:
-            res.f(dok, f"ukjent relasjonstype '{rtype}'. Tillatt: {', '.join(RELASJONER)}")
-        for m in som_liste(maal):
+    def lenke(verdi, felt: str) -> str | None:
+        m = HEL_LENKE_RE.match(str(verdi).strip())
+        if not m:
+            res.f(dok, f"{felt}: '{verdi}' må være en Obsidian-lenke i anførselstegn, f.eks. \"[[kunde]]\"")
+            return None
+        return m.group(1).strip()
+
+    rel: dict[str, list[str]] = {}
+    for rtype in RELASJONER:
+        if rtype not in fm:
+            continue
+        if not isinstance(fm[rtype], list):
+            res.f(dok, f"relasjonen {rtype} må være en liste, f.eks. {rtype}: [\"[[kunde]]\"]")
+            continue
+        rel[rtype] = [m for m in (lenke(v, f"relasjonen {rtype}") for v in fm[rtype]) if m]
+        for m in rel[rtype]:
             if m == bid:
                 res.f(dok, f"relasjonen {rtype} peker på seg selv")
             finnes(m, f"relasjonen {rtype}")
+    ref = {felt: lenke(fm[felt], felt) for felt in REFERANSEFELT if fm.get(felt)}
     for s in som_liste(fm.get("systemer")):
         if s not in systemer:
             res.f(dok, f"systemet '{s}' finnes ikke i systemer/")
@@ -283,15 +299,15 @@ def valider_begrep(dok: Dokument, begreper: dict, systemer: dict, res: Resultat)
             res.f(dok, f"aggregering må være en av: {', '.join(AGGREGERINGER)}")
         if fm.get("additivitet") not in ADDITIVITET:
             res.f(dok, f"additivitet må være en av: {', '.join(ADDITIVITET)}")
-        if fm.get("grain"):
-            finnes(fm["grain"], "grain", {"entitet", "hendelse"})
-        if fm.get("tidsdimensjon"):
-            finnes(fm["tidsdimensjon"], "tidsdimensjon", {"dimensjon"})
-            td = begreper.get(fm["tidsdimensjon"])
+        if ref.get("grain"):
+            finnes(ref["grain"], "grain", {"entitet", "hendelse"})
+        if ref.get("tidsdimensjon"):
+            finnes(ref["tidsdimensjon"], "tidsdimensjon", {"dimensjon"})
+            td = begreper.get(ref["tidsdimensjon"])
             if td and td.fm.get("dimensjonstype") != "tid":
-                res.f(dok, f"tidsdimensjon '{fm['tidsdimensjon']}' må ha dimensjonstype: tid")
-    if typ == "hendelse" and fm.get("tidspunkt"):
-        finnes(fm["tidspunkt"], "tidspunkt", {"dimensjon"})
+                res.f(dok, f"tidsdimensjon '{ref['tidsdimensjon']}' må ha dimensjonstype: tid")
+    if typ == "hendelse" and ref.get("tidspunkt"):
+        finnes(ref["tidspunkt"], "tidspunkt", {"dimensjon"})
     if typ == "dimensjon":
         if fm.get("dimensjonstype") not in DIMENSJONSTYPER:
             res.f(dok, f"dimensjonstype må være en av: {', '.join(DIMENSJONSTYPER)}")

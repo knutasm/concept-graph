@@ -5,11 +5,11 @@ rolle begrepet får i en semantisk modell.
 
 | Type | Spørsmål den svarer på | Eksempler | Rolle i semantisk modell |
 |---|---|---|---|
-| `entitet` | *Hva* holder vi rede på? | kunde, ordre, faktura, produkt | Entitet med nøkkel. Andre begreper kobles til den |
-| `hendelse` | *Hva skjer* på et tidspunkt? | betaling mottatt, abonnement sagt opp | Faktagrunnlag med eget tidspunkt |
-| `maaltall` | *Hvor mye / hvor mange?* | netto omsetning, MRR, antall ordre | Mål / metrikk |
-| `dimensjon` | *Hvordan* grupperer og filtrerer vi? | fakturadato, kundesegment, region | Dimensjon (kategori- eller tidsdimensjon) |
-| `klassifisering` | *Hvilke* forekomster hører til en gruppe? | aktiv kunde, tapt kunde, ny kunde | Filter, segment eller boolsk dimensjon |
+| `entitet` | *Hva* holder vi rede på? | vare, kunde, ordre, lager | Entitet med nøkkel. Andre begreper kobles til den |
+| `hendelse` | *Hva skjer* på et tidspunkt? | varemottak, leveranse | Faktagrunnlag med eget tidspunkt |
+| `maaltall` | *Hvor mye / hvor mange?* | omsetning, dekningsgrad, lagerbeholdning | Mål / metrikk |
+| `dimensjon` | *Hvordan* grupperer og filtrerer vi? | fakturadato, varegruppe, kundesegment | Dimensjon (kategori- eller tidsdimensjon) |
+| `klassifisering` | *Hvilke* forekomster hører til en gruppe? | aktiv kunde, restordre, virkedag | Filter, segment eller boolsk dimensjon |
 
 ## Velge riktig type
 
@@ -20,7 +20,7 @@ rolle begrepet får i en semantisk modell.
 - **Er svaret et tall som summeres, telles eller beregnes?** → `maaltall`.
 - **Brukes det til å dele opp eller filtrere et tall?** → `dimensjon`.
 - **Er det en regel som avgjør om en forekomst er "inne" eller "ute"?** → `klassifisering`.
-  Ofte et adjektiv foran en entitet: *aktiv* kunde, *forfalt* faktura.
+  Ofte et adjektiv foran en entitet: *aktiv* kunde, *restnotert* ordrelinje.
 
 ## Typespesifikke felt
 
@@ -51,10 +51,10 @@ rolle begrepet får i en semantisk modell.
 
 - `additiv`: kan summeres over alle dimensjoner, også tid. *Omsetning for et kvartal = summen av tre måneder.*
 - `semi_additiv`: kan summeres over alle dimensjoner **unntatt tid**. Beholdninger og
-  øyeblikksbilder. *MRR for et kvartal er MRR ved kvartalets slutt, ikke summen av tre måneder.*
+  øyeblikksbilder. *Lagerbeholdningen for et kvartal er beholdningen ved kvartalets slutt, ikke summen av tre måneder.*
   Skriv i **Beregning** hvilken verdi som gjelder over tid (siste, første, snitt).
 - `ikke_additiv`: kan ikke summeres i det hele tatt. Andeler, snitt, antall unike.
-  *Snittlig ordreverdi for to regioner er ikke summen av regionenes snitt.*
+  *Dekningsgraden for to varegrupper er ikke snittet av de to dekningsgradene.*
 
 ### dimensjon
 

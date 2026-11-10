@@ -3,7 +3,7 @@
 id: eksempel_begrep            # = filnavn uten .md. Små bokstaver, a-z 0-9 _, ingen æøå (ae, oe, aa)
 navn: Eksempel begrep          # Visningsnavn på vanlig norsk, entall
 type: entitet                  # entitet | hendelse | maaltall | dimensjon | klassifisering
-domene: kunde                  # = mappenavnet under begreper/
+domene: salg                   # = mappenavnet under begreper/
 kortdefinisjon: Én setning, systemnøytral, under 200 tegn.
 synonymer: [annet navn, engelsk navn]   # Hold lista på ÉN linje, så grep viser hele lista
 status: utkast                 # utkast | til_godkjenning | godkjent | utfaset
@@ -11,28 +11,30 @@ eier: Fagavdeling som eier definisjonen   # En rolle eller avdeling, ikke en per
 gyldig_fra: 2026-01-01         # Når gjeldende definisjon trådte i kraft (valgfri)
 sist_oppdatert: 2026-01-01
 systemer: [erp]                # id-er fra systemer/. Hvert system får en ### under Systemrepresentasjon
-relasjoner:                    # Kun relasjonstyper du trenger. Verdiene er alltid lister med begreps-id-er
-  er_en: []                    # spesialisering: aktiv_kunde er_en kunde
-  del_av: []                   # helhet/del: ordrelinje del_av ordre
-  tilhorer: []                 # mange-til-én: ordre tilhorer kunde
-  avledet_av: []               # beregnes fra: netto_omsetning avledet_av brutto_omsetning
-  beskriver: []                # dimensjon → det den beskriver: ordredato beskriver ordre
-  forveksles_med: []           # ulike begreper som ofte blandes sammen
-  se_ogsaa: []
-  erstattet_av: []             # kun ved status: utfaset
+# ── Relasjoner ─────────────────────────────────────────────────────────
+# Ett felt per relasjonstype, bare de du trenger. Verdiene er lister med Obsidian-lenker
+# i anførselstegn, så de blir klikkbare og vises i grafen: ["[[a]]", "[[b]]"]
+er_en: ["[[kunde]]"]           # spesialisering: aktiv_kunde er_en kunde
+del_av: []                     # helhet/del: ordrelinje del_av ordre
+tilhorer: []                   # mange-til-én: ordre tilhorer kunde
+avledet_av: []                 # beregnes fra: dekningsbidrag avledet_av omsetning
+beskriver: []                  # dimensjon → det den beskriver: ordredato beskriver ordre
+forveksles_med: []             # ulike begreper som ofte blandes sammen
+se_ogsaa: []
+erstattet_av: []               # kun ved status: utfaset
 
 # ── Kun entitet ─────────────────────────────────────────────────────────
 identifiseres_ved: kundenummer # Hva virksomheten bruker for å skille én forekomst fra en annen
 
 # ── Kun hendelse ────────────────────────────────────────────────────────
-# tidspunkt: ordredato          # id til en dimensjon med dimensjonstype: tid
+# tidspunkt: "[[ordredato]]"    # lenke til en dimensjon med dimensjonstype: tid
 # identifiseres_ved: ...        # valgfri
 
 # ── Kun maaltall ────────────────────────────────────────────────────────
 # aggregering: sum              # sum | antall | antall_unike | snitt | min | maks | ratio | formel
 # enhet: NOK                    # NOK, antall, prosent, dager …
-# grain: ordrelinje             # id til entitet/hendelse: én verdi beregnes per forekomst av denne
-# tidsdimensjon: fakturadato    # id til dimensjon med dimensjonstype: tid
+# grain: "[[ordrelinje]]"       # lenke til entitet/hendelse: én verdi beregnes per forekomst av denne
+# tidsdimensjon: "[[fakturadato]]"  # lenke til dimensjon med dimensjonstype: tid
 # additivitet: additiv          # additiv | semi_additiv (ikke over tid) | ikke_additiv
 
 # ── Kun dimensjon ───────────────────────────────────────────────────────
@@ -64,7 +66,7 @@ hva er med, hva er ikke med, terskler, tidsvinduer, grensetilfeller. -->
 
 <!-- KUN maaltall. Formel uttrykt med begreps-id-er, aldri med tabeller/kolonner.
 Ta med filter og hvordan verdien oppfører seg over tid. -->
-`brutto_omsetning - returer - rabatt`
+`omsetning - varekost`
 
 ## Gyldige verdier
 

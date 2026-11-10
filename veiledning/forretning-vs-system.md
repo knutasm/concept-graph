@@ -36,34 +36,40 @@ Valideringen advarer når den finner systemnavn eller teknisk utseende ord i for
 
 | ❌ Systemformulert | ✅ Forretningsformulert |
 |---|---|
-| "En kunde er en debitor i ERP-et." | "En person eller virksomhet som har minst én bekreftet ordre hos oss." |
+| "En kunde er et kundenummer i ERP-et." | "En virksomhet eller person som har kjøpt varer av oss på egen kundekonto." |
 
-ERP-et oppretter debitorer allerede ved tilbud, så "alle debitorer" gir et annet (og feil) tall.
-Dette er nyttig kunnskap, men den hører hjemme under `### erp` som et **avvik**:
+I ERP-et er kontantsalg ført på én samlekunde, og store byggeprosjekter er ofte opprettet som egne
+kundenumre. "Antall kundenumre" gir derfor et annet (og feil) tall. Dette er nyttig kunnskap, men den
+hører hjemme under `### erp` som et **avvik**:
 
 ```markdown
 ### erp
-- **Representasjon:** Kunderegisteret (debitorer) …
-- **Avvik fra forretningsdefinisjon:** Debitor opprettes ved tilbud. Registeret inneholder
-  derfor prospekter. Filtrer på at det finnes en bekreftet ordre.
+- **Representasjon:** Kunderegisteret …
+- **Avvik fra forretningsdefinisjon:** Kontantsalg føres på én samlekunde, som må filtreres bort.
+  Store byggeprosjekter er ofte egne kundenumre og må slås sammen til kunden via organisasjonsnummeret.
 ```
 
-### Aktiv kunde
+Legg merke til at prosjektet er et **eget begrep** ([prosjekt](../begreper/salg/prosjekt.md)), selv om
+systemet ikke har det.
+
+### Restordre
 
 | ❌ Systemformulert | ✅ Forretningsformulert |
 |---|---|
-| "Kunder der aktiv-flagget er satt." | "En kunde med minst én bekreftet ordre de siste 12 månedene." |
+| "Ordrelinjer med status «delvis levert»." | "En ordrelinje som ikke kunne leveres som avtalt fordi varen ikke var på lager." |
 
-Hvem setter flagget, og etter hvilken regel? Det er regelen som er begrepet. Flagget er bare én
-implementasjon av den, og kanskje en utdatert en.
+Statusen omfatter også linjer der en entreprenør selv har bedt om senere levering. Bruker man
+statusen som definisjon, ser leveringsevnen dårligere ut enn den er. Regelen er begrepet, og
+statusen er en ufullkommen implementasjon av den.
 
-### Ordre
+### Omsetning
 
 | ❌ Systemformulert | ✅ Forretningsformulert |
 |---|---|
-| "Ordrehoder med status 20–50." | "En bestilling fra en kunde som vi har bekreftet at vi skal levere." |
+| "Salg slik det vises i nettbutikken." | "Fakturert salg av varer eksklusiv mva, fratrukket kreditnotaer." |
 
-Statuskodene er nyttige for den som skal hente dataene, så skriv dem under `### erp`.
+Nettbutikken viser ordreverdi på bestillingstidspunktet. Det er et annet tall, selv om det heter
+"salg" i rapporten.
 
 ## Når systemet ER definisjonen
 

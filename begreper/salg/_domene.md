@@ -2,11 +2,11 @@
 id: salg
 navn: Salg
 eier: Salgsavdelingen
-beskrivelse: Bestillinger fra kunder og innholdet i dem.
+beskrivelse: "Salg til håndverkere og byggeprosjekter: kunder, ordre, fakturering og lønnsomhet."
 ---
 # Salg
 
 ## Avgrensning
 
-Hører hjemme her: ordre, ordrelinjer og hendelser i ordreprosessen.
-Hører ikke hjemme her: fakturering og inntektsføring (se [okonomi](../okonomi/_domene.md)).
+Hører hjemme her: kunder, prosjekter, ordre, fakturaer og måltall for omsetning og dekningsbidrag.
+Hører ikke hjemme her: hvordan ordren plukkes og leveres (se logistikk).

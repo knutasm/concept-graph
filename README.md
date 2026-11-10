@@ -16,7 +16,7 @@ Katalogen har to formål:
 | Jeg vil … | Gå til |
 |---|---|
 | finne et begrep | [INDEKS.md](INDEKS.md) |
-| lage eller endre et begrep | Be Claude om det ("nytt begrep: aktiv kunde"), så blir du guidet gjennom det. Eller bruk [malen](maler/begrep.md) |
+| lage eller endre et begrep | Be Claude om det ("nytt begrep: returandel"), så blir du guidet gjennom det. Eller bruk [malen](maler/begrep.md) |
 | lære å skrive gode begreper | [veiledning/godt-begrep.md](veiledning/godt-begrep.md) |
 | forstå skillet forretning/system | [veiledning/forretning-vs-system.md](veiledning/forretning-vs-system.md) |
 | velge riktig type | [veiledning/begrepstyper.md](veiledning/begrepstyper.md) |
@@ -43,8 +43,8 @@ den viktigste regelen i katalogen. Les [forretning-vs-system.md](veiledning/forr
 
 ### Fem typer
 
-`entitet` (kunde, ordre), `hendelse` (betaling mottatt), `maaltall` (netto omsetning),
-`dimensjon` (fakturadato, region) og `klassifisering` (aktiv kunde). Se
+`entitet` (vare, kunde, ordre), `hendelse` (varemottak, leveranse), `maaltall` (omsetning,
+lagerbeholdning), `dimensjon` (fakturadato, varegruppe) og `klassifisering` (aktiv kunde, restordre). Se
 [begrepstyper.md](veiledning/begrepstyper.md).
 
 ## Konvensjoner
@@ -61,7 +61,7 @@ den viktigste regelen i katalogen. Les [forretning-vs-system.md](veiledning/forr
 grep -i "omsetning" INDEKS.md                    # finn begreper på navn, synonym eller definisjon
 grep -rl "^type: maaltall" begreper              # alle måltall
 grep -rl "^status: utkast" begreper              # alt som ikke er ferdig
-grep -rlE "\[\[kunde\]\]|: \[.*\bkunde\b.*\]" begreper   # alt som peker på kunde
+grep -rl "\[\[kunde\]\]" begreper           # alt som peker på kunde
 ```
 
 Flere oppskrifter står i [CLAUDE.md](CLAUDE.md).

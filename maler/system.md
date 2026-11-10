@@ -1,7 +1,7 @@
 ---
 id: eksempel_system           # = filnavn. Generisk rolle-navn er ofte bedre enn produktnavn (erp, crm …)
 navn: Eksempelsystem
-kategori: erp                 # erp | crm | fakturering | abonnement | lager | hr | datavarehus | annet
+kategori: ERP                 # ERP | CRM | lager | netthandel | transport | hr | datavarehus | annet
 synonymer: []                 # Andre navn systemet går under internt. Brukes til å oppdage systemord i definisjoner
 eier: Avdeling som eier systemet
 beskrivelse: Én setning om hva systemet brukes til i virksomheten.

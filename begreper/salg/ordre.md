@@ -3,44 +3,51 @@ id: ordre
 navn: Ordre
 type: entitet
 domene: salg
-kortdefinisjon: En bekreftet bestilling fra en kunde om levering av varer eller tjenester.
-synonymer: [salgsordre, bestilling, order]
+kortdefinisjon: En bekreftet bestilling av varer fra en kunde.
+synonymer: [salgsordre, kundeordre, bestilling, order]
 status: godkjent
 eier: Salgsavdelingen
 gyldig_fra: 2023-01-01
 sist_oppdatert: 2026-11-10
-systemer: [erp]
-relasjoner:
-  tilhorer: [kunde]
-  forveksles_med: [faktura]
+systemer: [erp, nettbutikk]
+tilhorer: ["[[kunde]]", "[[prosjekt]]"]
+forveksles_med: ["[[faktura]]", "[[innkjopsordre]]"]
 identifiseres_ved: ordrenummer
 ---
 # Ordre
 
 ## Definisjon
 
-En bestilling fra en [[kunde]] som vi har bekreftet at vi skal levere. Ordren består av én eller
-flere [[ordrelinje]]r og har en [[ordredato]].
+En bestilling av [[vare]]r fra en [[kunde]] som vi har bekreftet. Ordren kan gjelde et [[prosjekt]],
+består av én eller flere [[ordrelinje]]r og har en [[ordredato]].
 
 ## Forretningsregler
 
-- Inkluderer: bekreftede, leverte og senere kansellerte ordrer. Kansellering endrer ikke at ordren fantes.
-- Ekskluderer: tilbud og utkast som kunden ikke har bekreftet.
+- Inkluderer: ordre fra alle kanaler, dvs. utsalgssted, telefon, e-post og netthandel.
+- Inkluderer: ordre som senere er kansellert. Kansellering endrer ikke at ordren fantes.
+- Ekskluderer: tilbud som kunden ikke har bekreftet.
 
 ## Avgrensning mot andre begreper
 
-- [[faktura]]: kravet om betaling. Én ordre kan gi flere fakturaer (delleveranser), og omsetning måles på faktura, ikke ordre.
+- [[faktura]]: kravet om betaling. En ordre kan faktureres i flere omganger ved delleveranser.
+- [[innkjopsordre]]: vår bestilling til en leverandør.
 
 ## Systemrepresentasjon
 
 ### erp
 
-- **Representasjon:** Ordrehodet. Tilbud, utkast og ordre ligger i samme register og skilles med et statusfelt.
+- **Representasjon:** Ordreregisteret. Tilbud og ordre ligger sammen og skilles med status.
 - **Identifikasjon:** Ordrenummer.
-- **Avvik fra forretningsdefinisjon:** Tilbud og utkast ligger i samme register og må filtreres bort. Status "bekreftet" og senere (levert, kansellert) er ordre.
+- **Avvik fra forretningsdefinisjon:** Tilbud må filtreres bort.
+
+### nettbutikk
+
+- **Representasjon:** Innsendte handlekurver. Overføres til ERP og får ordrenummer der.
+- **Identifikasjon:** Nettbutikkens eget bestillingsnummer, med ordrenummeret fra ERP som eget felt.
+- **Avvik fra forretningsdefinisjon:** Handlekurver som avvises ved overføring til ERP, f.eks. på grunn av kredittsperre, finnes bare her og er ikke ordre.
 
 ## Historikk
 
 | Gyldig fra | Endring | Besluttet av |
 |---|---|---|
-| 2023-01-01 | Opprettet | Salgsledelsen |
+| 2023-01-01 | Opprettet | Salgsdirektør |

@@ -1,21 +1,21 @@
 ---
 id: crm
 navn: CRM-systemet
-kategori: crm
+kategori: CRM
 synonymer: [CRM, salgssystemet]
 eier: Salgsavdelingen
-beskrivelse: Brukes av salg til å følge opp leads, prospekter og kundekontoer.
+beskrivelse: Brukes av selgerne til å følge opp kunder, kontaktpersoner og prosjektmuligheter.
 ---
 # CRM-systemet
 
 ## Formål
 
-Master for salgsmuligheter og kontaktpersoner. Ikke master for kunder eller ordre.
+Master for kontaktpersoner, salgsmuligheter og kundesegment. Ikke master for kunder eller ordre.
 
 ## Særegenheter
 
-- En "konto" kan være et prospekt, en kunde, en partner eller en leverandør. Det skilles med et kontotypefelt.
-- Kontoer synkroniseres til ERP først når et tilbud sendes.
+- Kundesegment settes manuelt av selger.
+- Byggeprosjekter registreres som salgsmuligheter lenge før det finnes en ordre.
 
 ## Kontakt
 
