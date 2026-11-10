@@ -2,7 +2,7 @@
 
 <!-- GENERERT av scripts/valider.py. Ikke rediger for hånd. -->
 
-33 begreper i 4 domener, 5 systemer. Les [README.md](README.md) for hvordan katalogen er bygd opp.
+38 begreper i 4 domener, 5 prosesser, 5 systemer. Les [README.md](README.md) for hvordan katalogen er bygd opp. Diagrammer, måltall og systemavvik står i [OVERSIKT.md](OVERSIKT.md).
 
 ## Domener
 
@@ -10,8 +10,8 @@
 |---|---|---|---|---|
 | [innkjop](#innkjop) | Innkjøp | Innkjøpsavdelingen | 5 | Innkjøp av varer fra leverandører, og oppfølging av leverandørene. |
 | [kjerne](#kjerne) | Kjerne | Dataplattformteamet | 5 | Begreper som brukes av flere domener og ikke har én naturlig faglig eier, f.eks. vare og kalender. |
-| [logistikk](#logistikk) | Logistikk | Logistikkavdelingen | 7 | Lagring og levering av varer: lagre, beholdning, utleveringer og leveringsevne. |
-| [salg](#salg) | Salg | Salgsavdelingen | 16 | Salg til håndverkere og byggeprosjekter: kunder, ordre, fakturering og lønnsomhet. |
+| [logistikk](#logistikk) | Logistikk | Logistikkavdelingen | 9 | Lagring og levering av varer: lagre, beholdning, utleveringer og leveringsevne. |
+| [salg](#salg) | Salg | Salgsavdelingen | 19 | Salg til håndverkere og byggeprosjekter: kunder, ordre, fakturering og lønnsomhet. |
 
 ## innkjop
 
@@ -50,6 +50,8 @@
 | [leveringsdato](begreper/logistikk/leveringsdato.md) | Leveringsdato | dimensjon | godkjent | utleveringsdato, delivery date | Datoen kunden mottok og kvitterte for en leveranse. |
 | [leveringsgrad](begreper/logistikk/leveringsgrad.md) | Leveringsgrad | maaltall | godkjent | leveringsevne, servicegrad, fill rate | Andelen ordrelinjer som ble levert komplett på avtalt dato. |
 | [restordre](begreper/logistikk/restordre.md) | Restordre | klassifisering | godkjent | rest, restnotert, backorder | En ordrelinje som ikke kunne leveres som avtalt fordi varen ikke var på lager. |
+| [returmottak](begreper/logistikk/returmottak.md) | Returmottak | hendelse | utkast | mottak av retur | At varer en kunde har returnert, er mottatt og kontrollert på et av våre lagre. |
+| [returmottaksdato](begreper/logistikk/returmottaksdato.md) | Returmottaksdato | dimensjon | utkast | returdato | Datoen returnerte varer ble mottatt og kontrollert. |
 
 ## salg
 
@@ -72,7 +74,22 @@
 | [ordrelinje](begreper/salg/ordrelinje.md) | Ordrelinje | entitet | godkjent | linje, order line | Én vare på en ordre, med bestilt antall og avtalt pris. |
 | [prosjekt](begreper/salg/prosjekt.md) | Prosjekt | entitet | til_godkjenning | byggeprosjekt, kundeprosjekt, project | Et byggeprosjekt som en kunde kjøper varer til, ofte med egne priser og egen leveringsadresse. |
 | [rabatt](begreper/salg/rabatt.md) | Rabatt | maaltall | utkast | kunderabatt, avslag, discount | Hvor mye lavere enn listepris kunden ble fakturert, i kroner eksklusiv mva. |
+| [reklamasjon](begreper/salg/reklamasjon.md) | Reklamasjon | entitet | utkast | klage, complaint | En kundes krav fordi en vare har feil eller mangel, eller fordi vi har levert feil vare eller skadet den. |
+| [retur](begreper/salg/retur.md) | Retur | entitet | utkast | godkjent retur, return | En godkjent returforespørsel, altså en avtale om at kunden kan levere tilbake bestemte feilfrie varer fra en ordre. |
+| [returforesporsel](begreper/salg/returforesporsel.md) | Returforespørsel | entitet | utkast | forespørsel om retur, return request | En kundes forespørsel om å levere tilbake feilfrie varer fra en ordre, som vi godkjenner eller avviser. |
 | [varekost](begreper/salg/varekost.md) | Varekost | maaltall | godkjent | vareforbruk, kost solgte varer, COGS | Hva de solgte varene kostet oss, til gjennomsnittlig innkjøpskost på salgstidspunktet. |
+
+## Prosesser
+
+Forretningsprosessene: hva som starter dem, hvem som deltar, og hvor mange entiteter og hendelser som inngår.
+
+| id | navn | domene | status | utløser | aktører | begreper | kortdefinisjon |
+|---|---|---|---|---|---|---|---|
+| [innkjop_til_mottak](prosesser/innkjop_til_mottak.md) | Innkjøp til mottak | innkjop | utkast | innkjopsordre | Innkjøp, Leverandør, Lager, Kunde | 5 | Fra vi bestiller varer hos en leverandør til varene er mottatt og kontrollert. |
+| [lagerstyring](prosesser/lagerstyring.md) | Lagerstyring | logistikk | utkast |  | Lager, Innkjøp | 4 | Å holde riktig beholdning av varer på hvert lager, fra varene mottas til de leveres ut. |
+| [plukk_og_levering](prosesser/plukk_og_levering.md) | Plukk og levering | logistikk | utkast | ordre | Lager, Transport, Kunde | 6 | Fra en ordre er klar til utlevering til kunden har kvittert for varene. |
+| [ordre_til_faktura](prosesser/ordre_til_faktura.md) | Ordre til faktura | salg | utkast | ordre | Kunde, Kundesenter, Lager, Økonomi | 8 | Fra kunden bestiller varer til leveransen er fakturert. |
+| [retur_fra_kunde](prosesser/retur_fra_kunde.md) | Retur fra kunde | salg | utkast | returforesporsel | Kunde, Kundesenter, Lager, Økonomi | 9 | Fra kunden ber om å returnere varer til varen er kontrollert og kunden er kreditert, eller returen er avvist. |
 
 ## Systemer
 
