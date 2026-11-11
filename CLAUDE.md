@@ -77,6 +77,7 @@ skal aldri summeres over tid.
 - Bruk skillen `domene` (`.claude/skills/domene/`) når brukeren vil lage et domene eller se over domenegrensene.
 - Rediger bare begreper når brukeren ber om det.
 - Følg malen nøyaktig: faste felt, faste seksjoner, fast rekkefølge.
+- Skriv standard Markdown som er lesbar uten Obsidian. Ikke tilpass filene til Obsidian utover `[[id]]`-lenkene.
 - Ingen produkt- eller leverandørnavn i malen, veiledningen eller eksemplene. Systemer omtales med
   generiske id-er (`erp`, `crm` …).
 - Kjør alltid `uv run scripts/valider.py` etter endringer. Den regenererer `katalog/INDEKS.md` og `katalog/OVERSIKT.md`.

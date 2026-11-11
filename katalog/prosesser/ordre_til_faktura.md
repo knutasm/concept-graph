@@ -21,7 +21,9 @@ leveres og faktureres i flere omganger, og én [[faktura]] kan dekke flere ordre
 
 - **Starter når:** En [[kunde]] bestiller [[vare]]r, eventuelt til et [[prosjekt]].
 - **Ferdig når:** Alle leverte varer på ordren er fakturert.
-- **Utenfor:** Selve plukkingen og utleveringen (se [[plukk_og_levering]]), returer (se [[retur_fra_kunde]]), og innbetaling av fakturaen.
+- **Utenfor:** 
+	- Selve plukkingen og utleveringen (se [[plukk_og_levering]])
+	- returer (se [[retur_fra_kunde]]), og innbetaling av fakturaen.
 
 ## Aktører
 
