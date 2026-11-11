@@ -11,6 +11,8 @@ eier: Fagavdeling som eier definisjonen   # En rolle eller avdeling, ikke en per
 gyldig_fra: 2026-01-01         # Når gjeldende definisjon trådte i kraft (valgfri)
 sist_oppdatert: 2026-01-01
 systemer: [erp]                # id-er fra systemer/. Hvert system får en ### under Systemrepresentasjon
+kilde: erp                     # Kun entitet, hendelse og dimensjon (valgfri). Systemet der begrepet oppstår og endres.
+                               # Må stå i systemer. De andre systemene er kopier. Påkrevd i praksis når det er flere systemer
 # ── Relasjoner ─────────────────────────────────────────────────────────
 # Ett felt per relasjonstype, bare de du trenger. Verdiene er lister med Obsidian-lenker
 # i anførselstegn, så de blir klikkbare og vises i grafen: ["[[a]]", "[[b]]"]

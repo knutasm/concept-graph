@@ -37,6 +37,7 @@ REFERANSEFELT = ["grain", "tidsdimensjon", "tidspunkt"]
 AGGREGERINGER = ["sum", "antall", "antall_unike", "snitt", "min", "maks", "ratio", "formel"]
 ADDITIVITET = ["additiv", "semi_additiv", "ikke_additiv"]
 DIMENSJONSTYPER = ["kategori", "tid", "boolsk", "numerisk", "tekst"]
+DOMENETYPER = ["kjerne", "stottende", "generisk"]
 
 FELLES_PAAKREVD = ["id", "navn", "type", "domene", "kortdefinisjon", "status", "eier", "sist_oppdatert"]
 FELLES_VALGFRI = ["synonymer", "systemer", "gyldig_fra"]  # + relasjonstypene i RELASJONER
@@ -48,10 +49,10 @@ TYPE_PAAKREVD = {
     "klassifisering": [],
 }
 TYPE_VALGFRI = {
-    "entitet": [],
-    "hendelse": ["identifiseres_ved"],
+    "entitet": ["kilde"],
+    "hendelse": ["identifiseres_ved", "kilde"],
     "maaltall": [],
-    "dimensjon": [],
+    "dimensjon": ["kilde"],
     "klassifisering": [],
 }
 
@@ -222,6 +223,8 @@ def last_domener(res: Resultat) -> dict[str, Dokument]:
         valider_enkel_fm(dok, ["id", "navn", "eier", "beskrivelse"], res)
         if dok.fm.get("id") != mappe.name:
             res.f(dok, f"id '{dok.fm.get('id')}' må være lik mappenavnet '{mappe.name}'")
+        if "domenetype" in dok.fm and dok.fm["domenetype"] not in DOMENETYPER:
+            res.f(dok, f"domenetype '{dok.fm['domenetype']}' er ugyldig. Tillatt: {', '.join(DOMENETYPER)}")
         domener[mappe.name] = dok
     return domener
 
@@ -316,6 +319,15 @@ def valider_begrep(dok: Dokument, begreper: dict, systemer: dict, res: Resultat)
     for s in som_liste(fm.get("systemer")):
         if s not in systemer:
             res.f(dok, f"systemet '{s}' finnes ikke i systemer/")
+    # Autoritativ kilde: systemet der begrepet oppstår og endres. De andre systemene er kopier.
+    kilde = fm.get("kilde")
+    if kilde:
+        if kilde not in som_liste(fm.get("systemer")):
+            res.f(dok, f"kilde '{kilde}' må også stå i 'systemer'")
+        elif systemer.get(kilde) and str(systemer[kilde].fm.get("kategori", "")).lower() == "datavarehus":
+            res.a(dok, f"kilde '{kilde}' er et datavarehus. Et mellomliggende system er en kopi, ikke kilden")
+    elif typ in ("entitet", "hendelse") and len(som_liste(fm.get("systemer"))) > 1:
+        res.a(dok, "finnes i flere systemer, men mangler 'kilde' (systemet der begrepet oppstår og endres)")
 
     if typ == "maaltall":
         if fm.get("aggregering") not in AGGREGERINGER:
@@ -400,13 +412,47 @@ def _underseksjon(innhold: str, overskrift: str) -> str:
     return del_[1].split("\n### ", 1)[0] if len(del_) > 1 else ""
 
 
+def _forveksles(a: Dokument, b: Dokument) -> bool:
+    """Er begrepene koblet med forveksles_med, i en av retningene?"""
+    return (f"[[{b.fm.get('id')}]]" in [str(v).strip() for v in som_liste(a.fm.get("forveksles_med"))]
+            or f"[[{a.fm.get('id')}]]" in [str(v).strip() for v in som_liste(b.fm.get("forveksles_med"))])
+
+
 def sjekk_synonymer(begreper: dict, res: Resultat) -> None:
+    """Samme ord på to begreper er enten et duplikat eller samme ord med ulik betydning (typisk i ulike
+    domener). Det siste er greit når begrepene er koblet med forveksles_med."""
     sett: dict[str, str] = {}
     for bid, dok in begreper.items():
         for ord_ in {bid, str(dok.fm.get("navn", "")).lower(), *[str(s).lower() for s in som_liste(dok.fm.get("synonymer"))]}:
-            if ord_ in sett and sett[ord_] != bid:
-                res.a(dok, f"'{ord_}' brukes også av '{sett[ord_]}'. Mulig duplikat. Bruk 'forveksles_med' hvis begrepene er ulike")
+            if ord_ in sett and sett[ord_] != bid and not _forveksles(dok, begreper[sett[ord_]]):
+                res.a(dok, f"'{ord_}' brukes også av '{sett[ord_]}'. Mulig duplikat. Er betydningen ulik, "
+                           "koble dem med 'forveksles_med' og forklar forskjellen")
             sett.setdefault(ord_, bid)
+
+
+def _oppstaar_i(prosesser: dict) -> dict[str, list[str]]:
+    """begrep-id -> prosessene der begrepet oppstår eller endres (Gir) eller er en resultathendelse."""
+    ut: dict[str, list[str]] = {}
+    for pid, pdok in prosesser.items():
+        for n in les_flyt(pdok):
+            for felt in ("Gir", "Hendelse"):
+                for bid in n.begreper(felt):
+                    if pid not in ut.setdefault(bid, []):
+                        ut[bid].append(pid)
+    return ut
+
+
+def sjekk_eierskap(begreper: dict, prosesser: dict, res: Resultat) -> None:
+    """Eierskap følger oppstedet: en entitet eller hendelse bør ligge i domenet til en prosess der den oppstår."""
+    for bid, pids in _oppstaar_i(prosesser).items():
+        dok = begreper.get(bid)
+        if not dok or dok.fm.get("type") not in PROSESS_BEGREPSTYPER:
+            continue
+        domener = {prosesser[p].fm.get("domene") for p in pids}
+        if dok.fm.get("domene") not in domener:
+            hvor = ", ".join(f"[[{p}]] ({prosesser[p].fm.get('domene')})" for p in pids)
+            res.a(dok, f"oppstår i {hvor}, men ligger i domenet '{dok.fm.get('domene')}'. "
+                       "Et begrep eies normalt av domenet der det oppstår. Flytt det, eller se på prosessgrensen")
 
 
 @dataclass
@@ -649,14 +695,15 @@ def lag_indeks(begreper: dict, domener: dict, systemer: dict, prosesser: dict) -
         "",
         "## Domener",
         "",
-        "| Domene | Navn | Eier | Antall | Beskrivelse |",
-        "|---|---|---|---|---|",
+        "| Domene | Navn | Type | Eier | Antall | Beskrivelse |",
+        "|---|---|---|---|---|---|",
     ]
     per_domene: dict[str, list[Dokument]] = {d: [] for d in domener}
     for dok in begreper.values():
         per_domene.setdefault(dok.fm.get("domene"), []).append(dok)
     for d, ddok in domener.items():
-        linjer.append(f"| [{d}](#{d}) | {celle(ddok.fm.get('navn'))} | {celle(ddok.fm.get('eier'))} "
+        linjer.append(f"| [{d}](#{d}) | {celle(ddok.fm.get('navn'))} | {celle(ddok.fm.get('domenetype'))} "
+                      f"| {celle(ddok.fm.get('eier'))} "
                       f"| {len(per_domene[d])} | {celle(ddok.fm.get('beskrivelse'))} |")
     for d, ddok in domener.items():
         linjer += ["", f"## {d}", "", f"**{celle(ddok.fm.get('navn'))}**: {celle(ddok.fm.get('beskrivelse'))} "
@@ -789,6 +836,35 @@ def _reflenke(verdi, begreper: dict) -> str:
     return _lenke(begreper[bid]) if bid in begreper else celle(verdi)
 
 
+def _prosesskart(prosesser: dict) -> list[str]:
+    """Verdikjeden: hvilke prosesser som fører videre til hvilke. Eksplisitt fra 'Neste: [[prosess]]',
+    og implisitt når en prosess gir begrepet som er utløseren til en annen."""
+    if not prosesser:
+        return []
+    kanter: dict[tuple[str, str], str] = {}
+    oppstaar = _oppstaar_i(prosesser)
+    for pid, pdok in prosesser.items():
+        for n in les_flyt(pdok):
+            for _, maal in n.neste:
+                til = _lenkemaal(maal)
+                if til in prosesser and til != pid:
+                    kanter[(pid, til)] = ""
+        utloser = _lenkemaal(str(pdok.fm.get("utloser", "")))
+        for fra in oppstaar.get(utloser, []) if utloser else []:
+            if fra != pid:
+                kanter.setdefault((fra, pid), utloser)
+    linjer = ["", "## Prosesskart", "",
+              "Hvordan prosessene henger sammen i en verdikjede. Heltrukket pil: flyten fortsetter i neste "
+              "prosess (`Neste: [[prosess]]`). Stiplet pil med begrep: prosessen gir begrepet som starter neste.",
+              "", "```mermaid", "flowchart LR"]
+    for pid, pdok in sorted(prosesser.items()):
+        linjer.append(f"    {pid}[{_etikett(pdok.fm.get('navn', pid))}]")
+    for (fra, til), via in sorted(kanter.items()):
+        linjer.append(f"    {fra} -.->|{via}| {til}" if via else f"    {fra} --> {til}")
+    linjer.append("```")
+    return linjer
+
+
 def lag_oversikt(begreper: dict, domener: dict, systemer: dict, prosesser: dict) -> str:
     kanter = _alle_kanter(begreper)
     linjer = [
@@ -806,7 +882,7 @@ def lag_oversikt(begreper: dict, domener: dict, systemer: dict, prosesser: dict)
         "",
         "## Domenekart",
         "",
-        "Antall koblinger mellom domener.",
+        "Antall relasjoner mellom domener (uten forveksles_med, som ikke er en avhengighet).",
         "",
         "```mermaid",
         "flowchart LR",
@@ -814,16 +890,22 @@ def lag_oversikt(begreper: dict, domener: dict, systemer: dict, prosesser: dict)
     for d, ddok in domener.items():
         linjer.append(f"    {d}[{_etikett(ddok.fm.get('navn', d))}]")
     mellom: dict[tuple[str, str], int] = {}
-    for fra, til, _ in kanter:
+    for fra, til, rtype in kanter:
         a, b = begreper[fra].fm.get("domene"), begreper[til].fm.get("domene")
-        if a != b and a in domener and b in domener:
+        if rtype != "forveksles_med" and a != b and a in domener and b in domener:  # forveksles_med er ikke en avhengighet
             mellom[(a, b)] = mellom.get((a, b), 0) + 1
     for (a, b), n in sorted(mellom.items()):
         linjer.append(f"    {a} -->|{n}| {b}")
     linjer.append("```")
+    linjer += _prosesskart(prosesser)
 
     for d, ddok in domener.items():
         linjer += ["", f"## {d}", "", f"**{celle(ddok.fm.get('navn'))}**: {celle(ddok.fm.get('beskrivelse'))}", ""]
+        lant = sorted({til for fra, til, rtype in kanter if rtype != "forveksles_med"
+                       and begreper[fra].fm.get("domene") == d and begreper[til].fm.get("domene") != d})
+        if lant:
+            linjer += ["Bruker fra andre domener: " + ", ".join(
+                f"{_lenke(begreper[b])} ({begreper[b].fm.get('domene')})" for b in lant), ""]
         mine = sorted((p for p in prosesser.values() if p.fm.get("domene") == d), key=lambda x: x.fm["id"])
         if not mine:
             linjer.append("_Ingen prosesser ennå._")
@@ -857,6 +939,18 @@ def lag_oversikt(begreper: dict, domener: dict, systemer: dict, prosesser: dict)
         tall = [sum(1 for b in begreper.values()
                     if b.fm.get("domene") == d and s in som_liste(b.fm.get("systemer"))) for s in systemer]
         linjer.append(f"| {d} | " + " | ".join(str(t) for t in tall) + " |")
+
+    linjer += ["", "### Autoritativ kilde", "",
+               "Systemet der begrepet oppstår og endres. Les fra kilden. De andre systemene er kopier, "
+               "og må brukes med avvikene under.", "",
+               "| begrep | type | kilde | kopier |", "|---|---|---|---|"]
+    for b in sorted(begreper.values(), key=lambda x: (x.fm.get("domene"), x.fm["id"])):
+        fm = b.fm
+        sys_ = som_liste(fm.get("systemer"))
+        if not sys_ or not (fm.get("kilde") or fm.get("type") in ("entitet", "hendelse")):
+            continue
+        kopier = ", ".join(x for x in sys_ if x != fm.get("kilde"))
+        linjer.append(f"| {_lenke(b)} | {celle(fm.get('type'))} | {celle(fm.get('kilde')) or '**mangler**'} | {kopier} |")
 
     linjer += ["", "### Kjente avvik", "",
                "Der systemet ikke stemmer med forretningsdefinisjonen. Disse filtrene og korreksjonene "
@@ -892,6 +986,7 @@ def main() -> int:
         valider_begrep(dok, begreper, systemer, res)
     sjekk_synonymer(begreper, res)
     prosesser = last_prosesser(res, begreper, domener)
+    sjekk_eierskap(begreper, prosesser, res)
 
     for a in res.advarsler:
         print(f"ADVARSEL  {a}")

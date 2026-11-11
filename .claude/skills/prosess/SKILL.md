@@ -39,9 +39,16 @@ Spør: *"Hva må virksomheten kunne gjøre her? Hvorfor er det viktig?"*
 
 - Formuler evnen som **verb + objekt** ("Levere bestilte varer til kunden"). Den går i **Formål**,
   sammen med hvorfor virksomheten trenger den. Lag `navn` og `id` (små bokstaver, `_`, æ→ae, ø→o, å→aa).
+- **Organiseringstesten:** *"Ville evnen fortsatt finnes hvis vi omorganiserte, eller satte arbeidet
+  ut?"* Svaret skal være ja. Avdelingsnavn i navn eller formål ("Kundesenterets ordrebehandling")
+  er organisasjons-lekkasje, på samme måte som systemnavn er system-lekkasje. Avdelinger og roller
+  hører hjemme under Aktører.
 - **Avgrensning:** spør etter *starter når*, *ferdig når* og *utenfor*. Grensene settes først, så
   prosessen ikke vokser underveis. Det som er utenfor, hører ofte til en nabo-prosess, så lenk til den.
 - **Utløser:** hvilken entitet eller hendelse starter prosessen? Den går i `utloser`.
+- **Verdikjeden:** spør *"Hva skjer rett før, og rett etter? Hvilken prosess gir utløseren, og hvilken
+  tar over?"* Finnes nabo-prosessene, lenk til dem under **Utenfor** og med `Neste: [[prosess_id]]`
+  der flyten fortsetter. Prosesskartet i `katalog/OVERSIKT.md` viser hvordan prosessene henger sammen.
 - **Domene og eier:** foreslå domenet som eier evnen, og eieren (en avdeling, ikke en person).
 
 ## 3. Hovedløpet
@@ -103,6 +110,10 @@ Er det et måltall, en dimensjon eller en klassifisering, hører det ikke i blok
 teksten med `[[id]]` hvis det finnes.
 
 Alle begreper fra **Bruker**, **Gir**, **Hendelse** og `utloser` skal stå i `begreper` i frontmatter, på én linje.
+
+**Eierskap:** gir et steg en entitet eller hendelse fra et annet domene, spør om begrepet ligger i
+riktig domene, eller om prosessgrensen er satt feil. Et begrep eies normalt av domenet der det
+oppstår. Valideringen advarer om dette.
 
 ## 7. Skriv, valider, oppsummer
 

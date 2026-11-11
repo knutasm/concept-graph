@@ -2,13 +2,13 @@
 id: kalenderdag
 navn: Kalenderdag
 type: dimensjon
-domene: kjerne
+domene: okonomi
 kortdefinisjon: En dag i den felles kalenderen, med uke, måned og regnskapsår.
 synonymer: [dato, kalender, date]
 status: godkjent
 eier: Dataplattformteamet
 gyldig_fra: 2023-01-01
-sist_oppdatert: 2026-11-10
+sist_oppdatert: 2026-11-11
 systemer: [datavarehus]
 se_ogsaa: ["[[virkedag]]"]
 dimensjonstype: tid
@@ -38,3 +38,4 @@ En dag i den felles kalenderen. Alle datoer i katalogen, som [[ordredato]], [[fa
 | Gyldig fra | Endring | Besluttet av |
 |---|---|---|
 | 2023-01-01 | Opprettet | Dataplattformteamet |
+| 2026-11-11 | Flyttet fra domenet kjerne til okonomi. Definisjonen er uendret | … |

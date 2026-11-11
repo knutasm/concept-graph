@@ -2,13 +2,13 @@
 id: dekningsgrad
 navn: Dekningsgrad
 type: maaltall
-domene: salg
+domene: okonomi
 kortdefinisjon: Dekningsbidrag i prosent av omsetningen.
 synonymer: [DG, bruttomargin, margin, gross margin percent]
 status: godkjent
 eier: Økonomiavdelingen
 gyldig_fra: 2023-01-01
-sist_oppdatert: 2026-11-10
+sist_oppdatert: 2026-11-11
 systemer: [datavarehus]
 avledet_av: ["[[dekningsbidrag]]", "[[omsetning]]"]
 forveksles_med: ["[[dekningsbidrag]]"]
@@ -52,3 +52,4 @@ varegrupper er **ikke** snittet av de to dekningsgradene.
 | Gyldig fra | Endring | Besluttet av |
 |---|---|---|
 | 2023-01-01 | Opprettet | Økonomisjef |
+| 2026-11-11 | Flyttet fra domenet salg til okonomi. Definisjonen er uendret | … |

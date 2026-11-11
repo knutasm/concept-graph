@@ -29,20 +29,29 @@ grep -rli "^navn:.*<ord>" katalog/begreper
 - **Finnes det?** Les filen og gå til *Oppdatere* under.
 - **Finnes noe lignende?** Spør om det er samme begrep (da legger du til synonym) eller et annet
   (da lager du nytt og knytter dem med `forveksles_med`).
+- **Finnes ordet i et annet domene?** Spør om det betyr det samme der. Hvert domene har sitt eget
+  språk, og samme ord kan bety ulike ting i salg og logistikk. Ulik betydning gir to begreper med
+  hver sin id (gjerne et presiserende navn), ordet som synonym på begge, `forveksles_med`, og en
+  forklaring under **Avgrensning mot andre begreper** av hvilket domene som mener hva. Lag aldri
+  én vag definisjon som skal passe alle. Se `katalog/veiledning/godt-begrep.md`.
 - **Ikke funnet?** Gå videre.
 
 ## 2. Navn, type og domene
 
 - **Navn:** det virksomheten faktisk kaller det, entall. Lag `id` (små bokstaver, `_`, æ→ae, ø→o, å→aa).
 - **Type:** foreslå en type ut fra `katalog/veiledning/begrepstyper.md` og forklar kort hvorfor.
-- **Domene:** foreslå blant mappene i `katalog/begreper/` (se `_domene.md` i hver). Nytt domene bare
-  hvis ingen passer, og da må du lage `katalog/begreper/<domene>/_domene.md` også.
-  `kjerne` er bare for begreper som minst to domener bruker **og** som ingen av dem eier alene
-  (f.eks. vare, kalenderdag). Har begrepet en tydelig faglig eier, legg det i eierens domene.
+- **Domene:** foreslå blant mappene i `katalog/begreper/` (se `_domene.md` i hver). For entiteter og
+  hendelser: velg domenet til prosessen der begrepet **oppstår** (`grep -rl "Gir:\*\*.*\[\[<id>\]\]" katalog/prosesser`).
+  Eierskapet følger oppstedet. Nytt domene bare hvis ingen passer, og da bruker du skillen `domene`
+  før du fortsetter.
+  Hvert begrep har ett domene som eier, også når mange domener bruker det. Det finnes ikke noe
+  felles domene for delte begreper: varen eies av sortiment, kalenderen av økonomi, og de andre
+  domenene lenker til dem.
 
 ## 3. Forretningsdefinisjonen (systemnøytral)
 
 Spør: *"Hva betyr dette for virksomheten? Hvordan ville du forklart det til en ny kollega?"*
+Spør også: *"Bruker andre avdelinger ordet? Betyr det det samme for dem?"* (se steg 1).
 
 **Pass på system-lekkasje.** Hvis svaret handler om et system (systemnavn, tabeller, felt,
 statuskoder, flagg, "det som ligger i …", "en rad i …"):
@@ -109,6 +118,13 @@ For hvert system, én `### <system-id>` med:
 Ta med det du noterte i steg 3. Alle system-id-er må også stå i `systemer:` i frontmatter.
 Har brukeren ingen systeminformasjon, skriv "Ikke kartlagt." og la `systemer: []` stå tom.
 
+**Kilde** (entitet, hendelse, dimensjon): spør *"I hvilket system oppstår og endres dette? Hvor
+retter dere det hvis det er feil?"* Svaret går i `kilde`. De andre systemene er kopier. Forklar
+hvorfor: en semantisk modell leser fra kilden, og bruker kopier bare med avvikene deres. Et
+datavarehus er nesten aldri kilden for en entitet. Måltall og klassifiseringer har ingen kilde,
+fordi filtre, koblinger og summeringer ikke skaper nye fakta. Sjekk at `Formål` i systemfilen
+stemmer. Er det uklart, la `kilde` stå tom og legg spørsmålet i **Åpne spørsmål**.
+
 ## 7. Skriv, valider, oppsummer
 
 1. Skriv `katalog/begreper/<domene>/<id>.md` etter malen. Ta bort alle kommentarer, felt og seksjoner som
@@ -118,7 +134,7 @@ Har brukeren ingen systeminformasjon, skriv "Ikke kartlagt." og la `systemer: []
    `til_godkjenning`, eller `utkast` hvis det finnes åpne spørsmål.
 3. Kjør `uv run scripts/valider.py`. Rett alle **FEIL**. Gå gjennom **ADVARSLER** med brukeren.
    Advarsler om systemnavn eller tekniske ord i forretningsdelen skal nesten alltid rettes.
-4. Vis en kort oppsummering: definisjon, type og typefelt, relasjoner, systemer med avvik,
+4. Vis en kort oppsummering: definisjon, type og typefelt, relasjoner, kilde og systemer med avvik,
    åpne spørsmål.
 
 ## Oppdatere et eksisterende begrep

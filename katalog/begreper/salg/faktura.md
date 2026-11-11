@@ -8,8 +8,9 @@ synonymer: [invoice, kreditnota]
 status: godkjent
 eier: Økonomiavdelingen
 gyldig_fra: 2023-01-01
-sist_oppdatert: 2026-11-10
+sist_oppdatert: 2026-11-11
 systemer: [erp]
+kilde: erp
 tilhorer: ["[[kunde]]"]
 forveksles_med: ["[[ordre]]"]
 identifiseres_ved: fakturanummer

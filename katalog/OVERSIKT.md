@@ -8,19 +8,36 @@ Sammenhenger, måltall, systemavvik og uferdige begreper. Se [INDEKS.md](INDEKS.
 
 ## Domenekart
 
-Antall koblinger mellom domener.
+Antall relasjoner mellom domener (uten forveksles_med, som ikke er en avhengighet).
 
 ```mermaid
 flowchart LR
     innkjop["Innkjøp"]
-    kjerne["Kjerne"]
     logistikk["Logistikk"]
+    okonomi["Økonomi"]
     salg["Salg"]
-    innkjop -->|1| salg
-    logistikk -->|2| innkjop
-    logistikk -->|2| kjerne
-    logistikk -->|7| salg
-    salg -->|3| kjerne
+    sortiment["Sortiment"]
+    logistikk -->|1| okonomi
+    logistikk -->|6| salg
+    logistikk -->|2| sortiment
+    okonomi -->|10| salg
+    salg -->|3| sortiment
+```
+
+## Prosesskart
+
+Hvordan prosessene henger sammen i en verdikjede. Heltrukket pil: flyten fortsetter i neste prosess (`Neste: [[prosess]]`). Stiplet pil med begrep: prosessen gir begrepet som starter neste.
+
+```mermaid
+flowchart LR
+    innkjop_til_mottak["Innkjøp til mottak"]
+    lagerstyring["Lagerstyring"]
+    ordre_til_faktura["Ordre til faktura"]
+    plukk_og_levering["Plukk og levering"]
+    retur_fra_kunde["Retur fra kunde"]
+    lagerstyring --> innkjop_til_mottak
+    ordre_til_faktura -.->|ordre| plukk_og_levering
+    ordre_til_faktura --> retur_fra_kunde
 ```
 
 ## innkjop
@@ -36,7 +53,7 @@ flowchart LR
     innkjopsordre["Innkjøpsordre"]
     lager["Lager (logistikk)"]
     leverandor["Leverandør"]
-    vare["Vare (kjerne)"]
+    vare["Vare (sortiment)"]
     varemottak(["Varemottak"])
     innkjopsordre -->|tilhorer| leverandor
     varemottak -->|tilhorer| innkjopsordre
@@ -44,15 +61,11 @@ flowchart LR
     class lager,vare ekstern
 ```
 
-## kjerne
-
-**Kjerne**: Begreper som brukes av flere domener og ikke har én naturlig faglig eier, f.eks. vare og kalender.
-
-_Ingen prosesser ennå._
-
 ## logistikk
 
 **Logistikk**: Lagring og levering av varer: lagre, beholdning, utleveringer og leveringsevne.
+
+Bruker fra andre domener: [kalenderdag](begreper/okonomi/kalenderdag.md) (okonomi), [ordre](begreper/salg/ordre.md) (salg), [ordredato](begreper/salg/ordredato.md) (salg), [ordrelinje](begreper/salg/ordrelinje.md) (salg), [retur](begreper/salg/retur.md) (salg), [vare](begreper/sortiment/vare.md) (sortiment)
 
 ### Lagerstyring
 
@@ -62,7 +75,7 @@ _Ingen prosesser ennå._
 flowchart LR
     lager["Lager"]
     leveranse(["Leveranse"])
-    vare["Vare (kjerne)"]
+    vare["Vare (sortiment)"]
     varemottak(["Varemottak (innkjop)"])
     classDef ekstern fill:#f5f5f5,stroke:#999,color:#555,stroke-dasharray:3 3
     class vare,varemottak ekstern
@@ -79,7 +92,7 @@ flowchart LR
     leveranse(["Leveranse"])
     ordre["Ordre (salg)"]
     ordrelinje["Ordrelinje (salg)"]
-    vare["Vare (kjerne)"]
+    vare["Vare (sortiment)"]
     leveranse -->|tilhorer| ordre
     ordre -->|tilhorer| kunde
     ordrelinje -->|del_av| ordre
@@ -88,9 +101,19 @@ flowchart LR
     class kunde,ordre,ordrelinje,vare ekstern
 ```
 
+## okonomi
+
+**Økonomi**: Regnskap og økonomistyring: omsetning, lønnsomhet, kalenderen og regnskapsperiodene.
+
+Bruker fra andre domener: [fakturadato](begreper/salg/fakturadato.md) (salg), [fakturalinje](begreper/salg/fakturalinje.md) (salg)
+
+_Ingen prosesser ennå._
+
 ## salg
 
-**Salg**: Salg til håndverkere og byggeprosjekter: kunder, ordre, fakturering og lønnsomhet.
+**Salg**: Salg til håndverkere og byggeprosjekter: kunder, ordre, priser og fakturering.
+
+Bruker fra andre domener: [vare](begreper/sortiment/vare.md) (sortiment)
 
 ### Ordre til faktura
 
@@ -105,7 +128,7 @@ flowchart LR
     ordre["Ordre"]
     ordrelinje["Ordrelinje"]
     prosjekt["Prosjekt"]
-    vare["Vare (kjerne)"]
+    vare["Vare (sortiment)"]
     faktura -->|tilhorer| kunde
     fakturalinje -->|del_av| faktura
     fakturalinje -->|tilhorer| vare
@@ -133,7 +156,7 @@ flowchart LR
     retur["Retur"]
     returforesporsel["Returforespørsel"]
     returmottak(["Returmottak (logistikk)"])
-    vare["Vare (kjerne)"]
+    vare["Vare (sortiment)"]
     faktura -->|tilhorer| kunde
     leveranse -->|tilhorer| ordre
     ordre -->|tilhorer| kunde
@@ -145,6 +168,12 @@ flowchart LR
     class lager,leveranse,returmottak,vare ekstern
 ```
 
+## sortiment
+
+**Sortiment**: Hvilke varer vi fører, og hvordan de grupperes og måles.
+
+_Ingen prosesser ennå._
+
 ## Måltall
 
 Grunnlaget for mål i en semantisk modell. **semi_additiv** skal aldri summeres over tid, **ikke_additiv** skal aldri summeres (beregn fra teller og nevner).
@@ -152,13 +181,13 @@ Grunnlaget for mål i en semantisk modell. **semi_additiv** skal aldri summeres 
 | måltall | domene | grain | tidsdimensjon | aggregering | additivitet | enhet | avledet_av | status |
 |---|---|---|---|---|---|---|---|---|
 | [leveringspresisjon_leverandor](begreper/innkjop/leveringspresisjon_leverandor.md) | innkjop | [varemottak](begreper/innkjop/varemottak.md) | [mottaksdato](begreper/innkjop/mottaksdato.md) | ratio | **ikke_additiv** | prosent | [varemottak](begreper/innkjop/varemottak.md), [innkjopsordre](begreper/innkjop/innkjopsordre.md) | godkjent |
-| [lagerbeholdning](begreper/logistikk/lagerbeholdning.md) | logistikk | [vare](begreper/kjerne/vare.md) | [beholdningsdato](begreper/logistikk/beholdningsdato.md) | sum | **semi_additiv** | NOK | [vare](begreper/kjerne/vare.md), [lager](begreper/logistikk/lager.md) | godkjent |
+| [lagerbeholdning](begreper/logistikk/lagerbeholdning.md) | logistikk | [vare](begreper/sortiment/vare.md) | [beholdningsdato](begreper/logistikk/beholdningsdato.md) | sum | **semi_additiv** | NOK | [vare](begreper/sortiment/vare.md), [lager](begreper/logistikk/lager.md) | godkjent |
 | [leveringsgrad](begreper/logistikk/leveringsgrad.md) | logistikk | [ordrelinje](begreper/salg/ordrelinje.md) | [ordredato](begreper/salg/ordredato.md) | ratio | **ikke_additiv** | prosent | [ordrelinje](begreper/salg/ordrelinje.md), [leveranse](begreper/logistikk/leveranse.md), [restordre](begreper/logistikk/restordre.md) | godkjent |
-| [dekningsbidrag](begreper/salg/dekningsbidrag.md) | salg | [fakturalinje](begreper/salg/fakturalinje.md) | [fakturadato](begreper/salg/fakturadato.md) | formel | additiv | NOK | [omsetning](begreper/salg/omsetning.md), [varekost](begreper/salg/varekost.md) | godkjent |
-| [dekningsgrad](begreper/salg/dekningsgrad.md) | salg | [fakturalinje](begreper/salg/fakturalinje.md) | [fakturadato](begreper/salg/fakturadato.md) | ratio | **ikke_additiv** | prosent | [dekningsbidrag](begreper/salg/dekningsbidrag.md), [omsetning](begreper/salg/omsetning.md) | godkjent |
-| [omsetning](begreper/salg/omsetning.md) | salg | [fakturalinje](begreper/salg/fakturalinje.md) | [fakturadato](begreper/salg/fakturadato.md) | sum | additiv | NOK | [fakturalinje](begreper/salg/fakturalinje.md) | godkjent |
+| [dekningsbidrag](begreper/okonomi/dekningsbidrag.md) | okonomi | [fakturalinje](begreper/salg/fakturalinje.md) | [fakturadato](begreper/salg/fakturadato.md) | formel | additiv | NOK | [omsetning](begreper/okonomi/omsetning.md), [varekost](begreper/okonomi/varekost.md) | godkjent |
+| [dekningsgrad](begreper/okonomi/dekningsgrad.md) | okonomi | [fakturalinje](begreper/salg/fakturalinje.md) | [fakturadato](begreper/salg/fakturadato.md) | ratio | **ikke_additiv** | prosent | [dekningsbidrag](begreper/okonomi/dekningsbidrag.md), [omsetning](begreper/okonomi/omsetning.md) | godkjent |
+| [omsetning](begreper/okonomi/omsetning.md) | okonomi | [fakturalinje](begreper/salg/fakturalinje.md) | [fakturadato](begreper/salg/fakturadato.md) | sum | additiv | NOK | [fakturalinje](begreper/salg/fakturalinje.md) | godkjent |
+| [varekost](begreper/okonomi/varekost.md) | okonomi | [fakturalinje](begreper/salg/fakturalinje.md) | [fakturadato](begreper/salg/fakturadato.md) | sum | additiv | NOK | [fakturalinje](begreper/salg/fakturalinje.md) | godkjent |
 | [rabatt](begreper/salg/rabatt.md) | salg | [fakturalinje](begreper/salg/fakturalinje.md) | [fakturadato](begreper/salg/fakturadato.md) | sum | additiv | NOK | [fakturalinje](begreper/salg/fakturalinje.md), [listepris](begreper/salg/listepris.md) | utkast |
-| [varekost](begreper/salg/varekost.md) | salg | [fakturalinje](begreper/salg/fakturalinje.md) | [fakturadato](begreper/salg/fakturadato.md) | sum | additiv | NOK | [fakturalinje](begreper/salg/fakturalinje.md) | godkjent |
 
 ## Systemdekning
 
@@ -167,9 +196,29 @@ Antall begreper per domene som er beskrevet i hvert system.
 | domene | crm | datavarehus | erp | lagerstyringssystem | nettbutikk |
 |---|---|---|---|---|---|
 | innkjop | 0 | 1 | 4 | 2 | 0 |
-| kjerne | 0 | 2 | 3 | 1 | 2 |
-| logistikk | 0 | 2 | 5 | 4 | 0 |
-| salg | 3 | 4 | 12 | 0 | 2 |
+| logistikk | 0 | 3 | 5 | 4 | 0 |
+| okonomi | 0 | 4 | 2 | 0 | 1 |
+| salg | 3 | 1 | 10 | 0 | 1 |
+| sortiment | 0 | 0 | 3 | 1 | 2 |
+
+### Autoritativ kilde
+
+Systemet der begrepet oppstår og endres. Les fra kilden. De andre systemene er kopier, og må brukes med avvikene under.
+
+| begrep | type | kilde | kopier |
+|---|---|---|---|
+| [innkjopsordre](begreper/innkjop/innkjopsordre.md) | entitet | erp |  |
+| [leverandor](begreper/innkjop/leverandor.md) | entitet | erp |  |
+| [varemottak](begreper/innkjop/varemottak.md) | hendelse | lagerstyringssystem | erp |
+| [lager](begreper/logistikk/lager.md) | entitet | **mangler** | lagerstyringssystem, erp |
+| [leveranse](begreper/logistikk/leveranse.md) | hendelse | lagerstyringssystem | erp |
+| [faktura](begreper/salg/faktura.md) | entitet | erp |  |
+| [fakturalinje](begreper/salg/fakturalinje.md) | entitet | erp |  |
+| [kunde](begreper/salg/kunde.md) | entitet | erp | crm |
+| [ordre](begreper/salg/ordre.md) | entitet | erp | nettbutikk |
+| [ordrelinje](begreper/salg/ordrelinje.md) | entitet | erp |  |
+| [prosjekt](begreper/salg/prosjekt.md) | entitet | **mangler** | erp, crm |
+| [vare](begreper/sortiment/vare.md) | entitet | erp | lagerstyringssystem, nettbutikk |
 
 ### Kjente avvik
 
@@ -187,7 +236,7 @@ Der systemet ikke stemmer med forretningsdefinisjonen. Disse filtrene og korreks
 
 | begrep | avvik |
 |---|---|
-| [dekningsbidrag](begreper/salg/dekningsbidrag.md) | Arver avviket i [[varekost]] for direkteleveranser. |
+| [dekningsbidrag](begreper/okonomi/dekningsbidrag.md) | Arver avviket i [[varekost]] for direkteleveranser. |
 | [leveringsgrad](begreper/logistikk/leveringsgrad.md) | Arver avviket i [[restordre]]: utsatte prosjektleveranser telles som ikke levert i tide. |
 | [leveringspresisjon_leverandor](begreper/innkjop/leveringspresisjon_leverandor.md) | Direkteleveranser får for sen mottaksdato (se [[mottaksdato]]), så presisjonen blir noe for lav. |
 
@@ -206,14 +255,14 @@ Der systemet ikke stemmer med forretningsdefinisjonen. Disse filtrene og korreks
 | [leveranse](begreper/logistikk/leveranse.md) | Kvitteringen registreres ofte flere dager for sent. |
 | [leveringsdato](begreper/logistikk/leveringsdato.md) | Registreringsdato, ofte flere dager for sent. |
 | [mottaksdato](begreper/innkjop/mottaksdato.md) | Er datoen kvitteringen ble registrert, ikke datoen varen ble levert. Kan være flere dager for sent. |
-| [omsetning](begreper/salg/omsetning.md) | Frakt og gebyrer må filtreres bort. |
+| [omsetning](begreper/okonomi/omsetning.md) | Frakt og gebyrer må filtreres bort. |
 | [ordre](begreper/salg/ordre.md) | Tilbud må filtreres bort. |
 | [ordrelinje](begreper/salg/ordrelinje.md) | Frakt, gebyrer og rene tekstlinjer ligger også som ordrelinjer og må filtreres bort. |
 | [prosjekt](begreper/salg/prosjekt.md) | Stort. Fritekstreferansene er ikke konsekvente, og prosjekter med eget kundenummer ser ut som egne kunder. |
 | [rabatt](begreper/salg/rabatt.md) | Frakt, gebyrer og pant ligger også som fakturalinjer og må filtreres bort (se [[fakturalinje]]). Ellers ikke kartlagt. |
 | [restordre](begreper/logistikk/restordre.md) | Statusen skiller ikke mellom manglende varer og levering utsatt etter kundens ønske. Utsatte leveranser for prosjekter blir derfor feilaktig talt som restordre. |
-| [vare](begreper/kjerne/vare.md) | Frakt, gebyrer og pant er registrert som varer med egen varetype. De må filtreres bort. |
-| [varekost](begreper/salg/varekost.md) | Ved direktelevering kommer leverandørfakturaen ofte etter at vi har fakturert kunden. Da står foreløpig innkjøpspris på linjen, og den rettes ikke i ettertid. |
+| [vare](begreper/sortiment/vare.md) | Frakt, gebyrer og pant er registrert som varer med egen varetype. De må filtreres bort. |
+| [varekost](begreper/okonomi/varekost.md) | Ved direktelevering kommer leverandørfakturaen ofte etter at vi har fakturert kunden. Da står foreløpig innkjøpspris på linjen, og den rettes ikke i ettertid. |
 | [varemottak](begreper/innkjop/varemottak.md) | Kvitteringen registreres ofte flere dager etter faktisk levering. |
 
 #### lagerstyringssystem
@@ -224,17 +273,17 @@ Der systemet ikke stemmer med forretningsdefinisjonen. Disse filtrene og korreks
 | [lagerbeholdning](begreper/logistikk/lagerbeholdning.md) | Har ikke verdi. Virtuelle lagre må filtreres bort. |
 | [leveranse](begreper/logistikk/leveranse.md) | Registrerer når varene er sendt, ikke når kunden har kvittert. Direkteleveranser mangler. |
 | [leveringsdato](begreper/logistikk/leveringsdato.md) | Er datoen varene ble sendt. For kjøring til byggeplass er det vanligvis samme dag, men ikke alltid. |
-| [vare](begreper/kjerne/vare.md) | Skaffevarer mangler. |
+| [vare](begreper/sortiment/vare.md) | Skaffevarer mangler. |
 | [varemottak](begreper/innkjop/varemottak.md) | Direkteleveranser finnes ikke her. |
 
 #### nettbutikk
 
 | begrep | avvik |
 |---|---|
-| [maaleenhet](begreper/kjerne/maaleenhet.md) | Antall i nettbutikkens rapporter er i salgsenhet, ikke lagerenhet. |
-| [omsetning](begreper/salg/omsetning.md) | Stort. Ordreverdi, ikke fakturert beløp. Kanselleringer og kreditnotaer er ikke trukket fra. Bruk ikke nettbutikkens tall som omsetning. |
+| [maaleenhet](begreper/sortiment/maaleenhet.md) | Antall i nettbutikkens rapporter er i salgsenhet, ikke lagerenhet. |
+| [omsetning](begreper/okonomi/omsetning.md) | Stort. Ordreverdi, ikke fakturert beløp. Kanselleringer og kreditnotaer er ikke trukket fra. Bruk ikke nettbutikkens tall som omsetning. |
 | [ordre](begreper/salg/ordre.md) | Handlekurver som avvises ved overføring til ERP, f.eks. på grunn av kredittsperre, finnes bare her og er ikke ordre. |
-| [vare](begreper/kjerne/vare.md) | Varer som ikke selges på nett, er skjult og mangler i katalogen. |
+| [vare](begreper/sortiment/vare.md) | Varer som ikke selges på nett, er skjult og mangler i katalogen. |
 
 ## Uferdig
 

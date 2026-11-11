@@ -2,13 +2,13 @@
 id: varekost
 navn: Varekost
 type: maaltall
-domene: salg
+domene: okonomi
 kortdefinisjon: Hva de solgte varene kostet oss, til gjennomsnittlig innkjøpskost på salgstidspunktet.
 synonymer: [vareforbruk, kost solgte varer, COGS]
 status: godkjent
 eier: Økonomiavdelingen
 gyldig_fra: 2023-01-01
-sist_oppdatert: 2026-11-10
+sist_oppdatert: 2026-11-11
 systemer: [erp]
 avledet_av: ["[[fakturalinje]]"]
 aggregering: sum
@@ -46,3 +46,4 @@ Sum over [[fakturalinje]]r av fakturert antall i lagerenhet ganger gjennomsnittl
 | Gyldig fra | Endring | Besluttet av |
 |---|---|---|
 | 2023-01-01 | Opprettet | Økonomisjef |
+| 2026-11-11 | Flyttet fra domenet salg til okonomi. Definisjonen er uendret | … |

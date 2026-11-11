@@ -8,8 +8,9 @@ synonymer: [mottak, inngående levering, goods receipt]
 status: godkjent
 eier: Innkjøpsavdelingen
 gyldig_fra: 2023-01-01
-sist_oppdatert: 2026-11-10
+sist_oppdatert: 2026-11-11
 systemer: [lagerstyringssystem, erp]
+kilde: lagerstyringssystem
 tilhorer: ["[[innkjopsordre]]"]
 tidspunkt: "[[mottaksdato]]"
 identifiseres_ved: mottaksnummer

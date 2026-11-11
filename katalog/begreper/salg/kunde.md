@@ -8,8 +8,9 @@ synonymer: [kundekonto, customer]
 status: godkjent
 eier: Salgsavdelingen
 gyldig_fra: 2023-01-01
-sist_oppdatert: 2026-11-10
+sist_oppdatert: 2026-11-11
 systemer: [erp, crm]
+kilde: erp
 forveksles_med: ["[[prosjekt]]", "[[aktiv_kunde]]"]
 identifiseres_ved: kundenummer
 ---

@@ -10,7 +10,8 @@ beskrivelse: Én setning om hva systemet brukes til i virksomheten.
 
 ## Formål
 
-Hvilke prosesser støtter systemet, og hvilke begreper er det kilde for ("master") for?
+Hvilke prosesser støtter systemet, og hvilke begreper oppstår og endres her? For de begrepene
+skal `kilde` i begrepet peke på dette systemet.
 
 ## Særegenheter
 

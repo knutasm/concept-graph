@@ -1,6 +1,7 @@
 ---
 id: logistikk
 navn: Logistikk
+domenetype: stottende
 eier: Logistikkavdelingen
 beskrivelse: "Lagring og levering av varer: lagre, beholdning, utleveringer og leveringsevne."
 ---

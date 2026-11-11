@@ -9,6 +9,12 @@ entiteter og hendelser som brukes og oppstår underveis. Mal: [maler/prosess.md]
 - **Navngi evnen med verb + objekt:** "Levere bestilte varer til kunden", ikke "Leveranseprosessen"
   eller "Lagersystemet". Det samme gjelder stegene: "Bekrefte ordre", "Kontrollere varer".
 - **Sett grensene først:** hva starter prosessen, når er den ferdig, og hva hører til nabo-prosessene?
+- **Uavhengig av organisering:** evnen skal finnes selv om virksomheten omorganiseres eller setter
+  arbeidet ut. Ikke bruk avdelingsnavn i navn og formål ("Kundesenterets ordrebehandling" →
+  "Bekrefte ordre"). Avdelinger og roller står under Aktører, ikke i selve evnen.
+- **Se verdikjeden:** hvilken prosess leverer utløseren, og hvilken tar over når denne er ferdig?
+  Lenk med `Neste: [[prosess_id]]` og under **Utenfor**. [OVERSIKT.md](../OVERSIKT.md) tegner
+  prosesskartet ut fra dette.
 - **Hovedløpet først, unntakene etterpå:** beskriv det som skjer når alt går som det skal, i 3–10 steg.
   Legg så til beslutningene og de alternative veiene.
 - **Alle veier skal ende et sted:** i et resultat (også uønskede, som "ordre avvist") eller i en annen prosess.
@@ -48,3 +54,9 @@ lesbar for mennesker og samtidig strukturert nok til at et flytskjema med svømm
 - **Ventetid ved overlevering:** tiden mellom hendelsene på hver side av et aktørskifte.
 
 Derfor bør resultater ha en **Hendelse**, og hendelser bør ha et `tidspunkt`.
+
+## Eierskap følger prosessen
+
+En entitet eller hendelse eies normalt av domenet til prosessen der den oppstår (**Gir** eller
+**Hendelse**). Valideringen advarer når et begrep oppstår bare i prosesser fra andre domener. Da
+ligger begrepet i feil domene, eller prosessgrensen er satt feil.

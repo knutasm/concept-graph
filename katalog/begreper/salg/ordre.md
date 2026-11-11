@@ -8,8 +8,9 @@ synonymer: [salgsordre, kundeordre, bestilling, order]
 status: godkjent
 eier: Salgsavdelingen
 gyldig_fra: 2023-01-01
-sist_oppdatert: 2026-11-10
+sist_oppdatert: 2026-11-11
 systemer: [erp, nettbutikk]
+kilde: erp
 tilhorer: ["[[kunde]]", "[[prosjekt]]"]
 forveksles_med: ["[[faktura]]", "[[innkjopsordre]]"]
 identifiseres_ved: ordrenummer

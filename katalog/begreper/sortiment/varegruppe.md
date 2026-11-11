@@ -2,13 +2,13 @@
 id: varegruppe
 navn: Varegruppe
 type: dimensjon
-domene: kjerne
+domene: sortiment
 kortdefinisjon: Hovedinndelingen av sortimentet som brukes i innkjøp, lager og salg.
 synonymer: [produktgruppe, kategori, product group]
 status: godkjent
 eier: Kategoriavdelingen
 gyldig_fra: 2023-01-01
-sist_oppdatert: 2026-11-10
+sist_oppdatert: 2026-11-11
 systemer: [erp]
 beskriver: ["[[vare]]"]
 dimensjonstype: kategori
@@ -40,3 +40,5 @@ Inndelingen er den samme i innkjøp, lager og salg.
 | Gyldig fra | Endring | Besluttet av |
 |---|---|---|
 | 2023-01-01 | Opprettet | Kategoriledelsen |
+| 2026-11-11 | Flyttet fra domenet kjerne til innkjop. Definisjonen er uendret | … |
+| 2026-11-11 | Flyttet fra domenet innkjop til sortiment. Definisjonen er uendret | … |

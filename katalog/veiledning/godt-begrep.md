@@ -7,7 +7,7 @@ blir du guidet gjennom det (skillen `begrep`).
 ## Sjekkliste
 
 - [ ] **Søkt først.** Finnes begrepet allerede, kanskje under et annet navn? Sjekk [INDEKS.md](../INDEKS.md) og synonymer.
-- [ ] **Ett begrep per fil.** Har begrepet to betydninger, er det to begreper.
+- [ ] **Ett begrep per fil.** Har begrepet to betydninger, er det to begreper. Spør om ordet betyr det samme i andre domener.
 - [ ] **Definisjonen er systemnøytral.** Se [forretning-vs-system.md](forretning-vs-system.md).
 - [ ] **Definisjonen starter med overbegrepet.** "En [[kunde]] som …", "Summen av …".
 - [ ] **Grensetilfellene er avklart.** Hva er med, hva er ikke med?
@@ -15,6 +15,7 @@ blir du guidet gjennom det (skillen `begrep`).
 - [ ] **For måltall: grain, tidsdimensjon og additivitet er gjennomtenkt.**
 - [ ] **Relasjoner til begreper som allerede finnes.** Se [relasjoner.md](relasjoner.md).
 - [ ] **Hvert system har en avvikslinje**, også når den er "Ingen kjente".
+- [ ] **Kilden er angitt** (`kilde`) når en entitet eller hendelse finnes i flere systemer.
 - [ ] **Eieren er en rolle eller avdeling**, ikke en person.
 - [ ] **Historikken er oppdatert** når definisjonen endres.
 - [ ] **Valideringen er kjørt:** `uv run scripts/valider.py`.
@@ -42,6 +43,20 @@ i søkeresultater, så den må kunne stå alene.
   Ikke endre id-en senere. Andre begreper peker på den.
 - **`synonymer`** er alle andre navn folk bruker, også engelske og forkortelser. Det er dem folk
   søker etter. Hvis et synonym egentlig er et annet begrep, lag begrepet og bruk `forveksles_med`.
+
+## Samme ord, ulik betydning
+
+Hvert domene har sitt eget språk. Det samme ordet kan bety noe annet i salg enn i logistikk
+eller økonomi. Katalogen er summen av domenenes språk, ikke ett felles kompromiss.
+
+- **Spør alltid** om ordet brukes i andre domener, og om det betyr det samme der.
+- **Betyr det det samme?** Da er det ett begrep, eid av domenet der det oppstår. De andre
+  domenene lenker til det.
+- **Betyr det noe annet?** Da er det to begreper med hver sin id, gjerne med et presiserende navn
+  ("Leveranse til kunde", "Leveranse fra leverandør"). Ordet folk bruker kan stå som synonym på
+  begge. Knytt dem med `forveksles_med` og forklar under **Avgrensning mot andre begreper** hvilket
+  domene som mener hva.
+- **Lag aldri én vag definisjon** som skal passe alle. Den passer ingen, og måltallene blir feil.
 
 ## Forretningsregler
 

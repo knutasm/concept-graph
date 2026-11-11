@@ -2,13 +2,13 @@
 id: dekningsbidrag
 navn: Dekningsbidrag
 type: maaltall
-domene: salg
+domene: okonomi
 kortdefinisjon: Omsetning minus varekost. Hva salget bidrar med til å dekke kostnader og gi overskudd.
 synonymer: [DB, bruttofortjeneste, gross margin]
 status: godkjent
 eier: Økonomiavdelingen
 gyldig_fra: 2023-01-01
-sist_oppdatert: 2026-11-10
+sist_oppdatert: 2026-11-11
 systemer: [datavarehus]
 avledet_av: ["[[omsetning]]", "[[varekost]]"]
 forveksles_med: ["[[dekningsgrad]]"]
@@ -50,3 +50,4 @@ Begge har samme grain og tidsdimensjon, så formelen gjelder på alle nivåer og
 | Gyldig fra | Endring | Besluttet av |
 |---|---|---|
 | 2023-01-01 | Opprettet | Økonomisjef |
+| 2026-11-11 | Flyttet fra domenet salg til okonomi. Definisjonen er uendret | … |

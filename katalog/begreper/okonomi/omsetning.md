@@ -2,13 +2,13 @@
 id: omsetning
 navn: Omsetning
 type: maaltall
-domene: salg
+domene: okonomi
 kortdefinisjon: Fakturert salg av varer eksklusiv mva, fratrukket kreditnotaer.
 synonymer: [netto omsetning, salg, salgsinntekt, revenue]
 status: godkjent
 eier: Økonomiavdelingen
 gyldig_fra: 2023-01-01
-sist_oppdatert: 2026-11-10
+sist_oppdatert: 2026-11-11
 systemer: [erp, nettbutikk, datavarehus]
 avledet_av: ["[[fakturalinje]]"]
 aggregering: sum
@@ -61,3 +61,4 @@ Kreditnotaer gir negative beløp. Kan summeres over tid, kunder, varer og lagre.
 | Gyldig fra | Endring | Besluttet av |
 |---|---|---|
 | 2023-01-01 | Opprettet | Økonomisjef |
+| 2026-11-11 | Flyttet fra domenet salg til okonomi. Definisjonen er uendret | … |

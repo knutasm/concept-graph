@@ -2,13 +2,13 @@
 id: virkedag
 navn: Virkedag
 type: klassifisering
-domene: kjerne
+domene: logistikk
 kortdefinisjon: En kalenderdag fra mandag til fredag som ikke er en offentlig helligdag.
 synonymer: [arbeidsdag, business day]
 status: godkjent
 eier: Logistikkavdelingen
 gyldig_fra: 2023-01-01
-sist_oppdatert: 2026-11-10
+sist_oppdatert: 2026-11-11
 systemer: [datavarehus]
 er_en: ["[[kalenderdag]]"]
 ---
@@ -43,3 +43,4 @@ leveringstid og forsinkelse måles.
 | Gyldig fra | Endring | Besluttet av |
 |---|---|---|
 | 2023-01-01 | Opprettet | Logistikkledelsen |
+| 2026-11-11 | Flyttet fra domenet kjerne til logistikk. Definisjonen er uendret | … |

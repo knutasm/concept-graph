@@ -80,7 +80,8 @@ En generator kan bygge en semantisk modell slik:
 4. **Måltall** blir mål på `grain`-entiteten, plassert i tid av `tidsdimensjon`, aggregert med
    `aggregering`. Måltall med `formel`/`ratio` bygges av måltallene i `avledet_av`.
 5. **Systemrepresentasjon** og avvikene der sier hvilke kildedata som skal brukes og hvilke filtre
-   som trengs for at tallene skal stemme med forretningsdefinisjonen.
+   som trengs for at tallene skal stemme med forretningsdefinisjonen. Les fra systemet i `kilde`.
+   Bruk en kopi bare når kilden mangler noe, og ta da med avvikene for kopien.
 
 Derfor er det viktig at `grain`, `tidsdimensjon`, `additivitet` og formelen er riktige. De styrer
 direkte hvordan tallene beregnes.

@@ -2,16 +2,17 @@
 
 <!-- GENERERT av scripts/valider.py. Ikke rediger for hånd. -->
 
-38 begreper i 4 domener, 5 prosesser, 5 systemer. Les [README.md](../README.md) for hvordan katalogen er bygd opp. Diagrammer, måltall og systemavvik står i [OVERSIKT.md](OVERSIKT.md).
+38 begreper i 5 domener, 5 prosesser, 5 systemer. Les [README.md](../README.md) for hvordan katalogen er bygd opp. Diagrammer, måltall og systemavvik står i [OVERSIKT.md](OVERSIKT.md).
 
 ## Domener
 
-| Domene | Navn | Eier | Antall | Beskrivelse |
-|---|---|---|---|---|
-| [innkjop](#innkjop) | Innkjøp | Innkjøpsavdelingen | 5 | Innkjøp av varer fra leverandører, og oppfølging av leverandørene. |
-| [kjerne](#kjerne) | Kjerne | Dataplattformteamet | 5 | Begreper som brukes av flere domener og ikke har én naturlig faglig eier, f.eks. vare og kalender. |
-| [logistikk](#logistikk) | Logistikk | Logistikkavdelingen | 9 | Lagring og levering av varer: lagre, beholdning, utleveringer og leveringsevne. |
-| [salg](#salg) | Salg | Salgsavdelingen | 19 | Salg til håndverkere og byggeprosjekter: kunder, ordre, fakturering og lønnsomhet. |
+| Domene | Navn | Type | Eier | Antall | Beskrivelse |
+|---|---|---|---|---|---|
+| [innkjop](#innkjop) | Innkjøp | stottende | Innkjøpsavdelingen | 5 | Innkjøp av varer fra leverandører, og oppfølging av leverandørene. |
+| [logistikk](#logistikk) | Logistikk | stottende | Logistikkavdelingen | 10 | Lagring og levering av varer: lagre, beholdning, utleveringer og leveringsevne. |
+| [okonomi](#okonomi) | Økonomi | generisk | Økonomiavdelingen | 5 | Regnskap og økonomistyring: omsetning, lønnsomhet, kalenderen og regnskapsperiodene. |
+| [salg](#salg) | Salg | kjerne | Salgsavdelingen | 15 | Salg til håndverkere og byggeprosjekter: kunder, ordre, priser og fakturering. |
+| [sortiment](#sortiment) | Sortiment | stottende | Kategoriavdelingen | 3 | Hvilke varer vi fører, og hvordan de grupperes og måles. |
 
 ## innkjop
 
@@ -24,18 +25,6 @@
 | [leveringspresisjon_leverandor](begreper/innkjop/leveringspresisjon_leverandor.md) | Leveringspresisjon leverandør | maaltall | godkjent | leverandørpresisjon, OTD leverandør, supplier on-time delivery | Andelen varemottak som kom senest på leverandørens bekreftede leveringsdato. |
 | [mottaksdato](begreper/innkjop/mottaksdato.md) | Mottaksdato | dimensjon | godkjent | mottatt dato, receipt date | Datoen varene i et varemottak ble mottatt og kontrollert. |
 | [varemottak](begreper/innkjop/varemottak.md) | Varemottak | hendelse | godkjent | mottak, inngående levering, goods receipt | At varer fra en innkjøpsordre er mottatt og kontrollert på et av våre lagre eller hos kunden. |
-
-## kjerne
-
-**Kjerne**: Begreper som brukes av flere domener og ikke har én naturlig faglig eier, f.eks. vare og kalender. ([domenebeskrivelse](begreper/kjerne/_domene.md))
-
-| id | navn | type | status | synonymer | kortdefinisjon |
-|---|---|---|---|---|---|
-| [kalenderdag](begreper/kjerne/kalenderdag.md) | Kalenderdag | dimensjon | godkjent | dato, kalender, date | En dag i den felles kalenderen, med uke, måned og regnskapsår. |
-| [maaleenhet](begreper/kjerne/maaleenhet.md) | Måleenhet | dimensjon | godkjent | enhet, unit of measure | Enheten en mengde av en vare uttrykkes i, f.eks. stykk, meter eller pakke. |
-| [vare](begreper/kjerne/vare.md) | Vare | entitet | godkjent | artikkel, produkt, item | En fysisk artikkel i sortimentet vårt som vi kjøper inn, lagerfører eller selger. |
-| [varegruppe](begreper/kjerne/varegruppe.md) | Varegruppe | dimensjon | godkjent | produktgruppe, kategori, product group | Hovedinndelingen av sortimentet som brukes i innkjøp, lager og salg. |
-| [virkedag](begreper/kjerne/virkedag.md) | Virkedag | klassifisering | godkjent | arbeidsdag, business day | En kalenderdag fra mandag til fredag som ikke er en offentlig helligdag. |
 
 ## logistikk
 
@@ -52,23 +41,33 @@
 | [restordre](begreper/logistikk/restordre.md) | Restordre | klassifisering | godkjent | rest, restnotert, backorder | En ordrelinje som ikke kunne leveres som avtalt fordi varen ikke var på lager. |
 | [returmottak](begreper/logistikk/returmottak.md) | Returmottak | hendelse | utkast | mottak av retur | At varer en kunde har returnert, er mottatt og kontrollert på et av våre lagre. |
 | [returmottaksdato](begreper/logistikk/returmottaksdato.md) | Returmottaksdato | dimensjon | utkast | returdato | Datoen returnerte varer ble mottatt og kontrollert. |
+| [virkedag](begreper/logistikk/virkedag.md) | Virkedag | klassifisering | godkjent | arbeidsdag, business day | En kalenderdag fra mandag til fredag som ikke er en offentlig helligdag. |
+
+## okonomi
+
+**Økonomi**: Regnskap og økonomistyring: omsetning, lønnsomhet, kalenderen og regnskapsperiodene. ([domenebeskrivelse](begreper/okonomi/_domene.md))
+
+| id | navn | type | status | synonymer | kortdefinisjon |
+|---|---|---|---|---|---|
+| [dekningsbidrag](begreper/okonomi/dekningsbidrag.md) | Dekningsbidrag | maaltall | godkjent | DB, bruttofortjeneste, gross margin | Omsetning minus varekost. Hva salget bidrar med til å dekke kostnader og gi overskudd. |
+| [dekningsgrad](begreper/okonomi/dekningsgrad.md) | Dekningsgrad | maaltall | godkjent | DG, bruttomargin, margin, gross margin percent | Dekningsbidrag i prosent av omsetningen. |
+| [kalenderdag](begreper/okonomi/kalenderdag.md) | Kalenderdag | dimensjon | godkjent | dato, kalender, date | En dag i den felles kalenderen, med uke, måned og regnskapsår. |
+| [omsetning](begreper/okonomi/omsetning.md) | Omsetning | maaltall | godkjent | netto omsetning, salg, salgsinntekt, revenue | Fakturert salg av varer eksklusiv mva, fratrukket kreditnotaer. |
+| [varekost](begreper/okonomi/varekost.md) | Varekost | maaltall | godkjent | vareforbruk, kost solgte varer, COGS | Hva de solgte varene kostet oss, til gjennomsnittlig innkjøpskost på salgstidspunktet. |
 
 ## salg
 
-**Salg**: Salg til håndverkere og byggeprosjekter: kunder, ordre, fakturering og lønnsomhet. ([domenebeskrivelse](begreper/salg/_domene.md))
+**Salg**: Salg til håndverkere og byggeprosjekter: kunder, ordre, priser og fakturering. ([domenebeskrivelse](begreper/salg/_domene.md))
 
 | id | navn | type | status | synonymer | kortdefinisjon |
 |---|---|---|---|---|---|
 | [aktiv_kunde](begreper/salg/aktiv_kunde.md) | Aktiv kunde | klassifisering | godkjent | active customer | En kunde med minst én bekreftet ordre de siste 12 månedene. |
-| [dekningsbidrag](begreper/salg/dekningsbidrag.md) | Dekningsbidrag | maaltall | godkjent | DB, bruttofortjeneste, gross margin | Omsetning minus varekost. Hva salget bidrar med til å dekke kostnader og gi overskudd. |
-| [dekningsgrad](begreper/salg/dekningsgrad.md) | Dekningsgrad | maaltall | godkjent | DG, bruttomargin, margin, gross margin percent | Dekningsbidrag i prosent av omsetningen. |
 | [faktura](begreper/salg/faktura.md) | Faktura | entitet | godkjent | invoice, kreditnota | Et krav om betaling sendt til en kunde for leverte varer, inkludert kreditnotaer. |
 | [fakturadato](begreper/salg/fakturadato.md) | Fakturadato | dimensjon | godkjent | invoice date | Datoen fakturaen er utstedt. Avgjør hvilken periode omsetningen hører til. |
 | [fakturalinje](begreper/salg/fakturalinje.md) | Fakturalinje | entitet | godkjent | invoice line | Én vare på en faktura, med fakturert antall, beløp og varekost. |
 | [kunde](begreper/salg/kunde.md) | Kunde | entitet | godkjent | kundekonto, customer | En virksomhet eller person som har kjøpt varer av oss på egen kundekonto. |
 | [kundesegment](begreper/salg/kundesegment.md) | Kundesegment | dimensjon | godkjent | segment, kundetype, customer segment | Hva slags virksomhet kunden er, f.eks. rørleggerbedrift eller entreprenør. |
 | [listepris](begreper/salg/listepris.md) | Listepris | dimensjon | utkast | veiledende pris, bruttopris, list price | Den veiledende salgsprisen for en vare før kunde- eller prosjektrabatter, eksklusiv mva. |
-| [omsetning](begreper/salg/omsetning.md) | Omsetning | maaltall | godkjent | netto omsetning, salg, salgsinntekt, revenue | Fakturert salg av varer eksklusiv mva, fratrukket kreditnotaer. |
 | [ordre](begreper/salg/ordre.md) | Ordre | entitet | godkjent | salgsordre, kundeordre, bestilling, order | En bekreftet bestilling av varer fra en kunde. |
 | [ordredato](begreper/salg/ordredato.md) | Ordredato | dimensjon | godkjent | bestillingsdato, order date | Datoen ordren ble bekreftet. |
 | [ordrelinje](begreper/salg/ordrelinje.md) | Ordrelinje | entitet | godkjent | linje, order line | Én vare på en ordre, med bestilt antall og avtalt pris. |
@@ -77,7 +76,16 @@
 | [reklamasjon](begreper/salg/reklamasjon.md) | Reklamasjon | entitet | utkast | klage, complaint | En kundes krav fordi en vare har feil eller mangel, eller fordi vi har levert feil vare eller skadet den. |
 | [retur](begreper/salg/retur.md) | Retur | entitet | utkast | godkjent retur, return | En godkjent returforespørsel, altså en avtale om at kunden kan levere tilbake bestemte feilfrie varer fra en ordre. |
 | [returforesporsel](begreper/salg/returforesporsel.md) | Returforespørsel | entitet | utkast | forespørsel om retur, return request | En kundes forespørsel om å levere tilbake feilfrie varer fra en ordre, som vi godkjenner eller avviser. |
-| [varekost](begreper/salg/varekost.md) | Varekost | maaltall | godkjent | vareforbruk, kost solgte varer, COGS | Hva de solgte varene kostet oss, til gjennomsnittlig innkjøpskost på salgstidspunktet. |
+
+## sortiment
+
+**Sortiment**: Hvilke varer vi fører, og hvordan de grupperes og måles. ([domenebeskrivelse](begreper/sortiment/_domene.md))
+
+| id | navn | type | status | synonymer | kortdefinisjon |
+|---|---|---|---|---|---|
+| [maaleenhet](begreper/sortiment/maaleenhet.md) | Måleenhet | dimensjon | godkjent | enhet, unit of measure | Enheten en mengde av en vare uttrykkes i, f.eks. stykk, meter eller pakke. |
+| [vare](begreper/sortiment/vare.md) | Vare | entitet | godkjent | artikkel, produkt, item | En fysisk artikkel i sortimentet vårt som vi kjøper inn, lagerfører eller selger. |
+| [varegruppe](begreper/sortiment/varegruppe.md) | Varegruppe | dimensjon | godkjent | produktgruppe, kategori, product group | Hovedinndelingen av sortimentet som brukes i innkjøp, lager og salg. |
 
 ## Prosesser
 

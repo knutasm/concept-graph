@@ -22,6 +22,7 @@ Katalogen har to formål:
 | forstå skillet forretning/system | [veiledning/forretning-vs-system.md](katalog/veiledning/forretning-vs-system.md) |
 | velge riktig type | [veiledning/begrepstyper.md](katalog/veiledning/begrepstyper.md) |
 | knytte begreper sammen | [veiledning/relasjoner.md](katalog/veiledning/relasjoner.md) |
+| lage et domene eller se over grensene | Be Claude om det ("se over domenegrensene"). Eller les [veiledning/domener.md](katalog/veiledning/domener.md) |
 
 ## Oppbygging
 
@@ -30,15 +31,15 @@ Katalogen har to formål:
 ```
 katalog/                               Obsidian-vaulten: alt som skal leses
   INDEKS.md                            Innholdsfortegnelse (generert)
-  OVERSIKT.md                          Prosessdiagrammer, måltall, systemavvik og uferdige begreper (generert)
+  OVERSIKT.md                          Domene- og prosesskart, prosessdiagrammer, måltall, kilder, systemavvik og uferdige begreper (generert)
   begreper/<domene>/_domene.md         Hva domenet dekker
   begreper/<domene>/<id>.md            Ett begrep per fil
   systemer/<id>.md                     Kildesystemene
   prosesser/<id>.md                    Forretningsprosessene: aktører, steg, beslutninger, resultater
-  maler/                               Maler for begrep, prosess og system
+  maler/                               Maler for begrep, prosess, domene og system
   veiledning/                          Skriveveiledning
 scripts/valider.py                     Validering og generering av INDEKS.md og OVERSIKT.md
-.claude/skills/                        Veiledet arbeid med Claude: begrep og prosess
+.claude/skills/                        Veiledet arbeid med Claude: begrep, prosess og domene
 ```
 
 ### Ett begrep, to deler
@@ -69,6 +70,7 @@ som viser relasjonene mellom begrepene.
 - **Lister på én linje** i frontmatter (`synonymer: [a, b]`), så grep viser hele lista.
 - **Lenker** til andre begreper skrives `[[id]]`.
 - **Systemer** omtales med generiske id-er fra `katalog/systemer/`.
+- **Kilde:** `kilde` sier hvilket system en entitet eller hendelse oppstår og endres i. De andre systemene er kopier.
 
 ## Søke med grep
 

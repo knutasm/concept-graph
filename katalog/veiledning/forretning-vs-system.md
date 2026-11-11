@@ -86,6 +86,19 @@ Hvis to systemer har ulik oppfatning av samme begrep, er det **ett** forretnings
 og "CRM-kunde"). Unntaket er når virksomheten faktisk trenger begge begrepene, med hver sin
 forretningsdefinisjon. Da lager du to begreper og knytter dem med `forveksles_med`.
 
+## Kilde og kopier
+
+Et begrep oppstår og endres i ett system: **kilden**. De andre systemene har kopier, ofte med
+filtre, omdøpte felt eller forsinkelse. Skriv kilden i `kilde`, f.eks. `kilde: erp`.
+
+- Kilden er der virksomheten registrerer og retter. Rettes en kunde i ERP-et og ikke i CRM-et,
+  er ERP-et kilden.
+- En kopi som bare filtrerer, kobler eller summerer, er fortsatt en kopi. Et datavarehus er
+  nesten aldri kilden for en entitet eller hendelse.
+- Måltall og klassifiseringer har ingen kilde. De beregnes fra begreper som har det.
+- Er det uklart hvilket system som er kilden, la `kilde` stå tom og skriv spørsmålet under
+  **Åpne spørsmål**.
+
 ## Hvorfor dette er viktig for analyse
 
 Katalogen brukes som grunnlag for å bygge semantiske modeller og måltall automatisk.

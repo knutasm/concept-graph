@@ -2,13 +2,13 @@
 id: maaleenhet
 navn: Måleenhet
 type: dimensjon
-domene: kjerne
+domene: sortiment
 kortdefinisjon: Enheten en mengde av en vare uttrykkes i, f.eks. stykk, meter eller pakke.
 synonymer: [enhet, unit of measure]
 status: godkjent
 eier: Kategoriavdelingen
 gyldig_fra: 2023-01-01
-sist_oppdatert: 2026-11-10
+sist_oppdatert: 2026-11-11
 systemer: [erp, nettbutikk]
 beskriver: ["[[vare]]"]
 dimensjonstype: kategori
@@ -57,3 +57,5 @@ I tillegg kan den ha en **kjøpsenhet** (slik [[leverandor]]en selger den) og en
 | Gyldig fra | Endring | Besluttet av |
 |---|---|---|
 | 2023-01-01 | Opprettet | Kategoriledelsen |
+| 2026-11-11 | Flyttet fra domenet kjerne til innkjop. Definisjonen er uendret | … |
+| 2026-11-11 | Flyttet fra domenet innkjop til sortiment. Definisjonen er uendret | … |
