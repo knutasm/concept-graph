@@ -9,7 +9,7 @@ status: godkjent
 eier: Økonomiavdelingen
 gyldig_fra: 2023-01-01
 sist_oppdatert: 2026-11-11
-systemer: [erp]
+systemer: ["[[erp]]"]
 avledet_av: ["[[fakturalinje]]"]
 aggregering: sum
 enhet: NOK

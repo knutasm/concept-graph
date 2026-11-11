@@ -9,7 +9,7 @@ status: godkjent
 eier: Salgsavdelingen
 gyldig_fra: 2024-03-01
 sist_oppdatert: 2026-11-10
-systemer: [datavarehus]
+systemer: ["[[datavarehus]]"]
 er_en: ["[[kunde]]"]
 avledet_av: ["[[ordre]]"]
 forveksles_med: ["[[kunde]]"]

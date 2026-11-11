@@ -9,8 +9,8 @@ status: godkjent
 eier: Økonomiavdelingen
 gyldig_fra: 2023-01-01
 sist_oppdatert: 2026-11-11
-systemer: [erp]
-kilde: erp
+systemer: ["[[erp]]"]
+kilde: "[[erp]]"
 del_av: ["[[faktura]]"]
 tilhorer: ["[[vare]]"]
 identifiseres_ved: fakturanummer og linjenummer

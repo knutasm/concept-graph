@@ -89,7 +89,7 @@ forretningsdefinisjon. Da lager du to begreper og knytter dem med `forveksles_me
 ## Kilde og kopier
 
 Et begrep oppstår og endres i ett system: **kilden**. De andre systemene har kopier, ofte med
-filtre, omdøpte felt eller forsinkelse. Skriv kilden i `kilde`, f.eks. `kilde: erp`.
+filtre, omdøpte felt eller forsinkelse. Skriv kilden i `kilde`, f.eks. `kilde: "[[erp]]"`.
 
 - Kilden er der virksomheten registrerer og retter. Rettes en kunde i ERP-et og ikke i CRM-et,
   er ERP-et kilden.

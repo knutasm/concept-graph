@@ -59,7 +59,7 @@ grep -h "^kortdefinisjon:" katalog/begreper/*/*.md              # alle kortdefin
 ```
 
 Frontmatter-lister står alltid på én linje (`synonymer: [a, b]`), så grep viser hele lista.
-Referanser til andre begreper (relasjoner, `granularitet`, `tidsdimensjon`, `tidspunkt` og lenker i teksten)
+Referanser til andre begreper og systemer (relasjoner, `granularitet`, `tidsdimensjon`, `tidspunkt`, `systemer`, `kilde` og lenker i teksten)
 skrives alltid `[[id]]`, så `grep "\[\[id\]\]"` finner alle.
 
 ## Generere semantiske modeller

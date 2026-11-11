@@ -9,7 +9,7 @@ status: godkjent
 eier: Dataplattformteamet
 gyldig_fra: 2023-01-01
 sist_oppdatert: 2026-11-11
-systemer: [datavarehus]
+systemer: ["[[datavarehus]]"]
 se_ogsaa: ["[[virkedag]]"]
 dimensjonstype: tid
 ---

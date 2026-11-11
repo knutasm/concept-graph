@@ -9,8 +9,8 @@ status: godkjent
 eier: Innkjøpsavdelingen
 gyldig_fra: 2023-01-01
 sist_oppdatert: 2026-11-11
-systemer: [erp]
-kilde: erp
+systemer: ["[[erp]]"]
+kilde: "[[erp]]"
 tilhorer: ["[[leverandor]]"]
 forveksles_med: ["[[ordre]]"]
 identifiseres_ved: innkjøpsordrenummer

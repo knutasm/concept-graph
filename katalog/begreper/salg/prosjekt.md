@@ -9,7 +9,7 @@ status: til_godkjenning
 eier: Salgsavdelingen
 gyldig_fra: 2025-01-01
 sist_oppdatert: 2026-11-10
-systemer: [erp, crm]
+systemer: ["[[erp]]", "[[crm]]"]
 tilhorer: ["[[kunde]]"]
 forveksles_med: ["[[kunde]]"]
 identifiseres_ved: prosjektnummer

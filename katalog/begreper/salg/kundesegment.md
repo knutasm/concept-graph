@@ -9,7 +9,7 @@ status: godkjent
 eier: Salgsavdelingen
 gyldig_fra: 2023-01-01
 sist_oppdatert: 2026-11-10
-systemer: [crm, erp]
+systemer: ["[[crm]]", "[[erp]]"]
 beskriver: ["[[kunde]]"]
 dimensjonstype: kategori
 ---

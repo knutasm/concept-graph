@@ -9,8 +9,8 @@ status: godkjent
 eier: Kategoriavdelingen
 gyldig_fra: 2023-01-01
 sist_oppdatert: 2026-11-11
-systemer: [erp, lagerstyringssystem, nettbutikk]
-kilde: erp
+systemer: ["[[erp]]", "[[lagerstyringssystem]]", "[[nettbutikk]]"]
+kilde: "[[erp]]"
 identifiseres_ved: varenummer
 ---
 # Vare

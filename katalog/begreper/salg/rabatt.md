@@ -8,7 +8,7 @@ synonymer: [kunderabatt, avslag, discount]
 status: utkast
 eier: Salgsavdelingen
 sist_oppdatert: 2026-11-10
-systemer: [erp]
+systemer: ["[[erp]]"]
 avledet_av: ["[[fakturalinje]]", "[[listepris]]"]
 aggregering: sum
 enhet: NOK

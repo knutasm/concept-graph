@@ -9,7 +9,7 @@ status: godkjent
 eier: Innkjøpsavdelingen
 gyldig_fra: 2023-01-01
 sist_oppdatert: 2026-11-10
-systemer: [lagerstyringssystem, erp]
+systemer: ["[[lagerstyringssystem]]", "[[erp]]"]
 beskriver: ["[[varemottak]]"]
 dimensjonstype: tid
 ---

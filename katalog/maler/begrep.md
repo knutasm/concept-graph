@@ -10,8 +10,8 @@ status: utkast                 # utkast | til_godkjenning | godkjent | utfaset
 eier: Fagavdeling som eier definisjonen   # En rolle eller avdeling, ikke en person
 gyldig_fra: 2026-01-01         # Når gjeldende definisjon trådte i kraft (valgfri)
 sist_oppdatert: 2026-01-01
-systemer: [erp]                # id-er fra systemer/, som id (erp) eller lenke ("[[erp]]"). Hvert system får en ### under Systemrepresentasjon
-kilde: erp                     # Kun entitet, hendelse og dimensjon (valgfri). Systemet der begrepet oppstår og endres.
+systemer: ["[[erp]]"]          # lenker til systemer/. Hvert system får en ### under Systemrepresentasjon
+kilde: "[[erp]]"               # Kun entitet, hendelse og dimensjon (valgfri). Systemet der begrepet oppstår og endres.
                                # Må stå i systemer. De andre systemene er kopier. Påkrevd i praksis når det er flere systemer
 # ── Relasjoner ─────────────────────────────────────────────────────────
 # Ett felt per relasjonstype, bare de du trenger. Verdiene er lister med Obsidian-lenker

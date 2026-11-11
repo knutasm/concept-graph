@@ -9,7 +9,7 @@ status: godkjent
 eier: Logistikkavdelingen
 gyldig_fra: 2023-01-01
 sist_oppdatert: 2026-11-10
-systemer: [datavarehus]
+systemer: ["[[datavarehus]]"]
 avledet_av: ["[[ordrelinje]]", "[[leveranse]]", "[[restordre]]"]
 forveksles_med: ["[[leveringspresisjon_leverandor]]"]
 aggregering: ratio

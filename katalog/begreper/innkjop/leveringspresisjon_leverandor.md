@@ -9,7 +9,7 @@ status: godkjent
 eier: Innkjøpsavdelingen
 gyldig_fra: 2024-01-01
 sist_oppdatert: 2026-11-10
-systemer: [datavarehus]
+systemer: ["[[datavarehus]]"]
 avledet_av: ["[[varemottak]]", "[[innkjopsordre]]"]
 forveksles_med: ["[[leveringsgrad]]"]
 aggregering: ratio
