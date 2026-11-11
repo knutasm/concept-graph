@@ -3,12 +3,24 @@ id: retur_fra_kunde
 navn: Retur fra kunde
 domene: salg
 kortdefinisjon: Fra kunden ber om å returnere varer til varen er kontrollert og kunden er kreditert, eller returen er avvist.
-synonymer: [returhåndtering, kunderetur, customer return]
+synonymer:
+  - returhåndtering
+  - kunderetur
+  - customer return
 status: utkast
 eier: Salgsavdelingen
 sist_oppdatert: 2026-11-10
 utloser: "[[returforesporsel]]"
-begreper: ["[[returforesporsel]]", "[[retur]]", "[[kunde]]", "[[ordre]]", "[[vare]]", "[[faktura]]", "[[leveranse]]", "[[lager]]", "[[returmottak]]"]
+begreper:
+  - "[[returforesporsel]]"
+  - "[[retur]]"
+  - "[[kunde]]"
+  - "[[ordre]]"
+  - "[[vare]]"
+  - "[[faktura]]"
+  - "[[leveranse]]"
+  - "[[lager]]"
+  - "[[returmottak]]"
 ---
 # Retur fra kunde
 
@@ -21,8 +33,9 @@ og varene kommer tilbake i salg eller blir tatt hånd om på en kontrollert måt
 
 - **Starter når:** En [[kunde]] ber om å få returnere [[vare]]r.
 - **Ferdig når:** Varen er kontrollert og kunden har fått kreditnota, eller kunden har fått beskjed om at returen er avvist.
-- **Utenfor:** [[reklamasjon]] (feil eller mangel ved varen, feil vare levert eller skade før levering). Salget og faktureringen av
-  varene (se [[ordre_til_faktura]]).
+- **Utenfor:** 
+	- [[reklamasjon]] (feil eller mangel ved varen, feil vare levert eller skade før levering). 
+	- Salget og faktureringen av varene (se [[ordre_til_faktura]]).
 
 ## Aktører
 

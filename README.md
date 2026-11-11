@@ -66,6 +66,7 @@ som viser relasjonene mellom begrepene.
 ## Konvensjoner
 
 - **id = filnavn**, små bokstaver, `_`, uten æøå (æ→ae, ø→o, å→aa). Visningsnavnet (`navn`) skrives på vanlig norsk.
+- **Tittel = `navn`.** Første overskrift (`# `) i filen er lik `navn`. Obsidian viser den som tittel, og filnavnet skjules. Gi aldri filen nytt navn i Obsidian, det bryter `id`.
 - **Domene = mappe.** Begrepets `domene` må være lik mappen filen ligger i.
 - **Lister på én linje** i frontmatter (`synonymer: [a, b]`), så grep viser hele lista.
 - **Lenker** til andre begreper skrives `[[id]]`.

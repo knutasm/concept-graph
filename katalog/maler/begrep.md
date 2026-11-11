@@ -1,7 +1,7 @@
 ---
 # ── Felles for alle typer ──────────────────────────────────────────────
 id: eksempel_begrep            # = filnavn uten .md. Små bokstaver, a-z 0-9 _, ingen æøå (ae, oe, aa)
-navn: Eksempel begrep          # Visningsnavn på vanlig norsk, entall
+navn: Eksempel begrep          # Visningsnavn på vanlig norsk, entall. Overskriften (# ) under skal være lik
 type: entitet                  # entitet | hendelse | maaltall | dimensjon | klassifisering
 domene: salg                   # = mappenavnet under begreper/
 kortdefinisjon: Én setning, systemnøytral, under 200 tegn.

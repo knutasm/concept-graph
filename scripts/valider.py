@@ -163,9 +163,12 @@ def les(sti: Path, res: Resultat) -> Dokument | None:
     under: dict[str, list[str]] = {}
     gjeldende = None
     i_kodeblokk = False
+    tittel = None
     for linje in tekst[slutt + 5:].splitlines():
         if linje.startswith("```"):
             i_kodeblokk = not i_kodeblokk
+        if not i_kodeblokk and tittel is None and gjeldende is None and linje.startswith("# "):
+            tittel = linje[2:].strip()
         if not i_kodeblokk and linje.startswith("## "):
             gjeldende = linje[3:].strip()
             rekkefolge.append(gjeldende)
@@ -176,6 +179,11 @@ def les(sti: Path, res: Resultat) -> Dokument | None:
             under[gjeldende].append(linje[4:].strip())
         if gjeldende:
             seksjoner[gjeldende].append(linje)
+    # Overskriften er tittelen i Obsidian (filnavnet er id-en), og skal være lik navn.
+    navn = fm.get("navn")
+    if navn and tittel != str(navn):
+        res.f(sti, f"mangler overskriften '# {navn}' (lik 'navn', og tittelen i Obsidian)"
+              + (f", fant '# {tittel}'" if tittel else ""))
     return Dokument(sti, fm, {k: "\n".join(v) for k, v in seksjoner.items()}, rekkefolge, under)
 
 

@@ -14,6 +14,7 @@ ligger utenfor. Lenker inne i katalogen er relative til `katalog/`.
 - `katalog/OVERSIKT.md`: Mermaid-diagram per forretningsprosess, måltallsmatrise (grain, tidsdimensjon, additivitet),
   kjente systemavvik og uferdige begreper. Generert. Godt utgangspunkt for semantiske modeller.
 - `katalog/begreper/<domene>/<id>.md`: ett begrep per fil. Filnavn = `id`, mappe = `domene`.
+  Første overskrift `# ` er lik `navn` (tittelen i Obsidian).
 - `katalog/begreper/<domene>/_domene.md`: hva domenet dekker.
 - `katalog/systemer/<id>.md`: kildesystemene som begrepene kan finnes i.
 - `katalog/prosesser/<id>.md`: forretningsprosessene (evner). Steg (`### s1`), beslutninger (`### b1`) og
