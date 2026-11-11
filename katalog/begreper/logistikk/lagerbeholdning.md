@@ -8,7 +8,7 @@ synonymer: [lagerverdi, varelager, beholdning, inventory]
 status: godkjent
 eier: Logistikkavdelingen
 gyldig_fra: 2023-01-01
-sist_oppdatert: 2026-11-10
+sist_oppdatert: 2026-11-11
 systemer: ["[[lagerstyringssystem]]", "[[erp]]"]
 avledet_av: ["[[vare]]", "[[lager]]"]
 aggregering: sum
@@ -35,7 +35,7 @@ lagerenhet ganger vektet gjennomsnittlig innkjøpskost. Måles per vare og lager
 Sum av antall i lagerenhet ganger gjennomsnittlig innkjøpskost, per vare og lager, ved dagens slutt.
 
 **Semi-additiv:** kan summeres på tvers av varer, varegrupper og lagre, men **ikke over tid**.
-Lagerbeholdningen for en måned er beholdningen ved siste dag i måneden. Gjennomsnittlig beholdning
+Lagerbeholdningen for en måned er beholdningen ved siste dag i måneden. [[gjennomsnittlig_lagerbeholdning]]
 er et eget måltall.
 
 ## Eksempler

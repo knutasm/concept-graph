@@ -77,6 +77,10 @@ skal aldri summeres over tid.
 - Bruk skillen `begrep` (`.claude/skills/begrep/`) når brukeren vil opprette eller endre et begrep.
 - Bruk skillen `prosess` (`.claude/skills/prosess/`) når brukeren vil kartlegge eller endre en prosess.
 - Bruk skillen `domene` (`.claude/skills/domene/`) når brukeren vil lage et domene eller se over domenegrensene.
+- Bruk skillen `gjennomgang` (`.claude/skills/gjennomgang/`) når en fagekspert har skrevet et begrep eller en prosess selv,
+  og siden skal gjennomgås med oppklaringsspørsmål.
+- Bruk skillen `intervju` (`.claude/skills/intervju/`) når et intervju med en fagekspert skal forberedes, eller et
+  transkript eller notater skal gjøres om til sider.
 - Rediger bare begreper når brukeren ber om det.
 - Følg malen nøyaktig: faste felt, faste seksjoner, fast rekkefølge.
 - Skriv standard Markdown som er lesbar uten Obsidian. Ikke tilpass filene til Obsidian utover `[[id]]`-lenkene.

@@ -2,14 +2,14 @@
 
 <!-- GENERERT av scripts/valider.py. Ikke rediger for hånd. -->
 
-38 begreper i 5 domener, 5 prosesser, 5 systemer. Les [README.md](../README.md) for hvordan katalogen er bygd opp. Diagrammer, måltall og systemavvik står i [OVERSIKT.md](OVERSIKT.md).
+40 begreper i 5 domener, 5 prosesser, 5 systemer. Les [README.md](../README.md) for hvordan katalogen er bygd opp. Diagrammer, måltall og systemavvik står i [OVERSIKT.md](OVERSIKT.md).
 
 ## Domener
 
 | Domene | Navn | Type | Eier | Antall | Beskrivelse |
 |---|---|---|---|---|---|
 | [innkjop](#innkjop) | Innkjøp | stottende | Innkjøpsavdelingen | 5 | Innkjøp av varer fra leverandører, og oppfølging av leverandørene. |
-| [logistikk](#logistikk) | Logistikk | stottende | Logistikkavdelingen | 10 | Lagring og levering av varer: lagre, beholdning, utleveringer og leveringsevne. |
+| [logistikk](#logistikk) | Logistikk | stottende | Logistikkavdelingen | 12 | Lagring og levering av varer: lagre, beholdning, utleveringer og leveringsevne. |
 | [okonomi](#okonomi) | Økonomi | generisk | Økonomiavdelingen | 5 | Regnskap og økonomistyring: omsetning, lønnsomhet, kalenderen og regnskapsperiodene. |
 | [salg](#salg) | Salg | kjerne | Salgsavdelingen | 15 | Salg til håndverkere og byggeprosjekter: kunder, ordre, priser og fakturering. |
 | [sortiment](#sortiment) | Sortiment | stottende | Kategoriavdelingen | 3 | Hvilke varer vi fører, og hvordan de grupperes og måles. |
@@ -33,8 +33,10 @@
 | id | navn | type | status | synonymer | kortdefinisjon |
 |---|---|---|---|---|---|
 | [beholdningsdato](begreper/logistikk/beholdningsdato.md) | Beholdningsdato | dimensjon | godkjent | lagerdato, snapshot date | Dagen en lagerbeholdning gjelder for, målt ved dagens slutt. |
+| [gjennomsnittlig_lagerbeholdning](begreper/logistikk/gjennomsnittlig_lagerbeholdning.md) | Gjennomsnittlig lagerbeholdning | maaltall | utkast | snittbeholdning, gjennomsnittlig varelager, average inventory | Snittet av de daglige lagerbeholdningene i en periode. |
 | [lager](begreper/logistikk/lager.md) | Lager | entitet | godkjent | lagersted, utsalgssted, filial, warehouse | Et fysisk sted der vi oppbevarer varer for salg, dvs. sentrallageret eller et utsalgssted. |
 | [lagerbeholdning](begreper/logistikk/lagerbeholdning.md) | Lagerbeholdning | maaltall | godkjent | lagerverdi, varelager, beholdning, inventory | Verdien av varene vi har på lager ved slutten av en dag, til gjennomsnittlig innkjøpskost. |
+| [lageromlopshastighet](begreper/logistikk/lageromlopshastighet.md) | Lageromløpshastighet | maaltall | utkast | lageromløp, omløpshastighet, inventory turnover | Hvor mange ganger per år vi selger ut og fyller opp et gjennomsnittlig varelager. Varekost delt på gjennomsnittlig lagerbeholdning. |
 | [leveranse](begreper/logistikk/leveranse.md) | Leveranse | hendelse | godkjent | utlevering, forsendelse, delivery | At varer fra en ordre er overlevert til kunden, enten hentet på utsalgssted eller levert til byggeplass. |
 | [leveringsdato](begreper/logistikk/leveringsdato.md) | Leveringsdato | dimensjon | godkjent | utleveringsdato, delivery date | Datoen kunden mottok og kvitterte for en leveranse. |
 | [leveringsgrad](begreper/logistikk/leveringsgrad.md) | Leveringsgrad | maaltall | godkjent | leveringsevne, servicegrad, fill rate | Andelen ordrelinjer som ble levert komplett på avtalt dato. |
@@ -104,7 +106,7 @@ Forretningsprosessene: hva som starter dem, hvem som deltar, og hvor mange entit
 | id | navn | kategori | antall begreper | beskrivelse |
 |---|---|---|---|---|
 | [crm](systemer/crm.md) | CRM-systemet | CRM | 3 | Brukes av selgerne til å følge opp kunder, kontaktpersoner og prosjektmuligheter. |
-| [datavarehus](systemer/datavarehus.md) | Datavarehuset | datavarehus | 9 | Samler data fra kildesystemene og beregner analytiske modeller og måltall. |
+| [datavarehus](systemer/datavarehus.md) | Datavarehuset | datavarehus | 10 | Samler data fra kildesystemene og beregner analytiske modeller og måltall. |
 | [erp](systemer/erp.md) | ERP-systemet | ERP | 24 | Kjernesystem for varer, kunder, leverandører, ordre, innkjøp, fakturering og regnskap. |
 | [lagerstyringssystem](systemer/lagerstyringssystem.md) | Lagerstyringssystemet | lager | 7 | Styrer varemottak, lagerplasser, plukk og utlevering på sentrallageret og utsalgsstedene. |
 | [nettbutikk](systemer/nettbutikk.md) | Nettbutikken | netthandel | 4 | Netthandel for innloggede bedriftskunder, med kundens egne avtalepriser. |

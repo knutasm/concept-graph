@@ -17,9 +17,9 @@ flowchart LR
     okonomi["Økonomi"]
     salg["Salg"]
     sortiment["Sortiment"]
-    logistikk -->|1| okonomi
+    logistikk -->|3| okonomi
     logistikk -->|6| salg
-    logistikk -->|2| sortiment
+    logistikk -->|4| sortiment
     okonomi -->|10| salg
     salg -->|3| sortiment
 ```
@@ -65,7 +65,7 @@ flowchart LR
 
 **Logistikk**: Lagring og levering av varer: lagre, beholdning, utleveringer og leveringsevne.
 
-Bruker fra andre domener: [kalenderdag](begreper/okonomi/kalenderdag.md) (okonomi), [ordre](begreper/salg/ordre.md) (salg), [ordredato](begreper/salg/ordredato.md) (salg), [ordrelinje](begreper/salg/ordrelinje.md) (salg), [retur](begreper/salg/retur.md) (salg), [vare](begreper/sortiment/vare.md) (sortiment)
+Bruker fra andre domener: [kalenderdag](begreper/okonomi/kalenderdag.md) (okonomi), [ordre](begreper/salg/ordre.md) (salg), [ordredato](begreper/salg/ordredato.md) (salg), [ordrelinje](begreper/salg/ordrelinje.md) (salg), [retur](begreper/salg/retur.md) (salg), [vare](begreper/sortiment/vare.md) (sortiment), [varekost](begreper/okonomi/varekost.md) (okonomi)
 
 ### Lagerstyring
 
@@ -181,7 +181,9 @@ Grunnlaget for mål i en semantisk modell. **semi_additiv** skal aldri summeres 
 | måltall | domene | granularitet | tidsdimensjon | aggregering | additivitet | enhet | avledet_av | status |
 |---|---|---|---|---|---|---|---|---|
 | [leveringspresisjon_leverandor](begreper/innkjop/leveringspresisjon_leverandor.md) | innkjop | [varemottak](begreper/innkjop/varemottak.md) | [mottaksdato](begreper/innkjop/mottaksdato.md) | ratio | **ikke_additiv** | prosent | [varemottak](begreper/innkjop/varemottak.md), [innkjopsordre](begreper/innkjop/innkjopsordre.md) | godkjent |
+| [gjennomsnittlig_lagerbeholdning](begreper/logistikk/gjennomsnittlig_lagerbeholdning.md) | logistikk | [vare](begreper/sortiment/vare.md) | [beholdningsdato](begreper/logistikk/beholdningsdato.md) | snitt | **semi_additiv** | NOK | [lagerbeholdning](begreper/logistikk/lagerbeholdning.md) | utkast |
 | [lagerbeholdning](begreper/logistikk/lagerbeholdning.md) | logistikk | [vare](begreper/sortiment/vare.md) | [beholdningsdato](begreper/logistikk/beholdningsdato.md) | sum | **semi_additiv** | NOK | [vare](begreper/sortiment/vare.md), [lager](begreper/logistikk/lager.md) | godkjent |
+| [lageromlopshastighet](begreper/logistikk/lageromlopshastighet.md) | logistikk | [vare](begreper/sortiment/vare.md) | [kalenderdag](begreper/okonomi/kalenderdag.md) | ratio | **ikke_additiv** | ganger per år | [varekost](begreper/okonomi/varekost.md), [gjennomsnittlig_lagerbeholdning](begreper/logistikk/gjennomsnittlig_lagerbeholdning.md) | utkast |
 | [leveringsgrad](begreper/logistikk/leveringsgrad.md) | logistikk | [ordrelinje](begreper/salg/ordrelinje.md) | [ordredato](begreper/salg/ordredato.md) | ratio | **ikke_additiv** | prosent | [ordrelinje](begreper/salg/ordrelinje.md), [leveranse](begreper/logistikk/leveranse.md), [restordre](begreper/logistikk/restordre.md) | godkjent |
 | [dekningsbidrag](begreper/okonomi/dekningsbidrag.md) | okonomi | [fakturalinje](begreper/salg/fakturalinje.md) | [fakturadato](begreper/salg/fakturadato.md) | formel | additiv | NOK | [omsetning](begreper/okonomi/omsetning.md), [varekost](begreper/okonomi/varekost.md) | godkjent |
 | [dekningsgrad](begreper/okonomi/dekningsgrad.md) | okonomi | [fakturalinje](begreper/salg/fakturalinje.md) | [fakturadato](begreper/salg/fakturadato.md) | ratio | **ikke_additiv** | prosent | [dekningsbidrag](begreper/okonomi/dekningsbidrag.md), [omsetning](begreper/okonomi/omsetning.md) | godkjent |
@@ -196,7 +198,7 @@ Antall begreper per domene som er beskrevet i hvert system.
 | domene | crm | datavarehus | erp | lagerstyringssystem | nettbutikk |
 |---|---|---|---|---|---|
 | innkjop | 0 | 1 | 4 | 2 | 0 |
-| logistikk | 0 | 3 | 5 | 4 | 0 |
+| logistikk | 0 | 4 | 5 | 4 | 0 |
 | okonomi | 0 | 4 | 2 | 0 | 1 |
 | salg | 3 | 1 | 10 | 0 | 1 |
 | sortiment | 0 | 0 | 3 | 1 | 2 |
@@ -237,6 +239,7 @@ Der systemet ikke stemmer med forretningsdefinisjonen. Disse filtrene og korreks
 | begrep | avvik |
 |---|---|
 | [dekningsbidrag](begreper/okonomi/dekningsbidrag.md) | Arver avviket i [[varekost]] for direkteleveranser. |
+| [lageromlopshastighet](begreper/logistikk/lageromlopshastighet.md) | Ikke kartlagt. Se Åpne spørsmål. |
 | [leveringsgrad](begreper/logistikk/leveringsgrad.md) | Arver avviket i [[restordre]]: utsatte prosjektleveranser telles som ikke levert i tide. |
 | [leveringspresisjon_leverandor](begreper/innkjop/leveringspresisjon_leverandor.md) | Direkteleveranser får for sen mottaksdato (se [[mottaksdato]]), så presisjonen blir noe for lav. |
 
@@ -291,7 +294,9 @@ Begreper og prosesser som ikke er godkjent, eller som har åpne spørsmål.
 
 | begrep | type | status | åpne spørsmål |
 |---|---|---|---|
+| [gjennomsnittlig_lagerbeholdning](begreper/logistikk/gjennomsnittlig_lagerbeholdning.md) | maaltall | utkast | 1 |
 | [innkjop_til_mottak](prosesser/innkjop_til_mottak.md) | prosess | utkast | 5 |
+| [lageromlopshastighet](begreper/logistikk/lageromlopshastighet.md) | maaltall | utkast | 2 |
 | [lagerstyring](prosesser/lagerstyring.md) | prosess | utkast | 5 |
 | [listepris](begreper/salg/listepris.md) | dimensjon | utkast | 2 |
 | [ordre_til_faktura](prosesser/ordre_til_faktura.md) | prosess | utkast | 4 |

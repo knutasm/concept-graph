@@ -18,6 +18,8 @@ Katalogen har to formål:
 | finne et begrep | [INDEKS.md](katalog/INDEKS.md) |
 | se sammenhenger, måltall og systemavvik | [OVERSIKT.md](katalog/OVERSIKT.md) |
 | lage eller endre et begrep | Be Claude om det ("nytt begrep: returandel"), så blir du guidet gjennom det. Eller bruk [malen](katalog/maler/begrep.md) |
+| få gjennomgått en side jeg har skrevet selv | Be Claude om det ("se over ordreinngang"), så får du spørsmål til det som er uklart |
+| intervjue en fagekspert | Be Claude om en intervjuguide ("lag en intervjuguide om returandel"). Lim inn notater eller transkript etterpå, så blir sidene fylt ut |
 | lære å skrive gode begreper | [veiledning/godt-begrep.md](katalog/veiledning/godt-begrep.md) |
 | forstå skillet forretning/system | [veiledning/forretning-vs-system.md](katalog/veiledning/forretning-vs-system.md) |
 | velge riktig type | [veiledning/begrepstyper.md](katalog/veiledning/begrepstyper.md) |
@@ -40,7 +42,7 @@ katalog/                               Obsidian-vaulten: alt som skal leses
   veiledning/                          Skriveveiledning
 docs/semantisk-modell.md               Hvordan katalogen brukes til semantiske modeller
 scripts/valider.py                     Validering og generering av INDEKS.md og OVERSIKT.md
-.claude/skills/                        Veiledet arbeid med Claude: begrep, prosess og domene
+.claude/skills/                        Veiledet arbeid med Claude: begrep, prosess, domene, gjennomgang og intervju
 ```
 
 ### Ett begrep, to deler
