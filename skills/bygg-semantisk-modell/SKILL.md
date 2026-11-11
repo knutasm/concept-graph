@@ -1,5 +1,5 @@
 ---
-name: semantisk-modell
+name: bygg-semantisk-modell
 description: Bygger semantiske modeller, metric views og måltall (f.eks. i dbt, Databricks eller Snowflake) med begrepskatalogen som kontekst. Bruk når brukeren vil generere eller sjekke en semantisk modell, et måltall, et mål eller en dimensjon ut fra katalogen, f.eks. "lag semantisk modell for salg", "metric view for omsetning", "hvordan beregnes dekningsgrad i dbt", "generate semantic model".
 ---
 
@@ -8,6 +8,9 @@ description: Bygger semantiske modeller, metric views og måltall (f.eks. i dbt,
 Hvordan begrepskatalogen brukes til å bygge semantiske modeller og måltall. Instruksjonene er for den
 som bygger modellen (menneske eller agent). Katalogen selv beskriver virksomheten, og forklarer
 ikke modellering. Se `${CLAUDE_PLUGIN_ROOT}/veiledning/` for hvordan begrepene skrives.
+
+Les virksomhetssiden (`type: virksomhet`) først, hvis den finnes. Hva virksomheten gjør og hvordan
+den tjener penger, sier hvilke måltall som betyr mest.
 
 ## Typene
 

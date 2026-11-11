@@ -1,5 +1,5 @@
 ---
-name: domene
+name: beskriv-domene
 description: Veileder brukeren gjennom å opprette, avgrense eller se over et domene (et fagområde med eget språk) i begrepskatalogen. Domenetype, eier, avgrensning mot nabodomener, og om begrepene ligger i riktig domene. Bruk når brukeren vil lage et nytt domene, flytte grenser, rydde i domenene eller vurdere koblingen mellom dem, f.eks. "nytt domene", "hvor hører dette hjemme", "se over domenegrensene", "domenekartet", "bounded context".
 ---
 
@@ -14,6 +14,7 @@ Les disse før du begynner, hvis du ikke allerede har gjort det i denne samtalen
 - `${CLAUDE_PLUGIN_ROOT}/maler/domene.md`: malen. Felt og seksjoner er faste.
 - `${CLAUDE_PLUGIN_ROOT}/veiledning/domener.md`: domenetyper, delte begreper og kobling mellom domener.
 - `${CLAUDE_PLUGIN_ROOT}/kontekst/sider.md`: hvordan du finner sider, og hvor nye sider skal ligge.
+- Virksomhetssiden (`type: virksomhet`), hvis den finnes, for sammenhengen begrepene skal forstås i.
 
 Still **ett eller noen få spørsmål om gangen**. Foreslå svar når du kan utlede dem, og la
 brukeren bekrefte. Ikke dikt opp grenser eller eiere. Det du ikke vet, går i **Åpne spørsmål**.

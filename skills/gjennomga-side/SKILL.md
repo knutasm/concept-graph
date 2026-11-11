@@ -1,5 +1,5 @@
 ---
-name: gjennomgang
+name: gjennomga-side
 description: Gjennomgår et begrep eller en prosess som en fagekspert har skrevet for hånd, finner mangler og stiller oppklaringsspørsmål før siden rettes. Bruk når brukeren vil se over, gjennomgå, kvalitetssikre eller reviewe en side i katalogen, f.eks. "se over begrepet X skrev", "gjennomgå ordreinngang", "review denne siden", "sjekk de nye sidene", "manuelt skrevet begrep".
 ---
 
@@ -12,12 +12,12 @@ Denne skillen bestemmer **hvordan gjennomgangen gjøres**. **Hva som skal spørr
 skal se ut**, står i skillen for typen. Les den før du begynner, hvis du ikke allerede har gjort det i
 denne samtalen:
 
-- Begrep: `${CLAUDE_PLUGIN_ROOT}/skills/begrep/SKILL.md`, med lesestoffet den lister opp (mal og veiledning).
-- Prosess: `${CLAUDE_PLUGIN_ROOT}/skills/prosess/SKILL.md`, med lesestoffet den lister opp.
+- Begrep: `${CLAUDE_PLUGIN_ROOT}/skills/beskriv-begrep/SKILL.md`, med lesestoffet den lister opp (mal og veiledning).
+- Prosess: `${CLAUDE_PLUGIN_ROOT}/skills/beskriv-prosess/SKILL.md`, med lesestoffet den lister opp.
 - Begge: sjekklisten i `${CLAUDE_PLUGIN_ROOT}/veiledning/godt-begrep.md`, og
   `${CLAUDE_PLUGIN_ROOT}/kontekst/sider.md` for hvordan du finner sider.
 
-Domener dekkes ikke her. Bruk skillen `domene`.
+Domener dekkes ikke her. Bruk skillen `beskriv-domene`.
 
 ## 1. Finn siden
 

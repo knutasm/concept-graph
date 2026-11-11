@@ -13,6 +13,7 @@ sist_oppdatert: 2026-01-01
 systemer: ["[[erp]]"]          # lenker til system-sider. Hvert system får en ### under Systemrepresentasjon
 kilde: "[[erp]]"               # Kun entitet, hendelse og dimensjon (valgfri). Systemet der begrepet oppstår og endres.
                                # Må stå i systemer. De andre systemene er kopier. Påkrevd i praksis når det er flere systemer
+tags: []                       # valgfri, hvis CLAUDE.md sier at sidene skal ha tags. Én linje
 # ── Relasjoner ─────────────────────────────────────────────────────────
 # Ett felt per relasjonstype, bare de du trenger. Verdiene er lister med Obsidian-lenker
 # i anførselstegn, så de blir klikkbare og vises i grafen: ["[[a]]", "[[b]]"]

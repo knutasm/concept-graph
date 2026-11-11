@@ -14,6 +14,8 @@ Dette er eksempelkatalogen i pluginens repo. Strukturen er ett valg av mange.
 - Begreper: `katalog/begreper/<domene>/<id>.md`. Mappen er lik `domene`.
 - Domenesider: `katalog/begreper/<domene>/_domene.md`.
 - Prosesser: `katalog/prosesser/<id>.md`. Systemer: `katalog/systemer/<id>.md`.
+- Virksomheten: `katalog/virksomhet.md`
+- Tags: nei
 - `katalog/INDEKS.md` (alle domener, begreper og systemer) og `katalog/OVERSIKT.md` (prosessdiagrammer,
   måltallsmatrise, systemavvik, uferdige begreper) er generert. Godt sted å starte, men skal ikke redigeres for hånd.
 - Validering: `uv run scripts/valider.py` fra `example/`. Kjør den etter endringer. Den regenererer
@@ -33,8 +35,11 @@ Sidene kjennes igjen på `type` i frontmatter, ikke på hvor de ligger:
   **Hendelse**. `utloser` og `begreper` lister entitetene og hendelsene som inngår.
 - **Domener** (`domene`): hva domenet dekker. Begreper og prosesser hører til et domene gjennom feltet `domene`.
 - **Systemer** (`system`): kildesystemene som begrepene kan finnes i.
+- **Virksomheten** (`virksomhet`): én side om virksomheten selv: hva den gjør, hvordan den tjener penger,
+  marked, kunder og eierskap. **Start her** for å forstå sammenhengen begrepene skal leses i.
 
-`id` er unik på tvers av alle sider. For begreper, prosesser og systemer er den også filnavnet.
+`id` er unik på tvers av alle sider. For alle sider unntatt domener er den også filnavnet.
+`tags` er valgfritt på alle sider, og brukes hvis **Plassering** sier det.
 
 ## Slå opp et begrep
 
@@ -68,7 +73,7 @@ Referanser til andre sider (relasjoner, `granularitet`, `tidsdimensjon`, `tidspu
 
 ## Generere semantiske modeller
 
-Bruk skillen `semantisk-modell`. Kort fortalt: entitet → entitet med nøkkel (`identifiseres_ved`,
+Bruk skillen `bygg-semantisk-modell`. Kort fortalt: entitet → entitet med nøkkel (`identifiseres_ved`,
 `tilhorer`, `del_av`). Dimensjon → attributt (`beskriver`). Klassifisering → filter/boolsk dimensjon
 (`er_en`). Måltall → mål (`granularitet`, `tidsdimensjon`, `aggregering`, `additivitet`, formel i
 **Beregning** med `avledet_av`). Kildedata og filtre hentes fra **Systemrepresentasjon**. Les fra
@@ -76,9 +81,10 @@ systemet i `kilde`, og bruk kopier bare med avvikene deres. `semi_additiv` skal 
 
 ## Endre katalogen
 
-- Bruk skillene fra pluginen: `begrep` (opprette/endre begrep), `prosess` (kartlegge prosess),
-  `domene` (domener og domenegrenser), `gjennomgang` (se over en side en fagekspert har skrevet),
-  `intervju` (forberede intervju, eller gjøre notater/transkript om til sider).
+- Bruk skillene fra pluginen: `sett-opp-katalog` (sette opp katalogen), `beskriv-virksomhet` (beskrive virksomheten),
+  `beskriv-begrep` (opprette/endre begrep), `beskriv-prosess` (kartlegge prosess),
+  `beskriv-domene` (domener og domenegrenser), `gjennomga-side` (se over en side en fagekspert har skrevet),
+  `intervju-fagekspert` (forberede intervju, eller gjøre notater/transkript om til sider).
 - Rediger bare sider når brukeren ber om det.
 - Følg malen nøyaktig: faste felt, faste seksjoner, fast rekkefølge.
 - Lagre nye sider etter **Plassering**.

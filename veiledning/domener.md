@@ -3,7 +3,7 @@
 Et domene er et område av virksomheten med sitt eget språk: et sett begreper som henger tett
 sammen, og som én avdeling har ansvaret for. Hvert domene har en egen side (`type: domene`)
 som sier hva domenet dekker, og begrepene viser til domenet med feltet `domene`. Mal: [maler/domene.md](../maler/domene.md).
-Be Claude om å "lage et nytt domene" eller "se over domenegrensene", så blir du guidet (skillen `domene`).
+Be Claude om å "lage et nytt domene" eller "se over domenegrensene", så blir du guidet (skillen `beskriv-domene`).
 
 ## Godt å vite
 
@@ -38,7 +38,7 @@ og der alle må bli enige før noe kan endres.
 ## Kobling mellom domener
 
 Se på hvor mange relasjoner som går mellom domenene, og hvilke begreper et domene bruker fra andre
-domener. Skillen `domene` kan telle dem for deg.
+domener. Skillen `beskriv-domene` kan telle dem for deg.
 
 - **Noen koblinger er normalt.** En leveranse hører til en ordre, selv om de ligger i hvert sitt domene.
 - **Mange koblinger er et faresignal.** Bruker et domene mange begreper fra ett annet, ligger

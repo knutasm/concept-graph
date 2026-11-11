@@ -1,5 +1,5 @@
 ---
-name: intervju
+name: intervju-fagekspert
 description: Forbereder et intervju med en fagekspert om et begrep eller en prosess (intervjuguide og notatmal), og gjør etterpå transkript eller notater om til sider i katalogen. Bruk når brukeren skal intervjue noen, eller limer inn et referat, f.eks. "lag en intervjuguide om returandel", "hva bør jeg spørre logistikksjefen om", "her er notatene fra intervjuet", "lim inn transkript", "interview guide".
 ---
 
@@ -13,8 +13,9 @@ Denne skillen bestemmer **hvordan intervjuet forberedes og bearbeides**. **Hva s
 hvordan siden skal se ut**, står i skillen for typen. Les den før du begynner, hvis du ikke allerede har
 gjort det i denne samtalen:
 
-- Begrep: `${CLAUDE_PLUGIN_ROOT}/skills/begrep/SKILL.md`, med lesestoffet den lister opp (mal og veiledning).
-- Prosess: `${CLAUDE_PLUGIN_ROOT}/skills/prosess/SKILL.md`, med lesestoffet den lister opp.
+- Begrep: `${CLAUDE_PLUGIN_ROOT}/skills/beskriv-begrep/SKILL.md`, med lesestoffet den lister opp (mal og veiledning).
+- Prosess: `${CLAUDE_PLUGIN_ROOT}/skills/beskriv-prosess/SKILL.md`, med lesestoffet den lister opp.
+- Virksomhetssiden (`type: virksomhet`), hvis den finnes, for sammenhengen begrepene skal forstås i.
 
 Intervjuguiden og transkriptet blir i chatten. Ingenting lagres utenom sidene i katalogen.
 

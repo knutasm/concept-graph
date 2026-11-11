@@ -14,9 +14,10 @@ Hver side har `id` og `type` i frontmatter:
 | `prosess` | prosess | `maler/prosess.md` |
 | `domene` | domene | `maler/domene.md` |
 | `system` | system | `maler/system.md` |
+| `virksomhet` | virksomheten selv (én per katalog) | `maler/virksomhet.md` |
 
-`id` er unikt på tvers av alle sider, så `[[id]]` alltid peker på én side. For begreper, prosesser og
-systemer er `id` også filnavnet uten `.md`, fordi `[[id]]`-lenker finner sider på filnavnet. Domenesider
+`id` er unikt på tvers av alle sider, så `[[id]]` alltid peker på én side. For begreper, prosesser,
+systemer og virksomhetssiden er `id` også filnavnet uten `.md`, fordi `[[id]]`-lenker finner sider på filnavnet. Domenesider
 lenkes ikke til, så de kan hete hva som helst.
 Begreper og prosesser hører til et domene gjennom feltet `domene`, ikke gjennom mappen de ligger i.
 
@@ -40,11 +41,16 @@ siden før du stoler på den.
 
 ## Lagre nye sider
 
-1. Står det i `CLAUDE.md` hvor nye sider skal ligge, følg det.
+1. Står det i `CLAUDE.md` (seksjonen **Plassering**) hvor nye sider skal ligge, følg det. Plassering
+   er skrevet som stimaler, for eksempel `katalog/begreper/<domene>/<id>.md`. Fyll inn `<domene>` og `<id>`
+   fra frontmatter, og lag mappen hvis den ikke finnes.
 2. Ellers: legg siden der brukeren har lagt sider av samme slag. Ligger for eksempel begrepene i
    mapper etter domene, legg det nye begrepet i mappen for sitt domene.
 3. Finnes det ingen sider av samme slag, spør brukeren hvor siden skal ligge. Tilby å skrive valget
    inn i `CLAUDE.md`, så du ikke trenger å spørre igjen.
+
+Sier **Plassering** at sidene skal ha tags, sett `tags` i frontmatter etter mønsteret som står der,
+på én linje (`tags: [salg, begrep]`). `tags` er et valgfritt felt på alle sider.
 
 Filnavnet er `<id>.md`, unntatt for domener. Flytt aldri en side uten at brukeren ber om det. Gi aldri en side nytt
 filnavn, det bryter `id` og lenkene.

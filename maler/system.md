@@ -6,6 +6,7 @@ kategori: ERP                 # ERP | CRM | lager | netthandel | transport | hr 
 synonymer: []                 # Andre navn systemet går under internt. Brukes til å oppdage systemord i definisjoner
 eier: Avdeling som eier systemet
 beskrivelse: Én setning om hva systemet brukes til i virksomheten.
+# tags: []                     # valgfri, hvis CLAUDE.md sier at sidene skal ha tags
 ---
 # Eksempelsystem
 

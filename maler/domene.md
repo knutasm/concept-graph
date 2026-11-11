@@ -5,6 +5,7 @@ navn: Eksempel                 # Visningsnavn
 domenetype: stottende          # valgfri. kjerne | stottende | generisk. Se veiledning/domener.md
 eier: Avdeling som eier domenet   # En rolle eller avdeling, ikke en person
 beskrivelse: "Én setning om hvilket område av virksomheten domenet dekker."
+# tags: []                     # valgfri, hvis CLAUDE.md sier at sidene skal ha tags
 ---
 # Eksempel
 

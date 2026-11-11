@@ -8,11 +8,14 @@ Malene, skriveveiledningen og skillene kommer fra pluginen `begrepskatalog`.
 
 ## Plassering
 
-<!-- Fyll inn hvor sidene ligger, og hvor nye sider skal lagres. For eksempel:
-- Alle sidene ligger i `katalog/`, som også er Obsidian-vaulten.
-- Begreper: `katalog/begreper/<domene>/<id>.md`. Prosesser: `katalog/prosesser/`. Systemer: `katalog/systemer/`.
-- Domenesider: `katalog/begreper/<domene>/_domene.md`.
-- Validering: `uv run scripts/valider.py` (hvis teamet har egen validering).
+<!-- Fylles inn av skillen `sett-opp-katalog`: én stimal per sidetype, og om tags brukes. For eksempel:
+- Begreper: `katalog/begreper/<domene>/<id>.md`
+- Domener: `katalog/begreper/<domene>/_domene.md`
+- Prosesser: `katalog/prosesser/<domene>/<id>.md`
+- Systemer: `katalog/systemer/<id>.md`
+- Virksomheten: `katalog/virksomhet.md`
+- Tags: nei
+- Validering: `uv run scripts/valider.py` (bare hvis teamet har egen validering)
 -->
 
 ## Sidene
@@ -29,8 +32,11 @@ Sidene kjennes igjen på `type` i frontmatter, ikke på hvor de ligger:
   **Hendelse**. `utloser` og `begreper` lister entitetene og hendelsene som inngår.
 - **Domener** (`domene`): hva domenet dekker. Begreper og prosesser hører til et domene gjennom feltet `domene`.
 - **Systemer** (`system`): kildesystemene som begrepene kan finnes i.
+- **Virksomheten** (`virksomhet`): én side om virksomheten selv: hva den gjør, hvordan den tjener penger,
+  marked, kunder og eierskap. **Start her** for å forstå sammenhengen begrepene skal leses i.
 
-`id` er unik på tvers av alle sider. For begreper, prosesser og systemer er den også filnavnet.
+`id` er unik på tvers av alle sider. For alle sider unntatt domener er den også filnavnet.
+`tags` er valgfritt på alle sider, og brukes hvis **Plassering** sier det.
 
 ## Slå opp et begrep
 
@@ -64,7 +70,7 @@ Referanser til andre sider (relasjoner, `granularitet`, `tidsdimensjon`, `tidspu
 
 ## Generere semantiske modeller
 
-Bruk skillen `semantisk-modell`. Kort fortalt: entitet → entitet med nøkkel (`identifiseres_ved`,
+Bruk skillen `bygg-semantisk-modell`. Kort fortalt: entitet → entitet med nøkkel (`identifiseres_ved`,
 `tilhorer`, `del_av`). Dimensjon → attributt (`beskriver`). Klassifisering → filter/boolsk dimensjon
 (`er_en`). Måltall → mål (`granularitet`, `tidsdimensjon`, `aggregering`, `additivitet`, formel i
 **Beregning** med `avledet_av`). Kildedata og filtre hentes fra **Systemrepresentasjon**. Les fra
@@ -72,9 +78,10 @@ systemet i `kilde`, og bruk kopier bare med avvikene deres. `semi_additiv` skal 
 
 ## Endre katalogen
 
-- Bruk skillene fra pluginen: `begrep` (opprette/endre begrep), `prosess` (kartlegge prosess),
-  `domene` (domener og domenegrenser), `gjennomgang` (se over en side en fagekspert har skrevet),
-  `intervju` (forberede intervju, eller gjøre notater/transkript om til sider).
+- Bruk skillene fra pluginen: `sett-opp-katalog` (sette opp katalogen), `beskriv-virksomhet` (beskrive virksomheten),
+  `beskriv-begrep` (opprette/endre begrep), `beskriv-prosess` (kartlegge prosess),
+  `beskriv-domene` (domener og domenegrenser), `gjennomga-side` (se over en side en fagekspert har skrevet),
+  `intervju-fagekspert` (forberede intervju, eller gjøre notater/transkript om til sider).
 - Rediger bare sider når brukeren ber om det.
 - Følg malen nøyaktig: faste felt, faste seksjoner, fast rekkefølge.
 - Lagre nye sider etter **Plassering**.

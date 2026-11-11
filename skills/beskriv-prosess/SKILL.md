@@ -1,5 +1,5 @@
 ---
-name: prosess
+name: beskriv-prosess
 description: Veileder brukeren gjennom å kartlegge eller oppdatere en forretningsprosess (en forretningsevne) i begrepskatalogen. Avgrensning, aktører, steg, beslutninger, resultater, og hvilke entiteter og hendelser som brukes og oppstår. Bruk når brukeren vil beskrive, kartlegge, endre eller rydde i en prosess, en arbeidsflyt eller en evne, f.eks. "kartlegg prosessen", "ny prosess", "prosessflyt", "hvem gjør hva i …", "svømmebaner", "map a business process".
 ---
 
@@ -16,6 +16,7 @@ Les disse før du begynner, hvis du ikke allerede har gjort det i denne samtalen
 - `${CLAUDE_PLUGIN_ROOT}/veiledning/prosesser.md`: hvordan steg, beslutninger og resultater skrives.
 - `${CLAUDE_PLUGIN_ROOT}/veiledning/begrepstyper.md`: forskjellen på entitet og hendelse.
 - `${CLAUDE_PLUGIN_ROOT}/kontekst/sider.md`: hvordan du finner sider, og hvor nye sider skal ligge.
+- Virksomhetssiden (`type: virksomhet`), hvis den finnes, for sammenhengen begrepene skal forstås i.
 
 Still **ett eller noen få spørsmål om gangen**. Foreslå svar når du kan utlede dem (fra
 eksisterende begreper og prosesser, fra det brukeren allerede har sagt), og la brukeren bekrefte.
@@ -62,7 +63,7 @@ Spør: *"Hva skjer når alt går som det skal, fra start til slutt?"*
   en kort ansvarsbeskrivelse. Bruk samme navn hver gang.
 - Over 10 steg: foreslå å dele opp i delprosesser.
 
-**Pass på system-lekkasje**, som i `begrep`-skillen. "Registrerer i ERP-et", "status settes til 4",
+**Pass på system-lekkasje**, som i skillen `beskriv-begrep`. "Registrerer i ERP-et", "status settes til 4",
 "jobben kjører" beskriver systemet. Si det vennlig, og spør hva som skjer forretningsmessig:
 *"Hva betyr det for kunden eller for oss at det skjer?"* → "Kundesenteret bekrefter ordren".
 Systemdetaljene hører hjemme under Systemrepresentasjon i begrepene, så tilby å notere dem der.
@@ -75,7 +76,7 @@ Gå gjennom stegene ett for ett: *"Kan dette gå annerledes? Hva avgjør det?"*
   **Neste** med etiketter: `ja → s4; nei → r2`.
 - Et steg har bare én vei videre. Trengs det et valg, legg inn en beslutning etter steget.
 - Er regelen egentlig en klassifisering ("restordre", "aktiv kunde"), sjekk om begrepet finnes,
-  og tilby å lage det med `begrep`-skillen.
+  og tilby å lage det med skillen `beskriv-begrep`.
 
 ## 5. Resultater
 
@@ -99,7 +100,7 @@ grep -rli --include='*.md' -E "^(navn|synonymer|kortdefinisjon):.*<ord>" .
 
 For hvert begrep som **ikke finnes**, gi brukeren tre valg:
 
-1. **Lag det nå** med `begrep`-skillen. Fortsett prosessen etterpå.
+1. **Lag det nå** med skillen `beskriv-begrep`. Fortsett prosessen etterpå.
 2. **Lag en stubb** og vent med resten: `status: utkast`, bare påkrevde felt, kort definisjon,
    "Ikke kartlagt." under Systemrepresentasjon, og et punkt under **Åpne spørsmål**. En stubb for en
    `hendelse` trenger også en tidsdimensjon (`dimensjon` med `dimensjonstype: tid` og `beskriver`),

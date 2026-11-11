@@ -13,6 +13,7 @@ utloser: "[[ordre]]"           # valgfri. Entiteten eller hendelsen som starter 
 # Alle entiteter og hendelser som inngår, også fra andre domener (alt i Bruker, Gir og Hendelse under).
 # Bare type entitet eller hendelse. Relasjonene mellom dem hentes fra begrepene selv.
 begreper: ["[[ordre]]", "[[kunde]]"]
+# tags: []                     # valgfri, hvis CLAUDE.md sier at sidene skal ha tags
 ---
 # Eksempelprosess
 

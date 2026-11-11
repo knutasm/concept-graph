@@ -16,12 +16,12 @@ To prinsipper:
 
 - `.claude-plugin/plugin.json` og `.claude-plugin/marketplace.json`: pluginen, og en markedsplass med
   bare denne pluginen, så repoet kan installeres direkte.
-- `skills/<navn>/SKILL.md`: `oppsett`, `begrep`, `prosess`, `domene`, `gjennomgang`, `intervju` og
-  `semantisk-modell`. Skillene viser til filer i pluginen med `${CLAUDE_PLUGIN_ROOT}/…`. Til brukerens
+- `skills/<navn>/SKILL.md`: `sett-opp-katalog`, `beskriv-virksomhet`, `beskriv-begrep`, `beskriv-prosess`,
+  `beskriv-domene`, `gjennomga-side`, `intervju-fagekspert` og `bygg-semantisk-modell`. Navnene er verb-objekt. Skillene viser til filer i pluginen med `${CLAUDE_PLUGIN_ROOT}/…`. Til brukerens
   sider viser de aldri med en fast sti, men søker på frontmatter.
-- `maler/`: malene for begrep, prosess, domene og system.
+- `maler/`: malene for begrep, prosess, domene, system og virksomhet.
 - `veiledning/`: skriveveiledning for mennesker, som skillene også leser.
-- `kontekst/CLAUDE.md`: instruksjonene for agenter som `oppsett` legger i brukerens repo
+- `kontekst/CLAUDE.md`: instruksjonene for agenter som `sett-opp-katalog` legger i brukerens repo
   (sidene, oppslag, grep-oppskrifter, og en **Plassering** brukeren fyller inn).
 - `kontekst/sider.md`: hvordan skillene finner sider, hvor nye sider lagres, og hva de leser over før de er ferdige.
 - `example/`: eksempelkatalogen. `example/CLAUDE.md` er `kontekst/CLAUDE.md` med eksempelets **Plassering**.

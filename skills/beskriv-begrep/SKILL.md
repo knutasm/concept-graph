@@ -1,5 +1,5 @@
 ---
-name: begrep
+name: beskriv-begrep
 description: Veileder brukeren gjennom å opprette eller oppdatere et begrep (forretningsbegrep, måltall, dimensjon, entitet, klassifisering) i begrepskatalogen. Bruk når brukeren vil legge til, definere, endre, rydde i eller dokumentere et begrep, et måltall eller et system i katalogen, f.eks. "nytt begrep", "definer aktiv kunde", "oppdater dekningsgrad", "add a glossary term".
 ---
 
@@ -12,6 +12,7 @@ Les disse før du begynner, hvis du ikke allerede har gjort det i denne samtalen
 - `${CLAUDE_PLUGIN_ROOT}/veiledning/forretning-vs-system.md`: det viktigste du skal passe på.
 - `${CLAUDE_PLUGIN_ROOT}/veiledning/begrepstyper.md` og `${CLAUDE_PLUGIN_ROOT}/veiledning/relasjoner.md`: gyldige typer og relasjoner.
 - `${CLAUDE_PLUGIN_ROOT}/kontekst/sider.md`: hvordan du finner sider, og hvor nye sider skal ligge.
+- Virksomhetssiden (`type: virksomhet`), hvis den finnes, for sammenhengen begrepene skal forstås i.
 
 Still **ett eller noen få spørsmål om gangen**. Foreslå svar når du kan utlede dem (fra
 eksisterende begreper, fra det brukeren allerede har sagt), og la brukeren bekrefte. Ikke dikt opp
@@ -43,7 +44,7 @@ Flere søk står i `sider.md`.
 - **Type:** foreslå en type ut fra `${CLAUDE_PLUGIN_ROOT}/veiledning/begrepstyper.md` og forklar kort hvorfor.
 - **Domene:** foreslå blant domenene (sidene med `type: domene`). For entiteter og
   hendelser: velg domenet til prosessen der begrepet **oppstår** (`grep -rl --include='*.md' "Gir:\*\*.*\[\[<id>\]\]" .`).
-  Eierskapet følger oppstedet. Nytt domene bare hvis ingen passer, og da bruker du skillen `domene`
+  Eierskapet følger oppstedet. Nytt domene bare hvis ingen passer, og da bruker du skillen `beskriv-domene`
   før du fortsetter.
   Hvert begrep har ett domene som eier, også når mange domener bruker det. Det finnes ikke noe
   felles domene for delte begreper: varen eies av sortiment, kalenderen av økonomi, og de andre
@@ -104,7 +105,7 @@ med dette begrepet (`forveksles_med` + seksjonen **Avgrensning mot andre begrepe
 For `entitet` og `hendelse`: spør hvilke forretningsprosesser begrepet inngår i (sidene med
 `type: prosess`). Legg `"[[<id>]]"` til i prosessens `begreper`, og oppdater
 prosessens `sist_oppdatert`. Spør også hvilke steg begrepet brukes i (**Bruker**) eller oppstår i
-(**Gir**). Finnes ikke prosessen, tilby å kartlegge den med skillen `prosess` når begrepet er ferdig.
+(**Gir**). Finnes ikke prosessen, tilby å kartlegge den med skillen `beskriv-prosess` når begrepet er ferdig.
 
 ## 6. Systemrepresentasjon
 

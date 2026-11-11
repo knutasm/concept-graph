@@ -58,7 +58,7 @@ DIMENSJONSTYPER = ["kategori", "tid", "boolsk", "numerisk", "tekst"]
 DOMENETYPER = ["kjerne", "stottende", "generisk"]
 
 FELLES_PAAKREVD = ["id", "navn", "type", "domene", "kortdefinisjon", "status", "eier", "sist_oppdatert"]
-FELLES_VALGFRI = ["synonymer", "systemer", "gyldig_fra"]  # + relasjonstypene i RELASJONER
+FELLES_VALGFRI = ["synonymer", "systemer", "gyldig_fra", "tags"]  # + relasjonstypene i RELASJONER
 TYPE_PAAKREVD = {
     "entitet": ["identifiseres_ved"],
     "hendelse": ["tidspunkt"],
@@ -93,7 +93,7 @@ FORRETNINGSSEKSJONER = ["Definisjon", "Forretningsregler", "Beregning", "Gyldige
 
 # Forretningsprosesser: prosesser/<id>.md
 PROSESS_PAAKREVD = ["id", "type", "navn", "domene", "kortdefinisjon", "status", "eier", "sist_oppdatert", "begreper"]
-PROSESS_VALGFRI = ["synonymer", "gyldig_fra", "utloser"]
+PROSESS_VALGFRI = ["synonymer", "gyldig_fra", "utloser", "tags"]
 PROSESS_SEKSJONER = [("Formål", True), ("Avgrensning", True), ("Aktører", True), ("Steg", True),
                      ("Resultater", True), ("Åpne spørsmål", False)]
 PROSESS_BEGREPSTYPER = {"entitet", "hendelse"}  # begrepene som inngår i en prosess
