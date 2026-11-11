@@ -10,7 +10,7 @@ status: utkast                 # utkast | til_godkjenning | godkjent | utfaset
 eier: Fagavdeling som eier definisjonen   # En rolle eller avdeling, ikke en person
 gyldig_fra: 2026-01-01         # Når gjeldende definisjon trådte i kraft (valgfri)
 sist_oppdatert: 2026-01-01
-systemer: [erp]                # id-er fra systemer/. Hvert system får en ### under Systemrepresentasjon
+systemer: [erp]                # id-er fra systemer/, som id (erp) eller lenke ("[[erp]]"). Hvert system får en ### under Systemrepresentasjon
 kilde: erp                     # Kun entitet, hendelse og dimensjon (valgfri). Systemet der begrepet oppstår og endres.
                                # Må stå i systemer. De andre systemene er kopier. Påkrevd i praksis når det er flere systemer
 # ── Relasjoner ─────────────────────────────────────────────────────────
@@ -35,7 +35,7 @@ identifiseres_ved: kundenummer # Hva virksomheten bruker for å skille én forek
 # ── Kun maaltall ────────────────────────────────────────────────────────
 # aggregering: sum              # sum | antall | antall_unike | snitt | min | maks | ratio | formel
 # enhet: NOK                    # NOK, antall, prosent, dager …
-# grain: "[[ordrelinje]]"       # lenke til entitet/hendelse: én verdi beregnes per forekomst av denne
+# granularitet: "[[ordrelinje]]"       # lenke til entitet/hendelse: én verdi beregnes per forekomst av denne
 # tidsdimensjon: "[[fakturadato]]"  # lenke til dimensjon med dimensjonstype: tid
 # additivitet: additiv          # additiv | semi_additiv (ikke over tid) | ikke_additiv
 

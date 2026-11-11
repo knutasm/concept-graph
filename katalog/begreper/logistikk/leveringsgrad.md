@@ -14,7 +14,7 @@ avledet_av: ["[[ordrelinje]]", "[[leveranse]]", "[[restordre]]"]
 forveksles_med: ["[[leveringspresisjon_leverandor]]"]
 aggregering: ratio
 enhet: prosent
-grain: "[[ordrelinje]]"
+granularitet: "[[ordrelinje]]"
 tidsdimensjon: "[[ordredato]]"
 additivitet: ikke_additiv
 ---

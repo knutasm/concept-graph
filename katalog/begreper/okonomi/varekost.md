@@ -13,7 +13,7 @@ systemer: [erp]
 avledet_av: ["[[fakturalinje]]"]
 aggregering: sum
 enhet: NOK
-grain: "[[fakturalinje]]"
+granularitet: "[[fakturalinje]]"
 tidsdimensjon: "[[fakturadato]]"
 additivitet: additiv
 ---

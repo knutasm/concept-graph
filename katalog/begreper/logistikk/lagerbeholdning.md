@@ -13,7 +13,7 @@ systemer: [lagerstyringssystem, erp]
 avledet_av: ["[[vare]]", "[[lager]]"]
 aggregering: sum
 enhet: NOK
-grain: "[[vare]]"
+granularitet: "[[vare]]"
 tidsdimensjon: "[[beholdningsdato]]"
 additivitet: semi_additiv
 ---

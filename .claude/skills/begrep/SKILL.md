@@ -77,25 +77,25 @@ Skriv så:
 - **hendelse:** Hvilken dato markerer hendelsen (`tidspunkt`)?
 - **maaltall:** gå gjennom alle fem, og forklar hvorfor de betyr noe:
   - `aggregering`: summeres, telles, telles unikt, snitt, eller formel av andre måltall?
-  - `grain`: én grunnverdi per hva?
+  - `granularitet`: én grunnverdi per hva?
   - `tidsdimensjon`: hvilken dato plasserer tallet i tid? Nevn alternativene (f.eks. ordredato
     eller fakturadato) og at de gir ulike tall.
   - `additivitet`: kan tallet for et kvartal regnes ut som summen av tre måneder? Hvis ikke, er det
     `semi_additiv` (beholdninger, øyeblikksbilder) eller `ikke_additiv` (andeler, snitt, unike).
-    Svar ut fra hva tallet betyr på sitt `grain`, ikke ut fra hvordan en tabell er bygget. For
+    Svar ut fra hva tallet betyr på sin `granularitet`, ikke ut fra hvordan en tabell er bygget. For
     andeler: pek på de additive delene med `avledet_av`.
   - `enhet`, og **Beregning**: formelen med begreps-id-er, aldri tabeller eller kolonner.
 - **dimensjon:** `dimensjonstype`. Hva beskriver den (`beskriver`)? For kategorier: hvilke verdier
   finnes (**Gyldige verdier**)?
 - **klassifisering:** Hva deles inn (`er_en`)? Regelen går i **Forretningsregler**.
 
-`grain`, `tidsdimensjon` og `tidspunkt` må peke på begreper som finnes, av riktig type.
+`granularitet`, `tidsdimensjon` og `tidspunkt` må peke på begreper som finnes, av riktig type.
 
 ## 5. Relasjoner
 
 Foreslå relasjoner ut fra det som er sagt, og bruk bare typene i `katalog/veiledning/relasjoner.md`.
-Hver relasjonstype er et eget felt med lenker: `er_en: ["[[kunde]]"]`. Det samme gjelder `grain`,
-`tidsdimensjon` og `tidspunkt`: `grain: "[[fakturalinje]]"`.
+Hver relasjonstype er et eget felt med lenker: `er_en: ["[[kunde]]"]`. Det samme gjelder `granularitet`,
+`tidsdimensjon` og `tidspunkt`: `granularitet: "[[fakturalinje]]"`.
 Alle mål må finnes. Mangler et begrep, tilby å lage det som stubb: `status: utkast`, bare påkrevde
 felt, kort definisjon, og "Ikke kartlagt." under Systemrepresentasjon. Spør om noe ofte forveksles
 med dette begrepet (`forveksles_med` + seksjonen **Avgrensning mot andre begreper**).
@@ -116,7 +116,7 @@ For hvert system, én `### <system-id>` med:
 - **Identifikasjon:** for entiteter.
 - **Avvik fra forretningsdefinisjon:** spør aktivt: *"Er det noe systemet tar med som egentlig ikke
   hører med, eller omvendt?"* Skriv "Ingen kjente" hvis det ikke er noe. For måltall, spør også:
-  *"Kan tallene i tabellen summeres slik `additivitet` sier?"* Annet grain, øyeblikksbilder,
+  *"Kan tallene i tabellen summeres slik `additivitet` sier?"* Annen granularitet, øyeblikksbilder,
   forhåndsaggregerte tall eller ferdig utregnede andeler er avvik, med korreksjonen.
 
 Ta med det du noterte i steg 3. Alle system-id-er må også stå i `systemer:` i frontmatter.

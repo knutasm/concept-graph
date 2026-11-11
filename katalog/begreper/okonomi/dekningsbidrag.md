@@ -14,7 +14,7 @@ avledet_av: ["[[omsetning]]", "[[varekost]]"]
 forveksles_med: ["[[dekningsgrad]]"]
 aggregering: formel
 enhet: NOK
-grain: "[[fakturalinje]]"
+granularitet: "[[fakturalinje]]"
 tidsdimensjon: "[[fakturadato]]"
 additivitet: additiv
 ---
@@ -28,7 +28,7 @@ additivitet: additiv
 
 `omsetning - varekost`
 
-Begge har samme grain og tidsdimensjon, så formelen gjelder på alle nivåer og kan summeres fritt.
+Begge har samme granularitet og tidsdimensjon, så formelen gjelder på alle nivåer og kan summeres fritt.
 
 ## Eksempler
 

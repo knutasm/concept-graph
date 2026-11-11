@@ -46,7 +46,7 @@ grep -rl "^type: maaltall" katalog/begreper/salg                # måltall i ett
 grep -rl "^status: utkast" katalog/begreper                     # alt som ikke er ferdig
 grep -rli "^synonymer:.*bruttomargin" katalog/begreper          # søk på synonym
 grep -rl "^systemer:.*\berp\b" katalog/begreper                 # begreper som finnes i ERP
-grep -rl "^kilde: erp" katalog/begreper                         # begreper der ERP er kilden
+grep -rl "^kilde:.*\berp\b" katalog/begreper                  # begreper der ERP er kilden
 grep -h "^domenetype:" katalog/begreper/*/_domene.md             # domenetypene
 grep -rl "\[\[kunde\]\]" katalog/begreper                     # alt som peker på kunde
 grep -rl "\[\[kunde\]\]" katalog/prosesser                    # prosesser kunde inngår i
@@ -59,14 +59,14 @@ grep -h "^kortdefinisjon:" katalog/begreper/*/*.md              # alle kortdefin
 ```
 
 Frontmatter-lister står alltid på én linje (`synonymer: [a, b]`), så grep viser hele lista.
-Referanser til andre begreper (relasjoner, `grain`, `tidsdimensjon`, `tidspunkt` og lenker i teksten)
+Referanser til andre begreper (relasjoner, `granularitet`, `tidsdimensjon`, `tidspunkt` og lenker i teksten)
 skrives alltid `[[id]]`, så `grep "\[\[id\]\]"` finner alle.
 
 ## Generere semantiske modeller
 
 Se `docs/semantisk-modell.md`. Kort fortalt:
 entitet → entitet med nøkkel (`identifiseres_ved`, `tilhorer`, `del_av`). Dimensjon → attributt
-(`beskriver`). Klassifisering → filter/boolsk dimensjon (`er_en`). Måltall → mål (`grain`,
+(`beskriver`). Klassifisering → filter/boolsk dimensjon (`er_en`). Måltall → mål (`granularitet`,
 `tidsdimensjon`, `aggregering`, `additivitet`, formel i **Beregning** med `avledet_av`).
 Kildedata og filtre hentes fra **Systemrepresentasjon**. Les fra systemet i `kilde`, og bruk kopier
 bare med avvikene deres. Respekter `additivitet`: `semi_additiv`

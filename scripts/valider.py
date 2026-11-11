@@ -32,8 +32,8 @@ STATUSER = ["utkast", "til_godkjenning", "godkjent", "utfaset"]
 # med Obsidian-lenker som verdier: er_en: ["[[kunde]]"]
 RELASJONER = ["er_en", "del_av", "tilhorer", "avledet_av", "beskriver",
               "forveksles_med", "se_ogsaa", "erstattet_av"]
-# Felt som peker på ett begrep, også som Obsidian-lenke: grain: "[[fakturalinje]]"
-REFERANSEFELT = ["grain", "tidsdimensjon", "tidspunkt"]
+# Felt som peker på ett begrep, også som Obsidian-lenke: granularitet: "[[fakturalinje]]"
+REFERANSEFELT = ["granularitet", "tidsdimensjon", "tidspunkt"]
 AGGREGERINGER = ["sum", "antall", "antall_unike", "snitt", "min", "maks", "ratio", "formel"]
 ADDITIVITET = ["additiv", "semi_additiv", "ikke_additiv"]
 DIMENSJONSTYPER = ["kategori", "tid", "boolsk", "numerisk", "tekst"]
@@ -44,7 +44,7 @@ FELLES_VALGFRI = ["synonymer", "systemer", "gyldig_fra"]  # + relasjonstypene i 
 TYPE_PAAKREVD = {
     "entitet": ["identifiseres_ved"],
     "hendelse": ["tidspunkt"],
-    "maaltall": ["aggregering", "enhet", "grain", "tidsdimensjon", "additivitet"],
+    "maaltall": ["aggregering", "enhet", "granularitet", "tidsdimensjon", "additivitet"],
     "dimensjon": ["dimensjonstype"],
     "klassifisering": [],
 }
@@ -237,6 +237,19 @@ def last_domener(res: Resultat) -> dict[str, Dokument]:
     return domener
 
 
+def _systemid(verdi) -> str:
+    tekst = str(verdi).strip()
+    return _lenkemaal(tekst) or tekst
+
+
+def _normaliser_systemer(fm: dict) -> None:
+    """Systemer kan skrives som id (erp) eller som lenke ("[[erp]]"). Resten av skriptet ser bare id-en."""
+    if isinstance(fm.get("systemer"), list):
+        fm["systemer"] = [_systemid(s) for s in fm["systemer"]]
+    if isinstance(fm.get("kilde"), str):
+        fm["kilde"] = _systemid(fm["kilde"])
+
+
 def last_begreper(res: Resultat) -> dict[str, Dokument]:
     begreper: dict[str, Dokument] = {}
     for sti in sorted(BEGREPER.rglob("*.md")):
@@ -248,6 +261,7 @@ def last_begreper(res: Resultat) -> dict[str, Dokument]:
         dok = les(sti, res)
         if not dok:
             continue
+        _normaliser_systemer(dok.fm)
         bid = dok.fm.get("id")
         if bid in begreper:
             res.f(dok, f"id '{bid}' er allerede brukt i {begreper[bid].rel}")
@@ -342,8 +356,8 @@ def valider_begrep(dok: Dokument, begreper: dict, systemer: dict, res: Resultat)
             res.f(dok, f"aggregering må være en av: {', '.join(AGGREGERINGER)}")
         if fm.get("additivitet") not in ADDITIVITET:
             res.f(dok, f"additivitet må være en av: {', '.join(ADDITIVITET)}")
-        if ref.get("grain"):
-            finnes(ref["grain"], "grain", {"entitet", "hendelse"})
+        if ref.get("granularitet"):
+            finnes(ref["granularitet"], "granularitet", {"entitet", "hendelse"})
         if ref.get("tidsdimensjon"):
             finnes(ref["tidsdimensjon"], "tidsdimensjon", {"dimensjon"})
             td = begreper.get(ref["tidsdimensjon"])
@@ -751,7 +765,7 @@ def lag_indeks(begreper: dict, domener: dict, systemer: dict, prosesser: dict) -
 # Relasjoner som tegnes, og pilstil. se_ogsaa utelates for lesbarhetens skyld.
 KANTSTIL = {
     "tilhorer": "-->", "del_av": "-->", "er_en": "-->", "avledet_av": "-->", "beskriver": "-->",
-    "grain": "-->", "tid": "-->", "forveksles_med": "-.-", "erstattet_av": "-.->",
+    "granularitet": "-->", "tid": "-->", "forveksles_med": "-.-", "erstattet_av": "-.->",
 }
 AVVIK_RE = re.compile(r"\*\*Avvik fra forretningsdefinisjon:\*\*\s*(.*?)(?=\n\s*-\s+\*\*|\n#|\Z)", re.DOTALL)
 
@@ -775,7 +789,7 @@ def _kanter(dok: Dokument, begreper: dict) -> list[tuple[str, str, str]]:
     for felt in REFERANSEFELT:
         til = _ref(dok.fm.get(felt, ""))
         if til in begreper:
-            kanter.append((fra, til, "grain" if felt == "grain" else "tid"))
+            kanter.append((fra, til, "granularitet" if felt == "granularitet" else "tid"))
     return kanter
 
 
@@ -927,7 +941,7 @@ def lag_oversikt(begreper: dict, domener: dict, systemer: dict, prosesser: dict)
     linjer += ["", "## Måltall", "",
                "Grunnlaget for mål i en semantisk modell. **semi_additiv** skal aldri summeres over tid, "
                "**ikke_additiv** skal aldri summeres (beregn fra teller og nevner).", "",
-               "| måltall | domene | grain | tidsdimensjon | aggregering | additivitet | enhet | avledet_av | status |",
+               "| måltall | domene | granularitet | tidsdimensjon | aggregering | additivitet | enhet | avledet_av | status |",
                "|---|---|---|---|---|---|---|---|---|"]
     maaltall = sorted((b for b in begreper.values() if b.fm.get("type") == "maaltall"),
                       key=lambda b: (b.fm.get("domene"), b.fm["id"]))
@@ -936,7 +950,7 @@ def lag_oversikt(begreper: dict, domener: dict, systemer: dict, prosesser: dict)
         add = str(fm.get("additivitet", ""))
         add = add if add == "additiv" else f"**{add}**"
         avledet = ", ".join(_reflenke(v, begreper) for v in som_liste(fm.get("avledet_av")))
-        linjer.append(f"| {_lenke(b)} | {celle(fm.get('domene'))} | {_reflenke(fm.get('grain'), begreper)} "
+        linjer.append(f"| {_lenke(b)} | {celle(fm.get('domene'))} | {_reflenke(fm.get('granularitet'), begreper)} "
                       f"| {_reflenke(fm.get('tidsdimensjon'), begreper)} | {celle(fm.get('aggregering'))} "
                       f"| {add} | {celle(fm.get('enhet'))} | {avledet} | {celle(fm.get('status'))} |")
 

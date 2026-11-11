@@ -14,7 +14,7 @@ avledet_av: ["[[varemottak]]", "[[innkjopsordre]]"]
 forveksles_med: ["[[leveringsgrad]]"]
 aggregering: ratio
 enhet: prosent
-grain: "[[varemottak]]"
+granularitet: "[[varemottak]]"
 tidsdimensjon: "[[mottaksdato]]"
 additivitet: ikke_additiv
 ---

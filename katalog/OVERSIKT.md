@@ -178,7 +178,7 @@ _Ingen prosesser ennå._
 
 Grunnlaget for mål i en semantisk modell. **semi_additiv** skal aldri summeres over tid, **ikke_additiv** skal aldri summeres (beregn fra teller og nevner).
 
-| måltall | domene | grain | tidsdimensjon | aggregering | additivitet | enhet | avledet_av | status |
+| måltall | domene | granularitet | tidsdimensjon | aggregering | additivitet | enhet | avledet_av | status |
 |---|---|---|---|---|---|---|---|---|
 | [leveringspresisjon_leverandor](begreper/innkjop/leveringspresisjon_leverandor.md) | innkjop | [varemottak](begreper/innkjop/varemottak.md) | [mottaksdato](begreper/innkjop/mottaksdato.md) | ratio | **ikke_additiv** | prosent | [varemottak](begreper/innkjop/varemottak.md), [innkjopsordre](begreper/innkjop/innkjopsordre.md) | godkjent |
 | [lagerbeholdning](begreper/logistikk/lagerbeholdning.md) | logistikk | [vare](begreper/sortiment/vare.md) | [beholdningsdato](begreper/logistikk/beholdningsdato.md) | sum | **semi_additiv** | NOK | [vare](begreper/sortiment/vare.md), [lager](begreper/logistikk/lager.md) | godkjent |

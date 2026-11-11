@@ -42,7 +42,7 @@ Alle begreper har én `type`. Typen bestemmer hvilke felt og seksjoner som er p�
 |---|---|---|
 | `aggregering` | `sum`, `antall`, `antall_unike`, `snitt`, `min`, `maks`, `ratio`, `formel` | Legges tallene sammen, telles de, eller regnes tallet ut fra andre måltall? Ved `ratio` og `formel` står regnestykket i **Beregning**. |
 | `enhet` | `NOK`, `antall`, `prosent`, `dager` … | Hva måles tallet i? |
-| `grain` | id til en `entitet` eller `hendelse` | Hva er én forekomst? *Omsetning: én verdi per fakturalinje.* |
+| `granularitet` | id til en `entitet` eller `hendelse` | Hva er én forekomst? *Omsetning: én verdi per fakturalinje.* |
 | `tidsdimensjon` | id til en `dimensjon` med `dimensjonstype: tid` | Hvilken dato teller? *Omsetning per ordredato og per fakturadato er ulike tall.* |
 | `additivitet` | `additiv`, `semi_additiv`, `ikke_additiv` | Kan tallene legges sammen? Se under. |
 

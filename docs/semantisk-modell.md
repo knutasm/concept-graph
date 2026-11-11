@@ -22,7 +22,7 @@ ikke modellering. Se `katalog/veiledning/` for hvordan begrepene skrives.
 3. **Dimensjoner** med `beskriver` blir attributter på entiteten de beskriver.
 4. **Klassifiseringer** blir boolske dimensjoner eller navngitte filtre på entiteten i `er_en`.
    Regelen står i **Forretningsregler**.
-5. **Måltall** blir mål på `grain`-entiteten, plassert i tid av `tidsdimensjon`, aggregert med
+5. **Måltall** blir mål på `granularitet`-entiteten, plassert i tid av `tidsdimensjon`, aggregert med
    `aggregering`. Måltall med `formel`/`ratio` bygges av måltallene i `avledet_av`, med formelen i
    **Beregning**.
 6. **Systemrepresentasjon** sier hvilke kildedata som skal brukes. Les fra systemet i `kilde`. Bruk
@@ -30,12 +30,12 @@ ikke modellering. Se `katalog/veiledning/` for hvordan begrepene skrives.
 7. **Avvik** sier hvilke filtre og korreksjoner som trengs for at tallene skal stemme med
    forretningsdefinisjonen. Alle avvik skal med i modellen.
 
-`katalog/OVERSIKT.md` har måltallsmatrisen (grain, tidsdimensjon, additivitet), kildene og alle
+`katalog/OVERSIKT.md` har måltallsmatrisen (granularitet, tidsdimensjon, additivitet), kildene og alle
 kjente avvik samlet.
 
 ## Additivitet
 
-`additivitet` sier hvordan måltallet kan summeres på sitt eget `grain`, ut fra hva tallet betyr.
+`additivitet` sier hvordan måltallet kan summeres på sin egen `granularitet`, ut fra hva tallet betyr.
 En andel er ikke-additiv, og en beholdning er semi-additiv, uansett hvordan dataene er lagret.
 
 - `additiv`: summeres over alle dimensjoner.
@@ -46,7 +46,7 @@ En andel er ikke-additiv, og en beholdning er semi-additiv, uansett hvordan data
 Hvordan en tabell er bygget, kan likevel gjøre at kolonnen ikke kan summeres slik måltallet sier.
 Slike forhold skal stå som avvik under **Systemrepresentasjon**. Se etter dem også når de mangler:
 
-- **Annet grain.** Et beløp fra fakturahodet gjentas på hver fakturalinje. Summen blir for høy.
+- **Annen granularitet.** Et beløp fra fakturahodet gjentas på hver fakturalinje. Summen blir for høy.
   Ta beløpet én gang per faktura.
 - **Øyeblikksbilder eller bevegelser.** En beholdning kan lagres som daglige øyeblikksbilder, eller
   bare som bevegelser inn og ut. Måltallet er semi-additivt i begge tilfeller, men med bevegelser

@@ -72,7 +72,7 @@ som viser relasjonene mellom begrepene.
 - **Standard Markdown.** Filene skal være lesbare uten Obsidian. Obsidian-oppsettet (tittel fra `navn`, strenge linjeskift i lesemodus) ligger i `katalog/.obsidian/`, ikke i filene.
 - **Lister på én linje** i frontmatter (`synonymer: [a, b]`), så grep viser hele lista.
 - **Lenker** til andre begreper skrives `[[id]]`.
-- **Systemer** omtales med generiske id-er fra `katalog/systemer/`.
+- **Systemer** omtales med generiske id-er fra `katalog/systemer/`. I `systemer` og `kilde` kan de skrives som id (`erp`) eller lenke (`"[[erp]]"`).
 - **Kilde:** `kilde` sier hvilket system en entitet eller hendelse oppstår og endres i. De andre systemene er kopier.
 
 ## Søke med grep

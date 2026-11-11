@@ -68,7 +68,7 @@ Punktliste med presise regler. Gode regler svarer på:
 
 For måltall avgjør disse feltene om tallene blir riktige:
 
-1. **Grain:** Hva beregnes én grunnverdi for? Fakturalinje, ordrelinje, vare?
+1. **Granularitet:** Hva beregnes én grunnverdi for? Fakturalinje, ordrelinje, vare?
 2. **Tidsdimensjon:** Hvilken dato plasserer tallet i tid? Ordredato og fakturadato gir ulike månedstall.
 3. **Additivitet:** Kan tallet summeres over tid? Lagerbeholdning kan ikke det.
 4. **Beregning:** Avledede måltall skrives som formel med begreps-id-er: `omsetning - varekost`.

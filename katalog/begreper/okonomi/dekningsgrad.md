@@ -14,7 +14,7 @@ avledet_av: ["[[dekningsbidrag]]", "[[omsetning]]"]
 forveksles_med: ["[[dekningsbidrag]]"]
 aggregering: ratio
 enhet: prosent
-grain: "[[fakturalinje]]"
+granularitet: "[[fakturalinje]]"
 tidsdimensjon: "[[fakturadato]]"
 additivitet: ikke_additiv
 ---

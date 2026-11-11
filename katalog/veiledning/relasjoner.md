@@ -9,8 +9,8 @@ avledet_av: ["[[ordre]]"]
 ```
 
 Lenkene gjør relasjonene klikkbare i Obsidian og synlige i graf- og backlink-visningen.
-Feltene `grain`, `tidsdimensjon` og `tidspunkt` peker også på begreper, og skrives som én lenke:
-`grain: "[[fakturalinje]]"`.
+Feltene `granularitet`, `tidsdimensjon` og `tidspunkt` peker også på begreper, og skrives som én lenke:
+`granularitet: "[[fakturalinje]]"`.
 
 Skriv relasjonen bare i én retning. Den motsatte retningen finner du med grep (se under).
 
