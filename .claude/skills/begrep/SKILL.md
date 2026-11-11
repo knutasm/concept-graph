@@ -82,6 +82,8 @@ Skriv så:
     eller fakturadato) og at de gir ulike tall.
   - `additivitet`: kan tallet for et kvartal regnes ut som summen av tre måneder? Hvis ikke, er det
     `semi_additiv` (beholdninger, øyeblikksbilder) eller `ikke_additiv` (andeler, snitt, unike).
+    Svar ut fra hva tallet betyr på sitt `grain`, ikke ut fra hvordan en tabell er bygget. For
+    andeler: pek på de additive delene med `avledet_av`.
   - `enhet`, og **Beregning**: formelen med begreps-id-er, aldri tabeller eller kolonner.
 - **dimensjon:** `dimensjonstype`. Hva beskriver den (`beskriver`)? For kategorier: hvilke verdier
   finnes (**Gyldige verdier**)?
@@ -113,7 +115,9 @@ For hvert system, én `### <system-id>` med:
 - **Representasjon:** hvor og hvordan det ligger (her er tabeller, felt og statuskoder velkomne).
 - **Identifikasjon:** for entiteter.
 - **Avvik fra forretningsdefinisjon:** spør aktivt: *"Er det noe systemet tar med som egentlig ikke
-  hører med, eller omvendt?"* Skriv "Ingen kjente" hvis det ikke er noe.
+  hører med, eller omvendt?"* Skriv "Ingen kjente" hvis det ikke er noe. For måltall, spør også:
+  *"Kan tallene i tabellen summeres slik `additivitet` sier?"* Annet grain, øyeblikksbilder,
+  forhåndsaggregerte tall eller ferdig utregnede andeler er avvik, med korreksjonen.
 
 Ta med det du noterte i steg 3. Alle system-id-er må også stå i `systemer:` i frontmatter.
 Har brukeren ingen systeminformasjon, skriv "Ikke kartlagt." og la `systemer: []` stå tom.

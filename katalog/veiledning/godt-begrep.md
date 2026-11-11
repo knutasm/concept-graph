@@ -1,8 +1,5 @@
-# Slik skriver du et godt begrep
-
-En god oppføring lar en ny kollega, eller en maskin, forstå begrepet riktig uten å spørre noen.
-Bruk [malen](../maler/begrep.md), eller enda enklere: be Claude om å "lage et nytt begrep", så
-blir du guidet gjennom det (skillen `begrep`).
+# Hvordan skrive en god begrepsdefinisjon
+En god oppføring lar en ny kollega, eller en maskin, forstå begrepet riktig uten å spørre noen. Bruk [malen](../maler/begrep.md), eller ta utgangspunkt i eksisterende begrep.
 
 ## Sjekkliste
 
@@ -12,7 +9,7 @@ blir du guidet gjennom det (skillen `begrep`).
 - [ ] **Definisjonen starter med overbegrepet.** "En [[kunde]] som …", "Summen av …".
 - [ ] **Grensetilfellene er avklart.** Hva er med, hva er ikke med?
 - [ ] **Riktig type, og typefeltene er fylt ut.** Se [begrepstyper.md](begrepstyper.md).
-- [ ] **For måltall: grain, tidsdimensjon og additivitet er gjennomtenkt.**
+- [ ] **For måltall: granularitet, tidsdimensjon og additivitet er gjennomtenkt.**
 - [ ] **Relasjoner til begreper som allerede finnes.** Se [relasjoner.md](relasjoner.md).
 - [ ] **Hvert system har en avvikslinje**, også når den er "Ingen kjente".
 - [ ] **Kilden er angitt** (`kilde`) når en entitet eller hendelse finnes i flere systemer.

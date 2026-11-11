@@ -1,15 +1,14 @@
 # Begrepstyper
 
-Alle begreper har én `type`. Typen bestemmer hvilke felt og seksjoner som er påkrevd, og hvilken
-rolle begrepet får i en semantisk modell.
+Alle begreper har én `type`. Typen bestemmer hvilke felt og seksjoner som er påkrevd.
 
-| Type | Spørsmål den svarer på | Eksempler | Rolle i semantisk modell |
-|---|---|---|---|
-| `entitet` | *Hva* holder vi rede på? | vare, kunde, ordre, lager | Entitet med nøkkel. Andre begreper kobles til den |
-| `hendelse` | *Hva skjer* på et tidspunkt? | varemottak, leveranse | Faktagrunnlag med eget tidspunkt |
-| `maaltall` | *Hvor mye / hvor mange?* | omsetning, dekningsgrad, lagerbeholdning | Mål / metrikk |
-| `dimensjon` | *Hvordan* grupperer og filtrerer vi? | fakturadato, varegruppe, kundesegment | Dimensjon (kategori- eller tidsdimensjon) |
-| `klassifisering` | *Hvilke* forekomster hører til en gruppe? | aktiv kunde, restordre, virkedag | Filter, segment eller boolsk dimensjon |
+| Type | Spørsmål den svarer på | Eksempler |
+|---|---|---|
+| `entitet` | *Hva* holder vi rede på? | vare, kunde, ordre, lager |
+| `hendelse` | *Hva skjer* på et tidspunkt? | varemottak, leveranse |
+| `maaltall` | *Hvor mye / hvor mange?* | omsetning, dekningsgrad, lagerbeholdning |
+| `dimensjon` | *Hvordan* grupperer og filtrerer vi? | fakturadato, varegruppe, kundesegment |
+| `klassifisering` | *Hvilke* forekomster hører til en gruppe? | aktiv kunde, restordre, virkedag |
 
 ## Velge riktig type
 
@@ -39,22 +38,24 @@ rolle begrepet får i en semantisk modell.
 
 ### maaltall
 
-| Felt | Verdier | Betydning |
+| Felt | Verdier | Spørsmål |
 |---|---|---|
-| `aggregering` | `sum`, `antall`, `antall_unike`, `snitt`, `min`, `maks`, `ratio`, `formel` | Hvordan grunnverdiene slås sammen. `ratio` og `formel` betyr at måltallet beregnes fra andre måltall. Skriv formelen i **Beregning**. |
-| `enhet` | `NOK`, `antall`, `prosent`, `dager` … | Hva tallet måles i. |
-| `grain` | id til en `entitet` eller `hendelse` | Det laveste nivået måltallet gir mening på. Én grunnverdi per forekomst. |
-| `tidsdimensjon` | id til en `dimensjon` med `dimensjonstype: tid` | Hvilken dato som plasserer verdien i tid. Avgjørende: omsetning per ordredato og per fakturadato er ulike tall. |
-| `additivitet` | `additiv`, `semi_additiv`, `ikke_additiv` | Om tallet kan summeres. Se under. |
+| `aggregering` | `sum`, `antall`, `antall_unike`, `snitt`, `min`, `maks`, `ratio`, `formel` | Legges tallene sammen, telles de, eller regnes tallet ut fra andre måltall? Ved `ratio` og `formel` står regnestykket i **Beregning**. |
+| `enhet` | `NOK`, `antall`, `prosent`, `dager` … | Hva måles tallet i? |
+| `grain` | id til en `entitet` eller `hendelse` | Hva er én forekomst? *Omsetning: én verdi per fakturalinje.* |
+| `tidsdimensjon` | id til en `dimensjon` med `dimensjonstype: tid` | Hvilken dato teller? *Omsetning per ordredato og per fakturadato er ulike tall.* |
+| `additivitet` | `additiv`, `semi_additiv`, `ikke_additiv` | Kan tallene legges sammen? Se under. |
 
-**Additivitet** er det enkeltpunktet som oftest gir feil tall i rapporter:
+**Additivitet** svarer på om tallet for et kvartal er summen av tre måneder:
 
-- `additiv`: kan summeres over alle dimensjoner, også tid. *Omsetning for et kvartal = summen av tre måneder.*
-- `semi_additiv`: kan summeres over alle dimensjoner **unntatt tid**. Beholdninger og
-  øyeblikksbilder. *Lagerbeholdningen for et kvartal er beholdningen ved kvartalets slutt, ikke summen av tre måneder.*
-  Skriv i **Beregning** hvilken verdi som gjelder over tid (siste, første, snitt).
-- `ikke_additiv`: kan ikke summeres i det hele tatt. Andeler, snitt, antall unike.
-  *Dekningsgraden for to varegrupper er ikke snittet av de to dekningsgradene.*
+- `additiv`: ja. *Omsetningen for et kvartal er summen av tre måneder.*
+- `semi_additiv`: ikke over tid. Beholdninger. *Lagerbeholdningen for et kvartal er beholdningen
+  ved kvartalets slutt.* Skriv i **Beregning** hvilken verdi som gjelder (siste, første, snitt).
+- `ikke_additiv`: nei. Andeler, snitt, antall unike. *Dekningsgraden for to varegrupper er ikke
+  snittet av de to dekningsgradene.* Pek på delene tallet regnes ut fra med `avledet_av`.
+
+Svar ut fra hva tallet betyr, ikke ut fra hvordan et system lagrer det. Lagrer et system tallet
+slik at det ikke kan legges sammen på samme måte, er det et avvik under **Systemrepresentasjon**.
 
 ### dimensjon
 
@@ -69,19 +70,3 @@ For `kategori`, list verdiene i seksjonen **Gyldige verdier**.
 
 Ingen egne felt, men relasjonen `er_en` er påkrevd (hvilket begrep som deles inn), og regelen
 skal stå i **Forretningsregler**.
-
-## Fra katalog til semantisk modell
-
-En generator kan bygge en semantisk modell slik:
-
-1. **Entiteter** blir tabeller/objekter med nøkkel fra `identifiseres_ved` og koblinger fra `tilhorer` og `del_av`.
-2. **Dimensjoner** med `beskriver` blir attributter på entiteten de beskriver.
-3. **Klassifiseringer** blir boolske dimensjoner eller navngitte filtre på entiteten i `er_en`.
-4. **Måltall** blir mål på `grain`-entiteten, plassert i tid av `tidsdimensjon`, aggregert med
-   `aggregering`. Måltall med `formel`/`ratio` bygges av måltallene i `avledet_av`.
-5. **Systemrepresentasjon** og avvikene der sier hvilke kildedata som skal brukes og hvilke filtre
-   som trengs for at tallene skal stemme med forretningsdefinisjonen. Les fra systemet i `kilde`.
-   Bruk en kopi bare når kilden mangler noe, og ta da med avvikene for kopien.
-
-Derfor er det viktig at `grain`, `tidsdimensjon`, `additivitet` og formelen er riktige. De styrer
-direkte hvordan tallene beregnes.

@@ -25,6 +25,8 @@ ligger utenfor. Lenker inne i katalogen er relative til `katalog/`.
   Mal: `katalog/maler/domene.md`. Veiledning: `katalog/veiledning/domener.md`.
 - `katalog/maler/`: malene. `katalog/veiledning/`: skriveveiledning for mennesker.
 - `scripts/valider.py`: validering og generering av `katalog/INDEKS.md` og `katalog/OVERSIKT.md`.
+- `docs/`: dokumentasjon for den som bruker katalogen, f.eks. til semantiske modeller. Ligger utenfor
+  katalogen, fordi katalogen beskriver virksomheten og ikke modellering.
 
 ## Slå opp et begrep
 
@@ -62,7 +64,7 @@ skrives alltid `[[id]]`, så `grep "\[\[id\]\]"` finner alle.
 
 ## Generere semantiske modeller
 
-Se `katalog/veiledning/begrepstyper.md`, avsnittet "Fra katalog til semantisk modell". Kort fortalt:
+Se `docs/semantisk-modell.md`. Kort fortalt:
 entitet → entitet med nøkkel (`identifiseres_ved`, `tilhorer`, `del_av`). Dimensjon → attributt
 (`beskriver`). Klassifisering → filter/boolsk dimensjon (`er_en`). Måltall → mål (`grain`,
 `tidsdimensjon`, `aggregering`, `additivitet`, formel i **Beregning** med `avledet_av`).

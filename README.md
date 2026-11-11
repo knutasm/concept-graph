@@ -9,7 +9,7 @@ Katalogen har to formål:
    når de ikke gjør det, skal det stå hvorfor.
 2. **Grunnlag for analyse.** Godt utfylt kan katalogen brukes som kontekst for å bygge semantiske
    modeller og måltall automatisk. Definisjonene sier *hva* som skal beregnes, og
-   systemrepresentasjonene sier *hvor* dataene finnes.
+   systemrepresentasjonene sier *hvor* dataene finnes. Se [docs/semantisk-modell.md](docs/semantisk-modell.md).
 
 ## Kom i gang
 
@@ -38,6 +38,7 @@ katalog/                               Obsidian-vaulten: alt som skal leses
   prosesser/<id>.md                    Forretningsprosessene: aktører, steg, beslutninger, resultater
   maler/                               Maler for begrep, prosess, domene og system
   veiledning/                          Skriveveiledning
+docs/semantisk-modell.md               Hvordan katalogen brukes til semantiske modeller
 scripts/valider.py                     Validering og generering av INDEKS.md og OVERSIKT.md
 .claude/skills/                        Veiledet arbeid med Claude: begrep, prosess og domene
 ```
