@@ -8,9 +8,9 @@ description: Veileder brukeren gjennom å opprette eller oppdatere et begrep (fo
 Du hjelper brukeren å skrive en god, konsistent oppføring i begrepskatalogen. Snakk norsk.
 Les disse før du begynner, hvis du ikke allerede har gjort det i denne samtalen:
 
-- `maler/begrep.md`: malen. Felt, seksjoner og rekkefølge er faste.
-- `veiledning/forretning-vs-system.md`: det viktigste du skal passe på.
-- `veiledning/begrepstyper.md` og `veiledning/relasjoner.md`: gyldige typer og relasjoner.
+- `katalog/maler/begrep.md`: malen. Felt, seksjoner og rekkefølge er faste.
+- `katalog/veiledning/forretning-vs-system.md`: det viktigste du skal passe på.
+- `katalog/veiledning/begrepstyper.md` og `katalog/veiledning/relasjoner.md`: gyldige typer og relasjoner.
 
 Still **ett eller noen få spørsmål om gangen**. Foreslå svar når du kan utlede dem (fra
 eksisterende begreper, fra det brukeren allerede har sagt), og la brukeren bekrefte. Ikke dikt opp
@@ -21,9 +21,9 @@ forretningsregler. Det du ikke vet, går i **Åpne spørsmål**, og da blir `sta
 Finn ut om begrepet finnes, også under andre navn:
 
 ```sh
-grep -i "<ord>" INDEKS.md
-grep -rli "synonymer:.*<ord>" begreper
-grep -rli "^navn:.*<ord>" begreper
+grep -i "<ord>" katalog/INDEKS.md
+grep -rli "synonymer:.*<ord>" katalog/begreper
+grep -rli "^navn:.*<ord>" katalog/begreper
 ```
 
 - **Finnes det?** Les filen og gå til *Oppdatere* under.
@@ -34,9 +34,9 @@ grep -rli "^navn:.*<ord>" begreper
 ## 2. Navn, type og domene
 
 - **Navn:** det virksomheten faktisk kaller det, entall. Lag `id` (små bokstaver, `_`, æ→ae, ø→o, å→aa).
-- **Type:** foreslå en type ut fra `veiledning/begrepstyper.md` og forklar kort hvorfor.
-- **Domene:** foreslå blant mappene i `begreper/` (se `_domene.md` i hver). Nytt domene bare
-  hvis ingen passer, og da må du lage `begreper/<domene>/_domene.md` også.
+- **Type:** foreslå en type ut fra `katalog/veiledning/begrepstyper.md` og forklar kort hvorfor.
+- **Domene:** foreslå blant mappene i `katalog/begreper/` (se `_domene.md` i hver). Nytt domene bare
+  hvis ingen passer, og da må du lage `katalog/begreper/<domene>/_domene.md` også.
   `kjerne` er bare for begreper som minst to domener bruker **og** som ingen av dem eier alene
   (f.eks. vare, kalenderdag). Har begrepet en tydelig faglig eier, legg det i eierens domene.
 
@@ -82,22 +82,22 @@ Skriv så:
 
 ## 5. Relasjoner
 
-Foreslå relasjoner ut fra det som er sagt, og bruk bare typene i `veiledning/relasjoner.md`.
+Foreslå relasjoner ut fra det som er sagt, og bruk bare typene i `katalog/veiledning/relasjoner.md`.
 Hver relasjonstype er et eget felt med lenker: `er_en: ["[[kunde]]"]`. Det samme gjelder `grain`,
 `tidsdimensjon` og `tidspunkt`: `grain: "[[fakturalinje]]"`.
 Alle mål må finnes. Mangler et begrep, tilby å lage det som stubb: `status: utkast`, bare påkrevde
 felt, kort definisjon, og "Ikke kartlagt." under Systemrepresentasjon. Spør om noe ofte forveksles
 med dette begrepet (`forveksles_med` + seksjonen **Avgrensning mot andre begreper**).
 
-For `entitet` og `hendelse`: spør hvilke forretningsprosesser begrepet inngår i (se `prosesser/` og
-tabellen Prosesser i `INDEKS.md`). Legg `"[[<id>]]"` til i prosessens `begreper`, og oppdater
+For `entitet` og `hendelse`: spør hvilke forretningsprosesser begrepet inngår i (se `katalog/prosesser/` og
+tabellen Prosesser i `katalog/INDEKS.md`). Legg `"[[<id>]]"` til i prosessens `begreper`, og oppdater
 prosessens `sist_oppdatert`. Spør også hvilke steg begrepet brukes i (**Bruker**) eller oppstår i
 (**Gir**). Finnes ikke prosessen, tilby å kartlegge den med skillen `prosess` når begrepet er ferdig.
 
 ## 6. Systemrepresentasjon
 
-Spør hvilke systemer begrepet finnes i. Systemene må finnes i `systemer/` (se `INDEKS.md`). Er et
-system nytt, lag det fra `maler/system.md` med et generisk id (`erp`, `crm`, …).
+Spør hvilke systemer begrepet finnes i. Systemene må finnes i `katalog/systemer/` (se `katalog/INDEKS.md`). Er et
+system nytt, lag det fra `katalog/maler/system.md` med et generisk id (`erp`, `crm`, …).
 
 For hvert system, én `### <system-id>` med:
 
@@ -111,7 +111,7 @@ Har brukeren ingen systeminformasjon, skriv "Ikke kartlagt." og la `systemer: []
 
 ## 7. Skriv, valider, oppsummer
 
-1. Skriv `begreper/<domene>/<id>.md` etter malen. Ta bort alle kommentarer, felt og seksjoner som
+1. Skriv `katalog/begreper/<domene>/<id>.md` etter malen. Ta bort alle kommentarer, felt og seksjoner som
    ikke gjelder typen. Behold seksjonsrekkefølgen. `sist_oppdatert` = dagens dato.
    Historikk: én rad "Opprettet".
 2. Status: `godkjent` bare hvis brukeren er eier eller sier at eier har godkjent. Ellers
@@ -128,7 +128,7 @@ Har brukeren ingen systeminformasjon, skriv "Ikke kartlagt." og la `systemer: []
    - Betydningen endres: oppdater, sett ny `gyldig_fra`, og legg til en rad i **Historikk**
      (dato, hva som endret seg, hvem som besluttet det). Spør hvem som besluttet.
    - Bare formulering: ingen ny historikkrad.
-3. Se om andre begreper påvirkes: `grep -rl "\[\[<id>\]\]\|\b<id>\b" begreper`. Nevn dem for brukeren.
+3. Se om andre begreper påvirkes: `grep -rl "\[\[<id>\]\]\|\b<id>\b" katalog/begreper`. Nevn dem for brukeren.
 4. Oppdater `sist_oppdatert`, kjør valideringen, og oppsummer endringen.
 
 Aldri endre `id`, og aldri slett et begrep. Bruk `status: utfaset` + `erstattet_av`.

@@ -1,4 +1,4 @@
-"""Validerer begrepskatalogen og genererer INDEKS.md og OVERSIKT.md.
+"""Validerer begrepskatalogen i katalog/ og genererer katalog/INDEKS.md og katalog/OVERSIKT.md.
 
 Bruk:
     uv run scripts/valider.py           # valider og skriv INDEKS.md og OVERSIKT.md på nytt
@@ -17,11 +17,12 @@ from pathlib import Path
 import yaml
 
 ROT = Path(__file__).resolve().parent.parent
-BEGREPER = ROT / "begreper"
-SYSTEMER = ROT / "systemer"
-PROSESSER = ROT / "prosesser"
-INDEKS = ROT / "INDEKS.md"
-OVERSIKT = ROT / "OVERSIKT.md"
+KATALOG = ROT / "katalog"              # Obsidian-vaulten: alt innhold som mennesker leser
+BEGREPER = KATALOG / "begreper"
+SYSTEMER = KATALOG / "systemer"
+PROSESSER = KATALOG / "prosesser"
+INDEKS = KATALOG / "INDEKS.md"
+OVERSIKT = KATALOG / "OVERSIKT.md"
 
 # --- Tillatte verdier --------------------------------------------------------
 
@@ -112,7 +113,8 @@ class Dokument:
 
     @property
     def rel(self) -> str:
-        return self.sti.relative_to(ROT).as_posix()
+        """Stien relativt til katalog/, brukt i lenker i INDEKS.md og OVERSIKT.md."""
+        return self.sti.relative_to(KATALOG).as_posix()
 
 
 @dataclass
@@ -129,7 +131,7 @@ class Resultat:
 
 def _navn(dok) -> str:
     if isinstance(dok, Dokument):
-        return dok.rel
+        return dok.sti.relative_to(ROT).as_posix()
     if isinstance(dok, Path):
         return dok.relative_to(ROT).as_posix()
     return str(dok)
@@ -642,7 +644,7 @@ def lag_indeks(begreper: dict, domener: dict, systemer: dict, prosesser: dict) -
         "<!-- GENERERT av scripts/valider.py. Ikke rediger for hånd. -->",
         "",
         f"{len(begreper)} begreper i {len(domener)} domener, {len(prosesser)} prosesser, {len(systemer)} systemer. "
-        "Les [README.md](README.md) for hvordan katalogen er bygd opp. "
+        "Les [README.md](../README.md) for hvordan katalogen er bygd opp. "
         "Diagrammer, måltall og systemavvik står i [OVERSIKT.md](OVERSIKT.md).",
         "",
         "## Domener",

@@ -2,7 +2,7 @@
 
 <!-- GENERERT av scripts/valider.py. Ikke rediger for hånd. -->
 
-38 begreper i 4 domener, 5 prosesser, 5 systemer. Les [README.md](README.md) for hvordan katalogen er bygd opp. Diagrammer, måltall og systemavvik står i [OVERSIKT.md](OVERSIKT.md).
+38 begreper i 4 domener, 5 prosesser, 5 systemer. Les [README.md](../README.md) for hvordan katalogen er bygd opp. Diagrammer, måltall og systemavvik står i [OVERSIKT.md](OVERSIKT.md).
 
 ## Domener
 

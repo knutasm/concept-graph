@@ -6,15 +6,15 @@ description: Veileder brukeren gjennom å kartlegge eller oppdatere en forretnin
 # Kartlegge eller oppdatere en prosess
 
 Du hjelper brukeren å beskrive en forretningsprosess som en **evne**: noe virksomheten må kunne
-gjøre for å drive. Resultatet er én fil i `prosesser/` der steg, beslutninger og resultater er
+gjøre for å drive. Resultatet er én fil i `katalog/prosesser/` der steg, beslutninger og resultater er
 strukturerte blokker, slik at et flytskjema med svømmebaner kan lages fra dem senere.
 Du skal ikke tegne flytskjemaet. Snakk norsk.
 
 Les disse før du begynner, hvis du ikke allerede har gjort det i denne samtalen:
 
-- `maler/prosess.md`: malen. Felt, seksjoner, blokkformat og rekkefølge er faste.
-- `veiledning/prosesser.md`: hvordan steg, beslutninger og resultater skrives.
-- `veiledning/begrepstyper.md`: forskjellen på entitet og hendelse.
+- `katalog/maler/prosess.md`: malen. Felt, seksjoner, blokkformat og rekkefølge er faste.
+- `katalog/veiledning/prosesser.md`: hvordan steg, beslutninger og resultater skrives.
+- `katalog/veiledning/begrepstyper.md`: forskjellen på entitet og hendelse.
 
 Still **ett eller noen få spørsmål om gangen**. Foreslå svar når du kan utlede dem (fra
 eksisterende begreper og prosesser, fra det brukeren allerede har sagt), og la brukeren bekrefte.
@@ -24,8 +24,8 @@ Ikke dikt opp steg, aktører eller regler. Det du ikke vet, går i **Åpne spør
 ## 1. Søk først
 
 ```sh
-grep -A20 "^## Prosesser" INDEKS.md
-grep -rli "<ord>" prosesser
+grep -A20 "^## Prosesser" katalog/INDEKS.md
+grep -rli "<ord>" katalog/prosesser
 ```
 
 - **Finnes prosessen?** Les filen og gå til *Oppdatere* under.
@@ -86,8 +86,8 @@ For hvert steg:
 Bare `entitet` og `hendelse` hører hjemme her. Slå opp hvert begrep:
 
 ```sh
-grep -i "<ord>" INDEKS.md
-grep -rli "^synonymer:.*<ord>" begreper
+grep -i "<ord>" katalog/INDEKS.md
+grep -rli "^synonymer:.*<ord>" katalog/begreper
 ```
 
 For hvert begrep som **ikke finnes**, gi brukeren tre valg:
@@ -106,7 +106,7 @@ Alle begreper fra **Bruker**, **Gir**, **Hendelse** og `utloser` skal stå i `be
 
 ## 7. Skriv, valider, oppsummer
 
-1. Skriv `prosesser/<id>.md` etter malen. Ta bort alle kommentarer og eksempelblokker.
+1. Skriv `katalog/prosesser/<id>.md` etter malen. Ta bort alle kommentarer og eksempelblokker.
    `sist_oppdatert` = dagens dato. Id-ene på blokkene: `s1`, `b1`, `r1` …, i flytrekkefølge.
 2. Status: `godkjent` bare hvis brukeren er eier eller sier at eier har godkjent. Ellers
    `til_godkjenning`, eller `utkast` hvis det finnes åpne spørsmål.
@@ -127,7 +127,7 @@ Alle begreper fra **Bruker**, **Gir**, **Hendelse** og `utloser` skal stå i `be
 2. Spør hva som skal endres. Gjør endringen i blokkene, og pass på at **Neste** fortsatt henger
    sammen. Ikke nummerer om id-er, bruk `s2a` for nye steg mellom `s2` og `s3`.
 3. Oppdater `begreper` og `utloser` hvis begrepene endres, og `sist_oppdatert`.
-4. Se om andre prosesser peker hit: `grep -rl "\[\[<id>\]\]" prosesser`. Nevn dem for brukeren.
+4. Se om andre prosesser peker hit: `grep -rl "\[\[<id>\]\]" katalog/prosesser`. Nevn dem for brukeren.
 5. Kjør valideringen og oppsummer endringen.
 
 Aldri endre `id` på en prosess.
