@@ -1,8 +1,0 @@
-[project]
-name = "concept-graph"
-version = "0.3.0"
-description = "Norsk begrepskatalog / forretningsordliste"
-requires-python = ">=3.11"
-dependencies = [
- "pyyaml>=6",
-]

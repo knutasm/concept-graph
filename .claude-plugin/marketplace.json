@@ -1,0 +1,16 @@
+{
+  "name": "begrepskatalog",
+  "owner": {
+    "name": "Knut Arne Smeland"
+  },
+  "metadata": {
+    "description": "Markedsplass for begrepskatalog-pluginen: norsk forretningsordliste med skills, maler og validering."
+  },
+  "plugins": [
+    {
+      "name": "begrepskatalog",
+      "source": "./",
+      "description": "Norsk begrepskatalog: maler, veiledning, skills og validering."
+    }
+  ]
+}

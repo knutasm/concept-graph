@@ -1,0 +1,7 @@
+{
+  "name": "begrepskatalog",
+  "version": "0.4.0",
+  "description": "Norsk begrepskatalog (forretningsordliste/kunnskapsgraf): maler, skriveveiledning, skills for begreper, prosesser, domener, gjennomgang og intervju, validering, og kontekst for å generere semantiske modeller.",
+  "author": { "name": "Knut Arne Smeland" },
+  "keywords": ["begrepskatalog", "forretningsordliste", "business-glossary", "semantic-model", "dbt", "norsk"]
+}
